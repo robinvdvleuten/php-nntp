@@ -13,6 +13,10 @@ interface ResponseInterface
     const AUTHENTICATION_REJECTED      = 481;
     const AUTHENTICATION_OUTOFSEQUENCE = 482;
 
+    // Group constants
+    const GROUP_SELECTED               = 211;
+    const NO_SUCH_GROUP                = 411;
+
     function getMessage();
 
     function getStatusCode();
