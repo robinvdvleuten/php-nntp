@@ -26,6 +26,11 @@ class GroupCommand extends Command implements CommandInterface
         $this->group = $group;
     }
 
+    public function isMultiLine()
+    {
+        return false;
+    }
+
     /**
      * {@inheritDoc}
      */

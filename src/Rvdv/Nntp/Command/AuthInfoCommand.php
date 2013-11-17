@@ -25,6 +25,11 @@ class AuthInfoCommand extends Command implements CommandInterface
         $this->value = $value;
     }
 
+    public function isMultiLine()
+    {
+        return false;
+    }
+
     /**
      * {@inheritDoc}
      */
