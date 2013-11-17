@@ -51,13 +51,15 @@ class Connection implements ConnectionInterface
         $responseHandlers = $command->getResponseHandlers();
 
         // Check if we received a response expected by the command.
-        if (!$responseHandler = $responseHandlers[$response->getStatusCode()]) {
+        if (!isset($responseHandlers[$response->getStatusCode()])) {
             throw new \RuntimeException(sprintf(
                 'Unexpected response received: [%d] %s',
                 $response->getStatusCode(),
                 $response->getMessage()
             ));
         }
+
+        $responseHandler = $responseHandlers[$response->getStatusCode()];
 
         if (!is_callable(array($command, $responseHandler))) {
             throw new \RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $responseHandler));

@@ -38,11 +38,11 @@ class Client implements ClientInterface
     {
         $command = $this->authInfo(AuthInfoCommand::AUTHINFO_USER, $username);
 
-        if (ResponseInterface::AUTHENTICATION_CONTINUE === $command->getResponse()->getStatusCode()) {
+        if (ResponseInterface::AUTHENTICATION_CONTINUE == $command->getResponse()->getStatusCode()) {
             $command = $this->authInfo(AuthInfoCommand::AUTHINFO_PASS, $password);
         }
 
-        if (ResponseInterface::AUTHENTICATION_ACCEPTED !== $command->getResponse()->getStatusCode()) {
+        if (ResponseInterface::AUTHENTICATION_ACCEPTED != $command->getResponse()->getStatusCode()) {
             new \RuntimeException(sprintf(
                 "Could not authenticate with the provided username/password: %s [%d]",
                 $command->getResponse()->getMessage(),
