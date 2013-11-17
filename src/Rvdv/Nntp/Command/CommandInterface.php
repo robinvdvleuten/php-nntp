@@ -10,7 +10,9 @@ interface CommandInterface
 
     function setResponse(ResponseInterface $response);
 
-    function getResponseHandlers();
+    function getResult();
 
     function execute();
+
+    function getResponseHandlers();
 }

@@ -29,4 +29,9 @@ class QuitCommandSpec extends ObjectBehavior
     {
         $this->execute()->shouldBe('QUIT');
     }
+
+    public function it_should_not_have_a_result()
+    {
+        $this->getResult()->shouldBeNull();
+    }
 }

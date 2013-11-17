@@ -42,4 +42,9 @@ class AuthInfoCommandSpec extends ObjectBehavior
         $this->beConstructedWith($connection, 'PASS', 'password');
         $this->execute()->shouldBe('AUTHINFO PASS password');
     }
+
+    public function it_should_not_have_a_result()
+    {
+        $this->getResult()->shouldBeNull();
+    }
 }
