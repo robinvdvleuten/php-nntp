@@ -2,17 +2,10 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Connection\ConnectionInterface;
-
-class QuitCommand implements CommandInterface
+class QuitCommand extends Command implements CommandInterface
 {
-    public function __construct(ConnectionInterface $connection)
+    public function __toString()
     {
-        $this->connection = $connection;
-    }
-
-    public function execute()
-    {
-        return $this->connection->sendCommand('QUIT');
+        return 'QUIT';
     }
 }
