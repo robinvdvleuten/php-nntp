@@ -7,14 +7,6 @@ use Prophecy\Argument;
 
 class QuitCommandSpec extends ObjectBehavior
 {
-    /**
-     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
-     */
-    public function let($connection)
-    {
-        $this->beConstructedWith($connection);
-    }
-
     public function it_is_initializable()
     {
         $this->shouldHaveType('Rvdv\Nntp\Command\QuitCommand');
