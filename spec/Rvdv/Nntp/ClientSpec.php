@@ -44,6 +44,30 @@ class ClientSpec extends ObjectBehavior
         $connection->sendCommand('QUIT')->willReturn($response)->shouldBeCalled();
         $this->setConnection($connection);
 
-        $this->disconnect()->shouldReturnAnInstanceOf('Rvdv\Nntp\Response\ResponseInterface');
+        $this->disconnect()->shouldReturnAnInstanceOf('Rvdv\Nntp\Command\QuitCommand');
+    }
+
+    /**
+     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
+     * @param Rvdv\Nntp\Response\ResponseInterface $response
+     */
+    public function it_should_return_command_when_calling_authinfo($connection, $response)
+    {
+        $connection->sendCommand('AUTHINFO USER username')->willReturn($response)->shouldBeCalled();
+        $this->setConnection($connection);
+
+        $this->authInfo('USER', 'username')->shouldReturnAnInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand');
+    }
+
+    /**
+     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
+     * @param Rvdv\Nntp\Response\ResponseInterface $response
+     */
+    public function it_should_return_command_when_calling_quit($connection, $response)
+    {
+        $connection->sendCommand('QUIT')->willReturn($response)->shouldBeCalled();
+        $this->setConnection($connection);
+
+        $this->quit()->shouldReturnAnInstanceOf('Rvdv\Nntp\Command\QuitCommand');
     }
 }

@@ -2,8 +2,10 @@
 
 namespace Rvdv\Nntp;
 
+use Rvdv\Nntp\Command\AuthInfoCommand;
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Connection\ConnectionInterface;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 class Client implements ClientInterface
 {
@@ -32,6 +34,25 @@ class Client implements ClientInterface
         $this->connection = $connection;
     }
 
+    public function authenticate($username, $password)
+    {
+        $response = $this->authInfo(AuthInfoCommand::AUTHINFO_USER, $username);
+
+        if (ResponseInterface::AUTHENTICATION_CONTINUE === $response->getStatusCode()) {
+            $response = $this->authInfo(AuthInfoCommand::AUTHINFO_PASS, $password);
+        }
+
+        if (ResponseInterface::AUTHENTICATION_ACCEPTED !== $response->getStatusCode()) {
+            new \RuntimeException(sprintf(
+                "Could not authenticate with the provided username/password: %s [%d]",
+                $response->getMessage(),
+                $response->getStatusCode()
+            ));
+        }
+
+        return $response;
+    }
+
     public function connect($host, $port, $secure = false, $timeout = 15)
     {
         return $this->connection->connect($host, $port, $secure, $timeout);
@@ -39,16 +60,17 @@ class Client implements ClientInterface
 
     public function disconnect()
     {
-        $response = $this->quit();
+        $command = $this->quit();
 
         if (!$this->connection->disconnect()) {
             // @todo throw exception
         }
 
-        return $response;
+        return $command;
     }
 
     /**
+     * @method \Rvdv\Nntp\Response\ResponseInterface authInfo($type, $value)
      * @method \Rvdv\Nntp\Response\ResponseInterface quit()
      */
     public function __call($command, $arguments)
@@ -67,6 +89,8 @@ class Client implements ClientInterface
         $reflect  = new \ReflectionClass($class);
         $command = $reflect->newInstanceArgs($arguments);
 
-        return $command->execute();
+        $command->execute();
+
+        return $command;
     }
 }
