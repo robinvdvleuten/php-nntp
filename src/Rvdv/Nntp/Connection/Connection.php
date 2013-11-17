@@ -41,13 +41,11 @@ class Connection implements ConnectionInterface
             return \InvalidArgumentException('Failed to write to socket: command exceeded 510 characters');
         }
 
-        if (!$response = @fwrite($this->socket, $commandString."\r\n")) {
+        if (!@fwrite($this->socket, $commandString."\r\n")) {
             new \RuntimeException('Failed to write to socket');
         }
 
         $response = $this->getSingleLineResponse();
-        $command->setResponse($response);
-
         $responseHandlers = $command->getResponseHandlers();
 
         // Check if we received a response expected by the command.
@@ -65,6 +63,7 @@ class Connection implements ConnectionInterface
             throw new \RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $responseHandler));
         }
 
+        $command->setResponse($response);
         return $command->$responseHandler($response);
     }
 

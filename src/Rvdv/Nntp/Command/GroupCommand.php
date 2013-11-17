@@ -2,7 +2,6 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Connection\ConnectionInterface;
 use Rvdv\Nntp\Response\ResponseInterface;
 
 class GroupCommand extends Command implements CommandInterface
@@ -15,7 +14,7 @@ class GroupCommand extends Command implements CommandInterface
     /**
      * @var array
      */
-    private $results = array();
+    private $result = array();
 
     /**
      * Constructor
@@ -45,14 +44,17 @@ class GroupCommand extends Command implements CommandInterface
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getResult()
     {
-        return $this->results;
+        return $this->result;
     }
 
     public function handleGroupResponse(ResponseInterface $response)
     {
         $message = $response->getMessage();
-        $this->results = array_combine(array('count', 'first', 'last', 'name'), explode(' ', $message));
+        $this->result = array_combine(array('count', 'first', 'last', 'name'), explode(' ', $message));
     }
 }

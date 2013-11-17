@@ -49,7 +49,7 @@ class Response implements ResponseInterface
         return $this->message;
     }
 
-    function getStatusCode()
+    public function getStatusCode()
     {
         return $this->statusCode;
     }
