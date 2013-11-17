@@ -23,7 +23,7 @@ class ClientSpec extends ObjectBehavior
      */
     public function it_connects_with_a_nntp_server($connection, $response)
     {
-        $connection->connect('news.php.net', 119)->willReturn($response)->shouldBeCalled();
+        $connection->connect('news.php.net', 119, false, 15)->willReturn($response)->shouldBeCalled();
         $this->setConnection($connection);
 
         $this->connect('news.php.net', 119)->shouldReturnAnInstanceOf('Rvdv\Nntp\Response\ResponseInterface');
