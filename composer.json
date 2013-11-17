@@ -1,9 +1,29 @@
 {
+    "name": "rvdv/nntp",
+    "description": "Network News Transfer Protocol (NNTP) client.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robin van der Vleuten",
+            "email": "robinvdvleuten@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
     "require-dev": {
         "phpspec/phpspec": "2.0.*@dev"
+    },
+    "autoload": {
+        "psr-0": {"": "src"}
     },
     "config": {
         "bin-dir": "bin"
     },
-    "autoload": {"psr-0": {"": "src"}}
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
 }
