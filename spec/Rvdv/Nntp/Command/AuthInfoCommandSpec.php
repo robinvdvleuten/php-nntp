@@ -27,25 +27,19 @@ class AuthInfoCommandSpec extends ObjectBehavior
 
     /**
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
-     * @param Rvdv\Nntp\Response\ResponseInterface $response
      */
-    public function it_should_send_authinfo_user_command($connection, $response)
+    public function it_should_send_authinfo_user_command($connection)
     {
-        $connection->sendCommand('AUTHINFO USER username')->willReturn($response)->shouldBeCalled();
         $this->beConstructedWith($connection, 'USER', 'username');
-
-        $this->execute()->shouldReturnAnInstanceOf('Rvdv\Nntp\Response\ResponseInterface');
+        $this->execute()->shouldBe('AUTHINFO USER username');
     }
 
     /**
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
-     * @param Rvdv\Nntp\Response\ResponseInterface $response
      */
-    public function it_should_send_authinfo_pass_command($connection, $response)
+    public function it_should_send_authinfo_pass_command($connection)
     {
-        $connection->sendCommand('AUTHINFO PASS password')->willReturn($response)->shouldBeCalled();
         $this->beConstructedWith($connection, 'PASS', 'password');
-
-        $this->execute()->shouldReturnAnInstanceOf('Rvdv\Nntp\Response\ResponseInterface');
+        $this->execute()->shouldBe('AUTHINFO PASS password');
     }
 }

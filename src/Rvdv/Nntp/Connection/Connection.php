@@ -2,6 +2,7 @@
 
 namespace Rvdv\Nntp\Connection;
 
+use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Response\Response;
 
 class Connection implements ConnectionInterface
@@ -14,7 +15,7 @@ class Connection implements ConnectionInterface
         $url = $this->getSocketUrl($address, $port);
 
         if (!$this->socket = stream_socket_client($url, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT)) {
-            new \RuntimeException(sprintf("Connection to %s:%d failed: %s", $address, $port, $errstr), $errno);
+            new \RuntimeException(sprintf('Connection to %s:%d failed: %s', $address, $port, $errstr), $errno);
         }
 
         if ($secure) {
@@ -31,18 +32,38 @@ class Connection implements ConnectionInterface
         return fclose($this->socket);
     }
 
-    public function sendCommand($command)
+    public function sendCommand(CommandInterface $command)
     {
+        $commandString = $command->execute();
+
         // NNTP/RFC977 only allows command up to 512 (-2 \r\n) chars.
-        if (!strlen($command) > 510) {
+        if (!strlen($commandString) > 510) {
             return \InvalidArgumentException('Failed to write to socket: command exceeded 510 characters');
         }
 
-        if (!$response = @fwrite($this->socket, $command."\r\n")) {
+        if (!$response = @fwrite($this->socket, $commandString."\r\n")) {
             new \RuntimeException('Failed to write to socket');
         }
 
-        return $this->getSingleLineResponse();
+        $response = $this->getSingleLineResponse();
+        $command->setResponse($response);
+
+        $responseHandlers = $command->getResponseHandlers();
+
+        // Check if we received a response expected by the command.
+        if (!$responseHandler = $responseHandlers[$response->getStatusCode()]) {
+            throw new \RuntimeException(sprintf(
+                'Unexpected response received: [%d] %s',
+                $response->getStatusCode(),
+                $response->getMessage()
+            ));
+        }
+
+        if (!is_callable(array($command, $responseHandler))) {
+            throw new \RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $responseHandler));
+        }
+
+        return $command->$responseHandler($response);
     }
 
     protected function getSingleLineResponse()

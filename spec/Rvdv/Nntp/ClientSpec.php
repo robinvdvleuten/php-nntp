@@ -41,7 +41,7 @@ class ClientSpec extends ObjectBehavior
     public function it_should_disconnect_from_an_established_connection($connection, $response)
     {
         $connection->disconnect()->shouldBeCalled();
-        $connection->sendCommand('QUIT')->willReturn($response)->shouldBeCalled();
+        $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\QuitCommand'))->shouldBeCalled();
         $this->setConnection($connection);
 
         $this->disconnect()->shouldReturnAnInstanceOf('Rvdv\Nntp\Command\QuitCommand');
@@ -49,23 +49,21 @@ class ClientSpec extends ObjectBehavior
 
     /**
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
-     * @param Rvdv\Nntp\Response\ResponseInterface $response
      */
-    public function it_should_return_command_when_calling_authinfo($connection, $response)
+    public function it_should_return_command_when_calling_authinfo($connection)
     {
-        $connection->sendCommand('AUTHINFO USER username')->willReturn($response)->shouldBeCalled();
+        $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\AuthInfoCommand'))->shouldBeCalled();
         $this->setConnection($connection);
 
-        $this->authInfo('USER', 'username')->shouldReturnAnInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand');
+        $this->authinfo('USER', 'username')->shouldReturnAnInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand');
     }
 
     /**
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
-     * @param Rvdv\Nntp\Response\ResponseInterface $response
      */
-    public function it_should_return_command_when_calling_quit($connection, $response)
+    public function it_should_return_command_when_calling_quit($connection)
     {
-        $connection->sendCommand('QUIT')->willReturn($response)->shouldBeCalled();
+        $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\QuitCommand'))->shouldBeCalled();
         $this->setConnection($connection);
 
         $this->quit()->shouldReturnAnInstanceOf('Rvdv\Nntp\Command\QuitCommand');

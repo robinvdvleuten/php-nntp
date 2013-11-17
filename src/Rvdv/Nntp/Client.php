@@ -36,21 +36,21 @@ class Client implements ClientInterface
 
     public function authenticate($username, $password)
     {
-        $response = $this->authInfo(AuthInfoCommand::AUTHINFO_USER, $username);
+        $command = $this->authInfo(AuthInfoCommand::AUTHINFO_USER, $username);
 
-        if (ResponseInterface::AUTHENTICATION_CONTINUE === $response->getStatusCode()) {
-            $response = $this->authInfo(AuthInfoCommand::AUTHINFO_PASS, $password);
+        if (ResponseInterface::AUTHENTICATION_CONTINUE === $command->getResponse()->getStatusCode()) {
+            $command = $this->authInfo(AuthInfoCommand::AUTHINFO_PASS, $password);
         }
 
-        if (ResponseInterface::AUTHENTICATION_ACCEPTED !== $response->getStatusCode()) {
+        if (ResponseInterface::AUTHENTICATION_ACCEPTED !== $command->getResponse()->getStatusCode()) {
             new \RuntimeException(sprintf(
                 "Could not authenticate with the provided username/password: %s [%d]",
-                $response->getMessage(),
-                $response->getStatusCode()
+                $command->getResponse()->getMessage(),
+                $command->getResponse()->getStatusCode()
             ));
         }
 
-        return $response;
+        return $command;
     }
 
     public function connect($host, $port, $secure = false, $timeout = 15)
@@ -89,7 +89,7 @@ class Client implements ClientInterface
         $reflect  = new \ReflectionClass($class);
         $command = $reflect->newInstanceArgs($arguments);
 
-        $command->execute();
+        $this->connection->sendCommand($command);
 
         return $command;
     }
