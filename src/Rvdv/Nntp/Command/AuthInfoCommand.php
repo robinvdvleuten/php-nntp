@@ -3,6 +3,7 @@
 namespace Rvdv\Nntp\Command;
 
 use Rvdv\Nntp\Connection\ConnectionInterface;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 class AuthInfoCommand extends Command implements CommandInterface
 {
@@ -17,8 +18,27 @@ class AuthInfoCommand extends Command implements CommandInterface
         parent::__construct($connection);
     }
 
-    public function __toString()
+    /**
+     * {@inheritDoc}
+     */
+    public function getResponseHandlers()
+    {
+        return array(
+            ResponseInterface::AUTHENTICATION_ACCEPTED => 'handleAuthenticatedResponse',
+            ResponseInterface::AUTHENTICATION_CONTINUE => 'handleAuthenticatedResponse',
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function execute()
     {
         return sprintf('AUTHINFO %s %s', $this->type, $this->value);
+    }
+
+    public function handleAuthenticatedResponse(ResponseInterface $response)
+    {
+        return true;
     }
 }

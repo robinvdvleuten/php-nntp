@@ -25,14 +25,8 @@ class QuitCommandSpec extends ObjectBehavior
         $this->shouldImplement('Rvdv\Nntp\Command\CommandInterface');
     }
 
-    /**
-     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
-     * @param Rvdv\Nntp\Response\ResponseInterface $response
-     */
-    public function it_should_send_quit_command($connection, $response)
+    public function it_should_send_quit_command()
     {
-        $connection->sendCommand('QUIT')->willReturn($response)->shouldBeCalled();
-
-        $this->execute()->shouldReturnAnInstanceOf('Rvdv\Nntp\Response\ResponseInterface');
+        $this->execute()->shouldBe('QUIT');
     }
 }
