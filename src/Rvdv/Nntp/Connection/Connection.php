@@ -23,8 +23,32 @@ class Connection implements ConnectionInterface
 
         stream_set_blocking($this->socket, 1);
 
+        return $this->getSingleLineResponse();
+    }
+
+    public function disconnect()
+    {
+        return fclose($this->socket);
+    }
+
+    public function sendCommand($command)
+    {
+        // NNTP/RFC977 only allows command up to 512 (-2 \r\n) chars.
+        if (!strlen($command) > 510) {
+            return \InvalidArgumentException('Failed to write to socket: command exceeded 510 characters');
+        }
+
+        if (!$response = @fwrite($this->socket, $command."\r\n")) {
+            new \RuntimeException('Failed to write to socket');
+        }
+
+        return $this->getSingleLineResponse();
+    }
+
+    protected function getSingleLineResponse()
+    {
         if (!$response = @fgets($this->socket, 256)) {
-            new \RuntimeException("Failed to read from socket");
+            new \RuntimeException('Failed to read from socket');
         }
 
         return Response::createFromString($response);
