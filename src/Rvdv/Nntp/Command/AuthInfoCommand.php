@@ -10,12 +10,20 @@ class AuthInfoCommand extends Command implements CommandInterface
     const AUTHINFO_USER = 'USER';
     const AUTHINFO_PASS = 'PASS';
 
-    public function __construct(ConnectionInterface $connection, $type, $value)
+    /**
+     * @var string
+     */
+    private $type;
+
+    /**
+     * @var string
+     */
+    private $value;
+
+    public function __construct($type, $value)
     {
         $this->type = $type;
         $this->value = $value;
-
-        parent::__construct($connection);
     }
 
     /**

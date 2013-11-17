@@ -84,8 +84,6 @@ class Client implements ClientInterface
             ));
         }
 
-        $arguments = array_merge(array($this->connection), $arguments);
-
         $reflect  = new \ReflectionClass($class);
         $command = $reflect->newInstanceArgs($arguments);
 

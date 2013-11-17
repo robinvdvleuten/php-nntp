@@ -7,12 +7,9 @@ use Prophecy\Argument;
 
 class AuthInfoCommandSpec extends ObjectBehavior
 {
-    /**
-     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
-     */
-    public function let($connection)
+    public function let()
     {
-        $this->beConstructedWith($connection, 'USER', 'username');
+        $this->beConstructedWith('USER', 'username');
     }
 
     public function it_is_initializable()
@@ -25,21 +22,15 @@ class AuthInfoCommandSpec extends ObjectBehavior
         $this->shouldImplement('Rvdv\Nntp\Command\CommandInterface');
     }
 
-    /**
-     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
-     */
-    public function it_should_send_authinfo_user_command($connection)
+    public function it_should_send_authinfo_user_command()
     {
-        $this->beConstructedWith($connection, 'USER', 'username');
+        $this->beConstructedWith('USER', 'username');
         $this->execute()->shouldBe('AUTHINFO USER username');
     }
 
-    /**
-     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
-     */
-    public function it_should_send_authinfo_pass_command($connection)
+    public function it_should_send_authinfo_pass_command()
     {
-        $this->beConstructedWith($connection, 'PASS', 'password');
+        $this->beConstructedWith('PASS', 'password');
         $this->execute()->shouldBe('AUTHINFO PASS password');
     }
 
