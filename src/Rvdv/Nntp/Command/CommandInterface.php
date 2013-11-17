@@ -6,6 +6,8 @@ use Rvdv\Nntp\Response\ResponseInterface;
 
 interface CommandInterface
 {
+    function isMultiLine();
+
     function getResponse();
 
     function setResponse(ResponseInterface $response);

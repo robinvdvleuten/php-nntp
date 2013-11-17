@@ -14,6 +14,11 @@ class QuitCommand extends Command implements CommandInterface
         return 'QUIT';
     }
 
+    public function isMultiLine()
+    {
+        return false;
+    }
+
     /**
      * {@inheritDoc}
      */

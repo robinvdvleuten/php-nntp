@@ -3,7 +3,9 @@
 namespace Rvdv\Nntp\Connection;
 
 use Rvdv\Nntp\Command\CommandInterface;
+use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 class Connection implements ConnectionInterface
 {
@@ -63,6 +65,10 @@ class Connection implements ConnectionInterface
             throw new \RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $responseHandler));
         }
 
+        if ($command->isMultiLine()) {
+            $response = $this->getMultiLineResponse($response);
+        }
+
         $command->setResponse($response);
         return $command->$responseHandler($response);
     }
@@ -74,6 +80,25 @@ class Connection implements ConnectionInterface
         }
 
         return Response::createFromString($response);
+    }
+
+    protected function getMultiLineResponse(ResponseInterface $response)
+    {
+        $buffer = "";
+        while(!feof($this->socket)) {
+            $buffer .= @fgets($this->socket, 256);
+
+            if (substr($buffer, -5) === "\r\n.\r\n") {
+                break;
+            }
+        }
+
+        $lines = explode("\r\n", trim($buffer));
+        if (end($lines) === ".") {
+            array_pop($lines);
+        }
+
+        return new MultiLineResponse($response, $lines);
     }
 
     protected function getSocketUrl($host, $port)
