@@ -12,7 +12,12 @@ class ClientSpec extends ObjectBehavior
         $this->shouldHaveType('Rvdv\Nntp\Client');
     }
 
-    public function it_is_initializable_through_factory_method()
+    public function it_implements_interface()
+    {
+        $this->shouldImplement('Rvdv\Nntp\ClientInterface');
+    }
+
+    public function it_should_be_initializable_through_create_method()
     {
         $this::create()->shouldReturnAnInstanceOf('Rvdv\Nntp\Client');
     }
@@ -21,11 +26,24 @@ class ClientSpec extends ObjectBehavior
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
      * @param Rvdv\Nntp\Response\ResponseInterface $response
      */
-    public function it_connects_with_a_nntp_server($connection, $response)
+    public function it_should_connect_with_a_nntp_server($connection, $response)
     {
         $connection->connect('news.php.net', 119, false, 15)->willReturn($response)->shouldBeCalled();
         $this->setConnection($connection);
 
         $this->connect('news.php.net', 119)->shouldReturnAnInstanceOf('Rvdv\Nntp\Response\ResponseInterface');
+    }
+
+    /**
+     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
+     * @param Rvdv\Nntp\Response\ResponseInterface $response
+     */
+    public function it_should_disconnect_from_an_established_connection($connection, $response)
+    {
+        $connection->disconnect()->shouldBeCalled();
+        $connection->sendCommand('QUIT')->willReturn($response)->shouldBeCalled();
+        $this->setConnection($connection);
+
+        $this->disconnect()->shouldReturnAnInstanceOf('Rvdv\Nntp\Response\ResponseInterface');
     }
 }
