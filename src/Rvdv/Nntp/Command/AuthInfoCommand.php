@@ -21,6 +21,14 @@ class AuthInfoCommand extends Command implements CommandInterface
     /**
      * {@inheritDoc}
      */
+    public function execute()
+    {
+        return sprintf('AUTHINFO %s %s', $this->type, $this->value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getResponseHandlers()
     {
         return array(
@@ -29,16 +37,15 @@ class AuthInfoCommand extends Command implements CommandInterface
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function execute()
+    public function getResult()
     {
-        return sprintf('AUTHINFO %s %s', $this->type, $this->value);
+        // This command doesn't have a result.
+        return;
     }
 
     public function handleAuthenticatedResponse(ResponseInterface $response)
     {
-        return true;
+        // We do nothing with the incoming response.
+        return;
     }
 }

@@ -9,6 +9,14 @@ class QuitCommand extends Command implements CommandInterface
     /**
      * {@inheritDoc}
      */
+    public function execute()
+    {
+        return 'QUIT';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getResponseHandlers()
     {
         return array(
@@ -16,16 +24,15 @@ class QuitCommand extends Command implements CommandInterface
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function execute()
+    public function getResult()
     {
-        return 'QUIT';
+        // This command doesn't have a result.
+        return;
     }
 
     public function handleConnectionClosedResponse(ResponseInterface $response)
     {
-        return true;
+        // We do nothing with the incoming response.
+        return;
     }
 }
