@@ -2,7 +2,6 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Connection\ConnectionInterface;
 use Rvdv\Nntp\Response\ResponseInterface;
 
 abstract class Command implements CommandInterface
