@@ -32,8 +32,8 @@ class Client
         $this->connection = $connection;
     }
 
-    public function connect($host, $port)
+    public function connect($host, $port, $secure = false, $timeout = 15)
     {
-        return $this->connection->connect($host, $port);
+        return $this->connection->connect($host, $port, $secure, $timeout);
     }
 }
