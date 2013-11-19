@@ -16,7 +16,7 @@ class Client implements ClientInterface
 
     public static function create()
     {
-        $client = new self();
+        $client = new static();
 
         $connection = new Connection();
         $client->setConnection($connection);
