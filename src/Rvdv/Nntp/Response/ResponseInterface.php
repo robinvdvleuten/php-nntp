@@ -18,6 +18,7 @@ interface ResponseInterface
     const NO_SUCH_GROUP                = 411;
 
     // Overview constants
+    const OVERVIEW_FORMAT_FOLLOWS      = 215;
     const OVERVIEW_FOLLOWS             = 224;
     const NO_GROUP_SELECTED            = 412;
     const CURRENT_ARTICLE_INVALID      = 420;
