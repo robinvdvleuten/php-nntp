@@ -30,7 +30,7 @@ class OverviewCommand extends Command implements CommandInterface
     public function __construct($range, array $format)
     {
         $this->range = $range;
-        $this->format = array_merge(['number' => false], $format);
+        $this->format = array_merge(array('number' => false), $format);
     }
 
     public function isMultiLine()
