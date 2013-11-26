@@ -24,17 +24,19 @@ class Connection implements ConnectionInterface
             stream_socket_enable_crypto($this->socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
         }
 
-        stream_set_blocking($this->socket, 1);
+        stream_set_blocking($this->socket, 0);
 
-        return $this->getSingleLineResponse();
+        return $this->getResponse();
     }
 
     public function disconnect()
     {
         if (is_resource($this->socket)) {
             stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
-            fclose($this->socket);
+            return fclose($this->socket);
         }
+
+        return false;
     }
 
     public function sendCommand(CommandInterface $command)
@@ -50,7 +52,7 @@ class Connection implements ConnectionInterface
             new \RuntimeException('Failed to write to socket');
         }
 
-        $response = $this->getSingleLineResponse();
+        $response = $this->getResponse($command->isMultiLine());
         $responseHandlers = $command->getResponseHandlers();
 
         // Check if we received a response expected by the command.
@@ -68,42 +70,44 @@ class Connection implements ConnectionInterface
             throw new \RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $responseHandler));
         }
 
-        if ($command->isMultiLine()) {
-            $response = $this->getMultiLineResponse($response);
-        }
-
         $command->setResponse($response);
         $command->$responseHandler($response);
 
         return $command;
     }
 
-    protected function getSingleLineResponse()
-    {
-        if (!$response = @fgets($this->socket, 256)) {
-            new \RuntimeException('Failed to read from socket');
-        }
-
-        return Response::createFromString($response);
-    }
-
-    protected function getMultiLineResponse(ResponseInterface $response)
+    protected function getResponse($multiLine = false)
     {
         $buffer = "";
+        $response = null;
+
         while(!feof($this->socket)) {
             $buffer .= @fread($this->socket, 256);
 
-            if (substr($buffer, -3) === ".\r\n") {
-                break;
+            if (!$response && substr($buffer, -2) === "\r\n") {
+                $response = Response::createFromString($buffer);
+
+                $lines = explode("\r\n", trim($buffer));
+                if (count($lines) > 1) {
+                    $buffer = implode("\r\n", array_slice($lines, 1));
+                } else {
+                    $buffer = "";
+                }
+
+                if (!$multiLine) {
+                    return $response;
+                }
+            }
+
+            if (false !== (bool) preg_match("/\r\n\.(\r\n)?$/", $buffer)) {
+                $lines = explode("\r\n", trim($buffer));
+                if (end($lines) === ".") {
+                    array_pop($lines);
+                }
+
+                return new MultiLineResponse($response, $lines);
             }
         }
-
-        $lines = explode("\r\n", trim($buffer));
-        if (end($lines) === ".") {
-            array_pop($lines);
-        }
-
-        return new MultiLineResponse($response, $lines);
     }
 
     protected function getSocketUrl($host, $port)
