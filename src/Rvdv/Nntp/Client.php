@@ -77,7 +77,7 @@ class Client implements ClientInterface
     {
         $class = sprintf('Rvdv\Nntp\Command\%sCommand', str_replace(" ", "", ucwords(strtr($command, "_-", "  "))));
         if (!class_exists($class) || !in_array('Rvdv\Nntp\Command\CommandInterface', class_implements($class))) {
-            throw new \RuntimeException(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 "Given command string '%s' is mapped to a non-callable command class (%s).",
                 $command,
                 $class
