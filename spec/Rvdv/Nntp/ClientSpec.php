@@ -36,36 +36,38 @@ class ClientSpec extends ObjectBehavior
 
     /**
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
-     * @param Rvdv\Nntp\Response\ResponseInterface $response
+     * @param Rvdv\Nntp\Command\CommandInterface $command
      */
-    public function it_should_disconnect_from_an_established_connection($connection, $response)
+    public function it_should_disconnect_from_an_established_connection($connection, $command)
     {
         $connection->disconnect()->shouldBeCalled();
-        $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\QuitCommand'))->shouldBeCalled();
+        $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\QuitCommand'))->willReturn($command)->shouldBeCalled();
         $this->setConnection($connection);
 
-        $this->disconnect()->shouldReturnAnInstanceOf('Rvdv\Nntp\Command\QuitCommand');
+        $this->disconnect()->shouldReturn($command);
     }
 
     /**
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
+     * @param Rvdv\Nntp\Command\CommandInterface $command
      */
-    public function it_should_return_command_when_calling_authinfo($connection)
+    public function it_should_return_command_when_calling_authinfo($connection, $command)
     {
-        $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\AuthInfoCommand'))->shouldBeCalled();
+        $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\AuthInfoCommand'))->willReturn($command)->shouldBeCalled();
         $this->setConnection($connection);
 
-        $this->authinfo('USER', 'username')->shouldReturnAnInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand');
+        $this->authinfo('USER', 'username')->shouldReturn($command);
     }
 
     /**
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
+     * @param Rvdv\Nntp\Command\CommandInterface $command
      */
-    public function it_should_return_command_when_calling_quit($connection)
+    public function it_should_return_command_when_calling_quit($connection, $command)
     {
-        $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\QuitCommand'))->shouldBeCalled();
+        $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\QuitCommand'))->willReturn($command)->shouldBeCalled();
         $this->setConnection($connection);
 
-        $this->quit()->shouldReturnAnInstanceOf('Rvdv\Nntp\Command\QuitCommand');
+        $this->quit()->shouldReturn($command);
     }
 }

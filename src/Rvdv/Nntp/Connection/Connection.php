@@ -70,7 +70,9 @@ class Connection implements ConnectionInterface
         }
 
         $command->setResponse($response);
-        return $command->$responseHandler($response);
+        $command->$responseHandler($response);
+
+        return $command;
     }
 
     protected function getSingleLineResponse()
