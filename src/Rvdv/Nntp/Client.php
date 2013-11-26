@@ -70,8 +70,11 @@ class Client implements ClientInterface
     }
 
     /**
-     * @method \Rvdv\Nntp\Response\ResponseInterface authInfo($type, $value)
-     * @method \Rvdv\Nntp\Response\ResponseInterface quit()
+     * @method \Rvdv\Nntp\Command\CommandInterface authInfo($type, $value)
+     * @method \Rvdv\Nntp\Command\CommandInterface group($name)
+     * @method \Rvdv\Nntp\Command\CommandInterface overview($range, $format)
+     * @method \Rvdv\Nntp\Command\CommandInterface overviewFormat()
+     * @method \Rvdv\Nntp\Command\CommandInterface quit()
      */
     public function __call($command, $arguments)
     {
