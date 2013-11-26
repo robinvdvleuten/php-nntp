@@ -42,6 +42,11 @@ class GroupCommandSpec extends ObjectBehavior
         $this->getResult()->shouldBeArray();
     }
 
+    public function it_should_not_expect_a_multiline_response()
+    {
+        $this->isMultiLine()->shouldBe(false);
+    }
+
     /**
      * @param Rvdv\Nntp\Response\ResponseInterface $response
      */
