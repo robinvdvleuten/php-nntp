@@ -31,7 +31,10 @@ class Connection implements ConnectionInterface
 
     public function disconnect()
     {
-        return fclose($this->socket);
+        if (is_resource($this->socket)) {
+            stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
+            fclose($this->socket);
+        }
     }
 
     public function sendCommand(CommandInterface $command)
@@ -88,7 +91,7 @@ class Connection implements ConnectionInterface
     {
         $buffer = "";
         while(!feof($this->socket)) {
-            $buffer .= @fgets($this->socket, 256);
+            $buffer .= @fread($this->socket, 256);
 
             if (substr($buffer, -3) === ".\r\n") {
                 break;
