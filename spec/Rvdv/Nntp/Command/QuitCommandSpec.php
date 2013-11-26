@@ -26,4 +26,9 @@ class QuitCommandSpec extends ObjectBehavior
     {
         $this->getResult()->shouldBeNull();
     }
+
+    public function it_should_not_expect_a_multiline_response()
+    {
+        $this->isMultiLine()->shouldBe(false);
+    }
 }

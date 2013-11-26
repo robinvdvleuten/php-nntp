@@ -22,7 +22,7 @@ class OverviewCommandSpec extends ObjectBehavior
         $this->shouldImplement('Rvdv\Nntp\Command\CommandInterface');
     }
 
-    public function it_should_be_a_multiline_command()
+    public function it_should_expect_a_multiline_response()
     {
         $this->isMultiLine()->shouldBe(true);
     }
