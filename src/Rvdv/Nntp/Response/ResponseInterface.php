@@ -25,6 +25,11 @@ interface ResponseInterface
     const NO_ARTICLES_IN_RANGE         = 423;
     const NO_ARTICLE_WITH_ID           = 430;
 
+    // XFeature constants
+    const FEATURE_ENABLED              = 290;
+
+    const UNKNOWN_COMMAND              = 500;
+
     function getMessage();
 
     function getStatusCode();

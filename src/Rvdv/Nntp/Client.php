@@ -3,6 +3,7 @@
 namespace Rvdv\Nntp;
 
 use Rvdv\Nntp\Command\AuthInfoCommand;
+use Rvdv\Nntp\Command\XFeatureCommand;
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Connection\ConnectionInterface;
 use Rvdv\Nntp\Response\ResponseInterface;
@@ -69,12 +70,19 @@ class Client implements ClientInterface
         return $command;
     }
 
+    public function enableCompression()
+    {
+        $command = $this->xfeature(XFeatureCommand::XFEATURE_COMPRESS_GZIP);
+        return $command->getResult();
+    }
+
     /**
      * @method \Rvdv\Nntp\Command\CommandInterface authInfo($type, $value)
      * @method \Rvdv\Nntp\Command\CommandInterface group($name)
      * @method \Rvdv\Nntp\Command\CommandInterface overview($range, $format)
      * @method \Rvdv\Nntp\Command\CommandInterface overviewFormat()
      * @method \Rvdv\Nntp\Command\CommandInterface quit()
+     * @method \Rvdv\Nntp\Command\CommandInterface xfeature($feature)
      */
     public function __call($command, $arguments)
     {

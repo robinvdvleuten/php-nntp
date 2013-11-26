@@ -75,4 +75,18 @@ class ClientSpec extends ObjectBehavior
     {
         $this->shouldThrow(new \InvalidArgumentException("Given command string 'unknown' is mapped to a non-callable command class (Rvdv\Nntp\Command\UnknownCommand)."))->during('__call', array('unknown', array()));
     }
+
+     /**
+     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
+     * @param Rvdv\Nntp\Command\CommandInterface $command
+     */
+    public function it_should_be_possible_to_enable_compression($connection, $command)
+    {
+        $command->getResult()->willReturn(true)->shouldBeCalled();
+
+        $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\XFeatureCommand'))->willReturn($command)->shouldBeCalled();
+        $this->setConnection($connection);
+
+        $this->enableCompression()->shouldBe(true);
+    }
 }

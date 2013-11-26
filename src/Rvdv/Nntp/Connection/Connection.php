@@ -9,6 +9,11 @@ use Rvdv\Nntp\Response\ResponseInterface;
 
 class Connection implements ConnectionInterface
 {
+    /**
+     * @var int
+     */
+    private $bufferSize = 256;
+
     private $socket;
 
     public function connect($host, $port, $secure = false, $timeout = 15)
@@ -82,14 +87,14 @@ class Connection implements ConnectionInterface
         $response = null;
 
         while(!feof($this->socket)) {
-            $buffer .= @fread($this->socket, 256);
+            $buffer .= @fread($this->socket, $this->bufferSize);
 
             if (!$response && substr($buffer, -2) === "\r\n") {
                 $response = Response::createFromString($buffer);
 
                 $lines = explode("\r\n", trim($buffer));
                 if (count($lines) > 1) {
-                    $buffer = implode("\r\n", array_slice($lines, 1));
+                    $buffer = implode("\r\n", array_slice($lines, 1))."\r\n";
                 } else {
                     $buffer = "";
                 }
@@ -99,11 +104,17 @@ class Connection implements ConnectionInterface
                 }
             }
 
-            if (false !== (bool) preg_match("/\r\n\.(\r\n)?$/", $buffer)) {
+            if ($response && substr($buffer, -3) === ".\r\n") {
+                if (substr($response->getMessage(), -15) === '[COMPRESS=GZIP]') {
+                    $buffer = @gzuncompress($buffer);
+                }
+
                 $lines = explode("\r\n", trim($buffer));
                 if (end($lines) === ".") {
                     array_pop($lines);
                 }
+
+                $lines = array_filter($lines);
 
                 return new MultiLineResponse($response, $lines);
             }

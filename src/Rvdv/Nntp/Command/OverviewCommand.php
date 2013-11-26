@@ -68,7 +68,8 @@ class OverviewCommand extends Command implements CommandInterface
     {
         $this->result = array();
 
-        foreach ($response->getLines() as $line) {
+        $lines = $response->getLines();
+        foreach ($lines as $line) {
             $segments = explode("\t", $line);
 
             $field = 0;
