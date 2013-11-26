@@ -87,8 +87,6 @@ class Client implements ClientInterface
         $reflect  = new \ReflectionClass($class);
         $command = $reflect->newInstanceArgs($arguments);
 
-        $this->connection->sendCommand($command);
-
-        return $command;
+        return $this->connection->sendCommand($command);
     }
 }
