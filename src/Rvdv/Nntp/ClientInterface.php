@@ -11,4 +11,6 @@ interface ClientInterface
     function connect($host, $port, $secure = false, $timeout = 15);
 
     function disconnect();
+
+    function enableCompression();
 }
