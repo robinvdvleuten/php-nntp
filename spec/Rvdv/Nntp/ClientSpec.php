@@ -43,7 +43,7 @@ class ClientSpec extends ObjectBehavior
      */
     public function it_should_disconnect_from_an_established_connection(ConnectionInterface $connection, CommandInterface $command)
     {
-        $connection->disconnect()->shouldBeCalled();
+        $connection->disconnect()->willReturn(true)->shouldBeCalled();
         $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\QuitCommand'))->willReturn($command)->shouldBeCalled();
         $this->setConnection($connection);
 
