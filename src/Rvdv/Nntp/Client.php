@@ -44,7 +44,7 @@ class Client implements ClientInterface
         }
 
         if (ResponseInterface::AUTHENTICATION_ACCEPTED != $command->getResponse()->getStatusCode()) {
-            new \RuntimeException(sprintf(
+            throw new \RuntimeException(sprintf(
                 "Could not authenticate with the provided username/password: %s [%d]",
                 $command->getResponse()->getMessage(),
                 $command->getResponse()->getStatusCode()
@@ -64,7 +64,7 @@ class Client implements ClientInterface
         $command = $this->quit();
 
         if (!$this->connection->disconnect()) {
-            // @todo throw exception
+            throw new \RuntimeException("Error while disconnecting from NNTP server");
         }
 
         return $command;
