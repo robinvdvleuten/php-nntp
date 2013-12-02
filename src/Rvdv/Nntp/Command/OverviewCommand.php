@@ -7,30 +7,40 @@ use Rvdv\Nntp\Response\ResponseInterface;
 class OverviewCommand extends Command implements CommandInterface
 {
     /**
+     * @var int
+     */
+    private $from;
+
+    /**
+     * @var int
+     */
+    private $to;
+
+    /**
      * @var array
      */
     private $format;
 
     /**
-     * @var string
+     * @var SplFixedArray
      */
-    private $range;
-
-    /**
-     * @var array
-     */
-    private $result = array();
+    private $result;
 
     /**
      * Constructor
      *
-     * @param string $range  The range of the overview.
-     * @param array  $format The format of the articles in response.
+     * @param int   $from   The article number where the range begins.
+     * @param int   $to     The article number where the range ends.
+     * @param array $format The format of the articles in response.
      */
-    public function __construct($range, array $format)
+    public function __construct($from, $to, array $format)
     {
-        $this->range = $range;
+        $this->from = $from;
+        $this->to = $to;
         $this->format = array_merge(array('number' => false), $format);
+
+        $size = ($this->to - $this->from) + 1;
+        $this->result = new \SplFixedArray($size);
     }
 
     public function isMultiLine()
@@ -43,7 +53,7 @@ class OverviewCommand extends Command implements CommandInterface
      */
     public function execute()
     {
-        return sprintf('XOVER %s', $this->range);
+        return sprintf('XOVER %d-%d', $this->from, $this->to);
     }
 
     /**
@@ -66,10 +76,9 @@ class OverviewCommand extends Command implements CommandInterface
 
     public function handleOverviewResponse(ResponseInterface $response)
     {
-        $this->result = array();
-
         $lines = $response->getLines();
-        foreach ($lines as $line) {
+
+        foreach ($lines as $index => $line) {
             $segments = explode("\t", $line);
 
             $field = 0;
@@ -82,7 +91,9 @@ class OverviewCommand extends Command implements CommandInterface
                 $field++;
             }
 
-            $this->result[] = $article;
+            $this->result[$index] = $article;
         }
+
+        unset($lines);
     }
 }
