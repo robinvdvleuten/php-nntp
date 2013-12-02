@@ -4,6 +4,9 @@ namespace spec\Rvdv\Nntp;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Rvdv\Nntp\Command\CommandInterface;
+use Rvdv\Nntp\Connection\ConnectionInterface;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 class ClientSpec extends ObjectBehavior
 {
@@ -26,7 +29,7 @@ class ClientSpec extends ObjectBehavior
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
      * @param Rvdv\Nntp\Response\ResponseInterface $response
      */
-    public function it_should_connect_with_a_nntp_server($connection, $response)
+    public function it_should_connect_with_a_nntp_server(ConnectionInterface $connection, ResponseInterface $response)
     {
         $connection->connect('news.php.net', 119, false, 15)->willReturn($response)->shouldBeCalled();
         $this->setConnection($connection);
@@ -38,7 +41,7 @@ class ClientSpec extends ObjectBehavior
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
      * @param Rvdv\Nntp\Command\CommandInterface $command
      */
-    public function it_should_disconnect_from_an_established_connection($connection, $command)
+    public function it_should_disconnect_from_an_established_connection(ConnectionInterface $connection, CommandInterface $command)
     {
         $connection->disconnect()->shouldBeCalled();
         $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\QuitCommand'))->willReturn($command)->shouldBeCalled();
@@ -51,7 +54,7 @@ class ClientSpec extends ObjectBehavior
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
      * @param Rvdv\Nntp\Command\CommandInterface $command
      */
-    public function it_should_return_command_when_calling_authinfo($connection, $command)
+    public function it_should_return_command_when_calling_authinfo(ConnectionInterface $connection, CommandInterface $command)
     {
         $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\AuthInfoCommand'))->willReturn($command)->shouldBeCalled();
         $this->setConnection($connection);
@@ -63,7 +66,7 @@ class ClientSpec extends ObjectBehavior
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
      * @param Rvdv\Nntp\Command\CommandInterface $command
      */
-    public function it_should_return_command_when_calling_quit($connection, $command)
+    public function it_should_return_command_when_calling_quit(ConnectionInterface $connection, CommandInterface $command)
     {
         $connection->sendCommand(Argument::type('Rvdv\Nntp\Command\QuitCommand'))->willReturn($command)->shouldBeCalled();
         $this->setConnection($connection);
@@ -80,7 +83,7 @@ class ClientSpec extends ObjectBehavior
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
      * @param Rvdv\Nntp\Command\CommandInterface $command
      */
-    public function it_should_be_possible_to_enable_compression($connection, $command)
+    public function it_should_be_possible_to_enable_compression(ConnectionInterface $connection, CommandInterface $command)
     {
         $command->getResult()->willReturn(true)->shouldBeCalled();
 

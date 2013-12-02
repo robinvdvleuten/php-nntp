@@ -4,6 +4,7 @@ namespace spec\Rvdv\Nntp\Command;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 class GroupCommandSpec extends ObjectBehavior
 {
@@ -50,7 +51,7 @@ class GroupCommandSpec extends ObjectBehavior
     /**
      * @param Rvdv\Nntp\Response\ResponseInterface $response
      */
-    public function it_should_have_result_when_response_received($response)
+    public function it_should_have_result_when_response_received(ResponseInterface $response)
     {
         $group = array('count' => '1234', 'first' => '3000234', 'last' => '3002322', 'name' => 'misc.test');
         $response->getMessage()->willReturn(implode(' ', array_values($group)))->shouldBeCalled();
