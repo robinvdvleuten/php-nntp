@@ -9,7 +9,7 @@ class OverviewCommandSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('10-10', array());
+        $this->beConstructedWith(10, 10, array());
     }
 
     public function it_is_initializable()
