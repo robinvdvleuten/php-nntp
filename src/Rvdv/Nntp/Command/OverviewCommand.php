@@ -82,11 +82,11 @@ class OverviewCommand extends Command implements CommandInterface
             $segments = explode("\t", $line);
 
             $field = 0;
-            $article = array();
+            $article = new \stdClass();
 
             foreach ($this->format as $name => $full) {
                 $value = $full ? ltrim(substr($segments[$field], strpos($segments[$field], ':') + 1), " \t") : $segments[$field];
-                $article[$name] = $value;
+                $article->{$name} = $value;
 
                 $field++;
             }
