@@ -2,8 +2,6 @@
 
 namespace Rvdv\Nntp;
 
-use Rvdv\Nntp\Connection\ConnectionInterface;
-
 interface ClientInterface
 {
     function authenticate($username, $password);

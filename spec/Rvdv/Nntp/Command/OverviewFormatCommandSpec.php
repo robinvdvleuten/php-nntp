@@ -3,7 +3,6 @@
 namespace spec\Rvdv\Nntp\Command;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class OverviewFormatCommandSpec extends ObjectBehavior
 {

@@ -3,7 +3,6 @@
 namespace spec\Rvdv\Nntp\Command;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Rvdv\Nntp\Response\ResponseInterface;
 
 class GroupCommandSpec extends ObjectBehavior

@@ -5,7 +5,6 @@ namespace Rvdv\Nntp\Connection;
 use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
-use Rvdv\Nntp\Response\ResponseInterface;
 
 class Connection implements ConnectionInterface
 {

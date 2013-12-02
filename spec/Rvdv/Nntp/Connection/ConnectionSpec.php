@@ -3,7 +3,6 @@
 namespace spec\Rvdv\Nntp\Connection;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ConnectionSpec extends ObjectBehavior
 {
