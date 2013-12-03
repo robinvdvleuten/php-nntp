@@ -14,7 +14,7 @@ class MultiLineResponse implements MultiLineResponseInterface
      */
     private $response;
 
-    public function __construct(ResponseInterface $response, array $lines)
+    public function __construct(ResponseInterface $response, \ArrayAccess $lines)
     {
         $this->response = $response;
         $this->lines = $lines;
