@@ -114,6 +114,7 @@ class Connection implements ConnectionInterface
                 }
 
                 $lines = array_filter($lines);
+                $lines = \SplFixedArray::fromArray($lines);
 
                 return new MultiLineResponse($response, $lines);
             }
