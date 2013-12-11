@@ -15,16 +15,6 @@ class Client implements ClientInterface
      */
     private $connection;
 
-    public static function create()
-    {
-        $client = new static();
-
-        $connection = new Connection();
-        $client->setConnection($connection);
-
-        return $client;
-    }
-
     public function getConnection()
     {
         return $this->connection;

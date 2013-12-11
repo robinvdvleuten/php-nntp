@@ -20,11 +20,6 @@ class ClientSpec extends ObjectBehavior
         $this->shouldImplement('Rvdv\Nntp\ClientInterface');
     }
 
-    public function it_should_be_initializable_through_create_method()
-    {
-        $this::create()->shouldReturnAnInstanceOf('Rvdv\Nntp\Client');
-    }
-
     /**
      * @param Rvdv\Nntp\Connection\ConnectionInterface $connection
      * @param Rvdv\Nntp\Response\ResponseInterface $response
