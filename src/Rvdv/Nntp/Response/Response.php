@@ -2,6 +2,9 @@
 
 namespace Rvdv\Nntp\Response;
 
+use Rvdv\Nntp\Exception\InvalidArgumentException;
+use Rvdv\Nntp\Exception\RuntimeException;
+
 class Response implements ResponseInterface
 {
     /**
@@ -17,20 +20,20 @@ class Response implements ResponseInterface
     public static function createFromString($response)
     {
         if (false === strpos($response, "\r\n")) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Invalid response given: response string should be terminated by &#92;r&#92;n'
             );
         }
 
         $response = trim($response);
         if (!preg_match('/^(\d{3}) (.+)$/s', $response, $matches)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('Invalid response given: "%s"', $response)
             );
         }
 
         if ($matches[1] < 100 || $matches[1] >= 600) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf('Invalid status code: %d', $matches[1])
             );
         }
