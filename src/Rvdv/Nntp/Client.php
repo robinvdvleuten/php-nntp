@@ -6,6 +6,8 @@ use Rvdv\Nntp\Command\AuthInfoCommand;
 use Rvdv\Nntp\Command\XFeatureCommand;
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Connection\ConnectionInterface;
+use Rvdv\Nntp\Exception\InvalidArgumentException;
+use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\ResponseInterface;
 
 class Client implements ClientInterface
@@ -34,7 +36,7 @@ class Client implements ClientInterface
         }
 
         if (ResponseInterface::AUTHENTICATION_ACCEPTED != $command->getResponse()->getStatusCode()) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 "Could not authenticate with the provided username/password: %s [%d]",
                 $command->getResponse()->getMessage(),
                 $command->getResponse()->getStatusCode()
@@ -54,7 +56,7 @@ class Client implements ClientInterface
         $command = $this->quit();
 
         if (!$this->connection->disconnect()) {
-            throw new \RuntimeException("Error while disconnecting from NNTP server");
+            throw new RuntimeException("Error while disconnecting from NNTP server");
         }
 
         return $command;
@@ -78,7 +80,7 @@ class Client implements ClientInterface
     {
         $class = sprintf('Rvdv\Nntp\Command\%sCommand', str_replace(" ", "", ucwords(strtr($command, "_-", "  "))));
         if (!class_exists($class) || !in_array('Rvdv\Nntp\Command\CommandInterface', class_implements($class))) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 "Given command string '%s' is mapped to a non-callable command class (%s).",
                 $command,
                 $class

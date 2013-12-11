@@ -3,6 +3,8 @@
 namespace Rvdv\Nntp\Connection;
 
 use Rvdv\Nntp\Command\CommandInterface;
+use Rvdv\Nntp\Exception\InvalidArgumentException;
+use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
 
@@ -21,7 +23,7 @@ class Connection implements ConnectionInterface
         $url = $this->getSocketUrl($address, $port);
 
         if (!$this->socket = stream_socket_client($url, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT)) {
-            new \RuntimeException(sprintf('Connection to %s:%d failed: %s', $address, $port, $errstr), $errno);
+            throw new RuntimeException(sprintf('Connection to %s:%d failed: %s', $address, $port, $errstr), $errno);
         }
 
         if ($secure) {
@@ -49,11 +51,11 @@ class Connection implements ConnectionInterface
 
         // NNTP/RFC977 only allows command up to 512 (-2 \r\n) chars.
         if (!strlen($commandString) > 510) {
-            return \InvalidArgumentException('Failed to write to socket: command exceeded 510 characters');
+            throw new InvalidArgumentException('Failed to write to socket: command exceeded 510 characters');
         }
 
         if (!@fwrite($this->socket, $commandString."\r\n")) {
-            new \RuntimeException('Failed to write to socket');
+            throw new RuntimeException('Failed to write to socket');
         }
 
         $response = $this->getResponse($command->isMultiLine());
@@ -61,7 +63,7 @@ class Connection implements ConnectionInterface
 
         // Check if we received a response expected by the command.
         if (!isset($responseHandlers[$response->getStatusCode()])) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Unexpected response received: [%d] %s',
                 $response->getStatusCode(),
                 $response->getMessage()
@@ -71,7 +73,7 @@ class Connection implements ConnectionInterface
         $responseHandler = $responseHandlers[$response->getStatusCode()];
 
         if (!is_callable(array($command, $responseHandler))) {
-            throw new \RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $responseHandler));
+            throw new RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $responseHandler));
         }
 
         $command->setResponse($response);

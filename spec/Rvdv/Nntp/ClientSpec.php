@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\ConnectionInterface;
+use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Response\ResponseInterface;
 
 class ClientSpec extends ObjectBehavior
@@ -71,7 +72,7 @@ class ClientSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_calling_unknown_command()
     {
-        $this->shouldThrow(new \InvalidArgumentException("Given command string 'unknown' is mapped to a non-callable command class (Rvdv\Nntp\Command\UnknownCommand)."))->during('__call', array('unknown', array()));
+        $this->shouldThrow(new InvalidArgumentException("Given command string 'unknown' is mapped to a non-callable command class (Rvdv\Nntp\Command\UnknownCommand)."))->during('__call', array('unknown', array()));
     }
 
      /**
