@@ -22,7 +22,7 @@ class OverviewCommand extends Command implements CommandInterface
     private $format;
 
     /**
-     * @var SplFixedArray
+     * @var array
      */
     private $result;
 
@@ -40,7 +40,7 @@ class OverviewCommand extends Command implements CommandInterface
         $this->format = array_merge(array('number' => false), $format);
 
         $size = ($this->to - $this->from) + 1;
-        $this->result = new \SplFixedArray($size);
+        $this->result = array();
     }
 
     public function isMultiLine()
@@ -91,7 +91,7 @@ class OverviewCommand extends Command implements CommandInterface
                 $field++;
             }
 
-            $this->result[$index] = $article;
+            $this->result[] = $article;
         }
 
         unset($lines);
