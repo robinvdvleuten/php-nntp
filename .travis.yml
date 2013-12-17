@@ -1,9 +1,14 @@
 language: php
 
 php:
+  - hhvm
   - 5.3
   - 5.4
   - 5.5
+
+matrix:
+    allow_failures:
+        - php: hhvm
 
 before_script:
   - composer self-update
