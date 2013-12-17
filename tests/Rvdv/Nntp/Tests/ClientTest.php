@@ -81,4 +81,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceof('Rvdv\Nntp\Exception\RuntimeException', $e, '->disconnect() throws a Rvdv\Nntp\Exception\RuntimeException if the established connection cannot be disconnected');
         }
     }
+
+    public function testItShouldErrorsWhenUnknownCommandIsCalled()
+    {
+        $client = new Client();
+
+        try {
+            $client->unknownCommand();
+            $this->fail('->unknownCommand() throws a Rvdv\Nntp\Exception\InvalidArgumentException because the command class does not exists');
+        } catch (\Exception $e) {
+            $this->assertInstanceof('Rvdv\Nntp\Exception\InvalidArgumentException', $e, '->unknownCommand() throws a Rvdv\Nntp\Exception\InvalidArgumentException because the command class does not exists');
+        }
+    }
 }
