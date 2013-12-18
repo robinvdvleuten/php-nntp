@@ -51,15 +51,16 @@ class Client implements ClientInterface
         return $this->connection->connect($host, $port, $secure, $timeout);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function disconnect()
     {
-        $command = $this->quit();
-
         if (!$this->connection->disconnect()) {
             throw new RuntimeException("Error while disconnecting from NNTP server");
         }
 
-        return $command;
+        return true;
     }
 
     public function enableCompression()

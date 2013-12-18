@@ -54,6 +54,10 @@ $articles = $command->getResult();
 
 var_dump(count($articles));
 
+// Send the QUIT command first before disconnecting.
+$client->quit();
+
+// Disconnect the established socket connection.
 $client->disconnect();
 ```
 
