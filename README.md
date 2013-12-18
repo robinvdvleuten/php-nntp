@@ -21,9 +21,14 @@ The recommended way to install the library is [through composer](http://getcompo
 
 ## NNTP?
 
-> The Network News Transfer Protocol (NNTP) has been in use in the Internet for a decade, and remains one of the most popular protocols (by volume) in use today.  This document is a replacement for RFC 977, and officially updates the protocol specification.  It clarifies some vagueness in RFC 977, includes some new base functionality, and provides a specific mechanism to add standardized extensions to NNTP.
+> NNTP specifies a protocol for the distribution, inquiry, retrieval,
+> and posting of news articles using a reliable stream (such as TCP)
+> server-client model. NNTP is designed so that news articles need only
+> be stored on one (presumably central) host, and subscribers on other
+> hosts attached to the LAN may read news articles using stream
+> connections to the news host.
 
-> -- RFC Abstract ([source](http://tools.ietf.org/html/rfc3977))
+> -- RFC Abstract ([source](http://tools.ietf.org/html/rfc977))
 
 ## Usage
 
