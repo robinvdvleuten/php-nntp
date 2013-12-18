@@ -32,10 +32,10 @@ The recommended way to install the library is [through composer](http://getcompo
 
 ## Usage
 
+Here is an example that fetches 100 articles from the _php.doc_ of the _news.php.net_ server:
+
 ```php
 <?php
-
-require_once __DIR__.'/../vendor/autoload.php';
 
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Client;
@@ -46,24 +46,28 @@ $connection = new Connection();
 $client->setConnection($connection);
 
 $client->connect('news.php.net', 119);
-$client->authenticate('username', 'password');
 
 $command = $client->overviewFormat();
 $overviewFormat = $command->getResult();
 
-$command = $client->group('alt.binaries.moovee');
+$command = $client->group('php.doc');
 $group = $command->getResult();
 
 $command = $client->overview($group['first'], $group['first'] + 100, $overviewFormat);
 $articles = $command->getResult();
 
-var_dump(count($articles));
+// Process the articles further...
 
-// Send the QUIT command first before disconnecting.
-$client->quit();
-
-// Disconnect the established socket connection.
 $client->disconnect();
+```
+
+## Tests
+
+To run the test suite, you need install the dependencies via composer, then run PHPUnit.
+
+```bash
+$ composer install
+$ bin/phpunit
 ```
 
 ## License
