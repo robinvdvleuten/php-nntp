@@ -43,15 +43,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('disconnect')
             ->will($this->returnValue(true));
 
-        $command = $this->getMock('Rvdv\Nntp\Command\CommandInterface');
-
-        $connection->expects($this->once())
-            ->method('sendCommand')
-            ->will($this->returnValue($command));
-
         $client->setConnection($connection);
 
-        $this->assertSame($client->disconnect(), $command);
+        $this->assertTrue($client->disconnect());
     }
 
     public function testItShouldErrorsWhenDisconnectFails()
@@ -65,12 +59,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $connection->expects($this->once())
             ->method('disconnect')
             ->will($this->returnValue(false));
-
-        $command = $this->getMock('Rvdv\Nntp\Command\CommandInterface');
-
-        $connection->expects($this->once())
-            ->method('sendCommand')
-            ->will($this->returnValue($command));
 
         $client->setConnection($connection);
 
