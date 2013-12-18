@@ -2,8 +2,13 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Response\ResponseInterface;
+use Rvdv\Nntp\Response\Response;
 
+/**
+ * QuitCommand
+ *
+ * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ */
 class QuitCommand extends Command implements CommandInterface
 {
     /**
@@ -14,30 +19,18 @@ class QuitCommand extends Command implements CommandInterface
         return 'QUIT';
     }
 
-    public function isMultiLine()
-    {
-        return false;
-    }
-
     /**
      * {@inheritDoc}
      */
-    public function getResponseHandlers()
+    public function getExpectedResponseCodes()
     {
         return array(
-            ResponseInterface::CONNECTION_CLOSED => 'handleConnectionClosedResponse',
+            Response::CONNECTION_CLOSING => 'onConnectionClosing',
         );
     }
 
-    public function getResult()
+    public function onConnectionClosing(Response $response)
     {
-        // This command doesn't have a result.
-        return;
-    }
-
-    public function handleConnectionClosedResponse(ResponseInterface $response)
-    {
-        // We do nothing with the incoming response.
         return;
     }
 }

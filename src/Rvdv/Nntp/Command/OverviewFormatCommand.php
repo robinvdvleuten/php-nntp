@@ -2,18 +2,19 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Response\ResponseInterface;
+use Rvdv\Nntp\Response\MultiLineResponse;
+use Rvdv\Nntp\Response\Response;
 
+/**
+ * OverviewFormatCommand
+ *
+ * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ */
 class OverviewFormatCommand extends Command implements CommandInterface
 {
-    /**
-     * @var array
-     */
-    private $result = array();
-
-    public function isMultiLine()
+    public function __construct()
     {
-        return true;
+        parent::__construct(array(), true);
     }
 
     /**
@@ -27,22 +28,14 @@ class OverviewFormatCommand extends Command implements CommandInterface
     /**
      * {@inheritDoc}
      */
-    public function getResponseHandlers()
+    public function getExpectedResponseCodes()
     {
         return array(
-            ResponseInterface::OVERVIEW_FORMAT_FOLLOWS => 'handleOverviewFormatResponse',
+            Response::INFORMATION_FOLLOWS => 'onInformationFollows',
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getResult()
-    {
-        return $this->result;
-    }
-
-    public function handleOverviewFormatResponse(ResponseInterface $response)
+    public function onInformationFollows(MultiLineResponse $response)
     {
         $this->result = array();
 

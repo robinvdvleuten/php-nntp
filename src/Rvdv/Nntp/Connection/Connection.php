@@ -7,6 +7,7 @@ use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 class Connection implements ConnectionInterface
 {
@@ -59,10 +60,14 @@ class Connection implements ConnectionInterface
         }
 
         $response = $this->getResponse($command->isMultiLine());
-        $responseHandlers = $command->getResponseHandlers();
+        if (in_array($response->getStatusCode(), array(Response::COMMAND_UNKNOWN, Response::COMMAND_UNAVAILABLE))) {
+            throw new Exception('Sent command is either unknown or unavailable on server');
+        }
+
+        $expectedResponseCodes = $command->getExpectedResponseCodes();
 
         // Check if we received a response expected by the command.
-        if (!isset($responseHandlers[$response->getStatusCode()])) {
+        if (!isset($expectedResponseCodes[$response->getStatusCode()])) {
             throw new RuntimeException(sprintf(
                 'Unexpected response received: [%d] %s',
                 $response->getStatusCode(),
@@ -70,14 +75,13 @@ class Connection implements ConnectionInterface
             ));
         }
 
-        $responseHandler = $responseHandlers[$response->getStatusCode()];
-
-        if (!is_callable(array($command, $responseHandler))) {
-            throw new RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $responseHandler));
+        $expectedResponseHandler = $expectedResponseCodes[$response->getStatusCode()];
+        if (!is_callable(array($command, $expectedResponseHandler))) {
+            throw new RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $expectedResponseHandler));
         }
 
         $command->setResponse($response);
-        $command->$responseHandler($response);
+        $command->$expectedResponseHandler($response);
 
         return $command;
     }
