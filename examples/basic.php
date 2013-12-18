@@ -11,7 +11,6 @@ $connection = new Connection();
 $client->setConnection($connection);
 
 $client->connect('news.php.net', 119);
-// $client->authenticate('username', 'password');
 
 $command = $client->overviewFormat();
 $overviewFormat = $command->getResult();
