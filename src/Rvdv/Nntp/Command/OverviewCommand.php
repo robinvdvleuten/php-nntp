@@ -2,8 +2,15 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Response\ResponseInterface;
+use Rvdv\Nntp\Exception\RuntimeException;
+use Rvdv\Nntp\Response\MultiLineResponse;
+use Rvdv\Nntp\Response\Response;
 
+/**
+ * OverviewCommand
+ *
+ * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ */
 class OverviewCommand extends Command implements CommandInterface
 {
     /**
@@ -22,11 +29,6 @@ class OverviewCommand extends Command implements CommandInterface
     private $format;
 
     /**
-     * @var array
-     */
-    private $result;
-
-    /**
      * Constructor
      *
      * @param int   $from   The article number where the range begins.
@@ -39,13 +41,7 @@ class OverviewCommand extends Command implements CommandInterface
         $this->to = $to;
         $this->format = array_merge(array('number' => false), $format);
 
-        $size = ($this->to - $this->from) + 1;
-        $this->result = array();
-    }
-
-    public function isMultiLine()
-    {
-        return true;
+        parent::__construct(array(), true);
     }
 
     /**
@@ -59,22 +55,16 @@ class OverviewCommand extends Command implements CommandInterface
     /**
      * {@inheritDoc}
      */
-    public function getResponseHandlers()
+    public function getExpectedResponseCodes()
     {
         return array(
-            ResponseInterface::OVERVIEW_FOLLOWS => 'handleOverviewResponse',
+            Response::OVERVIEW_INFORMATION_FOLLOWS => 'onOverviewInformationFollows',
+            Response::NO_NEWSGROUP_CURRENT_SELECTED => 'onNoNewsGroupCurrentSelected',
+            Response::NO_ARTICLES_SELECTED => 'onNoArticlesSelected',
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getResult()
-    {
-        return $this->result;
-    }
-
-    public function handleOverviewResponse(ResponseInterface $response)
+    public function onOverviewInformationFollows(MultiLineResponse $response)
     {
         $lines = $response->getLines();
 
@@ -95,5 +85,15 @@ class OverviewCommand extends Command implements CommandInterface
         }
 
         unset($lines);
+    }
+
+    public function onNoNewsGroupCurrentSelected(Response $response)
+    {
+        throw new RuntimeException('A group must be selected first before getting an overview.');
+    }
+
+    public function onNoArticlesSelected(Response $response)
+    {
+        throw new RuntimeException(sprintf('No articles selected in the given range %d-%d.', $this->from, $this->to));
     }
 }

@@ -2,8 +2,14 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Response\ResponseInterface;
+use Rvdv\Nntp\Exception\RuntimeException;
+use Rvdv\Nntp\Response\Response;
 
+/**
+ * AuthInfoCommand
+ *
+ * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ */
 class AuthInfoCommand extends Command implements CommandInterface
 {
     const AUTHINFO_USER = 'USER';
@@ -23,11 +29,8 @@ class AuthInfoCommand extends Command implements CommandInterface
     {
         $this->type = $type;
         $this->value = $value;
-    }
 
-    public function isMultiLine()
-    {
-        return false;
+        parent::__construct();
     }
 
     /**
@@ -41,23 +44,33 @@ class AuthInfoCommand extends Command implements CommandInterface
     /**
      * {@inheritDoc}
      */
-    public function getResponseHandlers()
+    public function getExpectedResponseCodes()
     {
         return array(
-            ResponseInterface::AUTHENTICATION_ACCEPTED => 'handleAuthenticatedResponse',
-            ResponseInterface::AUTHENTICATION_CONTINUE => 'handleAuthenticatedResponse',
+            Response::AUTHENTICATION_ACCEPTED => 'onAuthenticationAccepted',
+            Response::PASSWORD_REQUIRED => 'onPasswordRequired',
+            Response::AUTHENTICATION_REJECTED => 'onAuthenticationRejected',
+            Response::AUTHENTICATION_OUTOFSEQUENCE => 'onAuthenticationOutOfSequence',
         );
     }
 
-    public function getResult()
+    public function onAuthenticationAccepted(Response $response)
     {
-        // This command doesn't have a result.
         return;
     }
 
-    public function handleAuthenticatedResponse(ResponseInterface $response)
+    public function onPasswordRequired(Response $response)
     {
-        // We do nothing with the incoming response.
         return;
+    }
+
+    public function onAuthenticationRejected(Response $response)
+    {
+        throw new RuntimeException(sprintf('Authentication failed with given value for type %s', $this->type));
+    }
+
+    public function onAuthenticationOutOfSequence(Response $response)
+    {
+        throw new RuntimeException(sprintf('Authentication is out of sequence for type %s', $this->type));
     }
 }

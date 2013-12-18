@@ -2,21 +2,21 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Response\ResponseInterface;
+use Rvdv\Nntp\Response\Response;
 
+/**
+ * XFeatureCommand
+ *
+ * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ */
 class XFeatureCommand extends Command implements CommandInterface
 {
-    const XFEATURE_COMPRESS_GZIP = 'COMPRESS GZIP';
+    const COMPRESS_GZIP = 'COMPRESS GZIP';
 
     /**
      * @var string
      */
     private $feature;
-
-    /**
-     * @var array
-     */
-    private $result = false;
 
     /**
      * Constructor
@@ -26,11 +26,8 @@ class XFeatureCommand extends Command implements CommandInterface
     public function __construct($feature)
     {
         $this->feature = $feature;
-    }
 
-    public function isMultiLine()
-    {
-        return false;
+        parent::__construct(false);
     }
 
     /**
@@ -44,24 +41,15 @@ class XFeatureCommand extends Command implements CommandInterface
     /**
      * {@inheritDoc}
      */
-    public function getResponseHandlers()
+    public function getExpectedResponseCodes()
     {
         return array(
-            ResponseInterface::FEATURE_ENABLED => 'handleXFeatureResponse',
-            ResponseInterface::UNKNOWN_COMMAND => 'handleXFeatureResponse',
+            Response::XFEATURE_ENABLED => 'onXFeatureEnabled',
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getResult()
+    public function onXFeatureEnabled(Response $response)
     {
-        return $this->result;
-    }
-
-    public function handleXFeatureResponse(ResponseInterface $response)
-    {
-        $this->result = $response->getStatusCode() === ResponseInterface::FEATURE_ENABLED;
+        $this->result = true;
     }
 }

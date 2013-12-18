@@ -11,7 +11,7 @@ use Rvdv\Nntp\Client;
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
-    public function testItShouldConnectWithANntpServer()
+    public function testItConnectsWithANntpServer()
     {
         $client = new Client();
 
@@ -31,7 +31,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($client->connect('news.php.net', 119), $response);
     }
 
-    public function testItShouldDisconnectFromAnEstablishedConnection()
+    public function testItDisconnectsFromAnEstablishedConnection()
     {
         $client = new Client();
 
@@ -48,7 +48,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($client->disconnect());
     }
 
-    public function testItShouldErrorsWhenDisconnectFails()
+    public function testItErrorsWhenDisconnectFails()
     {
         $client = new Client();
 
@@ -70,7 +70,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testItShouldErrorsWhenUnknownCommandIsCalled()
+    public function testItErrorsWhenUnknownCommandIsCalled()
     {
         $client = new Client();
 

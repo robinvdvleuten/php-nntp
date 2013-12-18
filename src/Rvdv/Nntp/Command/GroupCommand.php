@@ -2,19 +2,20 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Response\ResponseInterface;
+use Rvdv\Nntp\Exception\RuntimeException;
+use Rvdv\Nntp\Response\Response;
 
+/**
+ * GroupCommand
+ *
+ * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ */
 class GroupCommand extends Command implements CommandInterface
 {
     /**
      * @var string
      */
     private $group;
-
-    /**
-     * @var array
-     */
-    private $result = array();
 
     /**
      * Constructor
@@ -24,11 +25,8 @@ class GroupCommand extends Command implements CommandInterface
     public function __construct($group)
     {
         $this->group = $group;
-    }
 
-    public function isMultiLine()
-    {
-        return false;
+        parent::__construct(array());
     }
 
     /**
@@ -42,24 +40,22 @@ class GroupCommand extends Command implements CommandInterface
     /**
      * {@inheritDoc}
      */
-    public function getResponseHandlers()
+    public function getExpectedResponseCodes()
     {
         return array(
-            ResponseInterface::GROUP_SELECTED => 'handleGroupResponse',
+            Response::GROUP_SELECTED => 'onGroupSelected',
+            Response::NO_SUCH_GROUP => 'onNoSuchGroup',
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getResult()
-    {
-        return $this->result;
-    }
-
-    public function handleGroupResponse(ResponseInterface $response)
+    public function onGroupSelected(Response $response)
     {
         $message = $response->getMessage();
         $this->result = array_combine(array('count', 'first', 'last', 'name'), explode(' ', $message));
+    }
+
+    public function onNoSuchGroup(Response $response)
+    {
+        throw new RuntimeException(sprintf('A group with name %s does not exists on server', $this->group));
     }
 }

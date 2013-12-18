@@ -7,6 +7,25 @@ use Rvdv\Nntp\Exception\RuntimeException;
 
 class Response implements ResponseInterface
 {
+    const CONNECTION_CLOSING = 205; // RFC 3977
+    const GROUP_SELECTED = 211; // RFC 3977
+    const INFORMATION_FOLLOWS = 215; // RFC 2980
+    const OVERVIEW_INFORMATION_FOLLOWS = 224; // RFC 2980
+    const AUTHENTICATION_ACCEPTED = 281; // RFC 4643
+    const XFEATURE_ENABLED = 290;
+
+    const PASSWORD_REQUIRED = 381; // RFC 4643
+
+    const NO_SUCH_GROUP = 411; // RFC 3977
+    const NO_NEWSGROUP_CURRENT_SELECTED = 412; // RFC 2980
+    const NO_ARTICLES_SELECTED = 420; // RFC 2980
+    const AUTHENTICATION_REJECTED = 481; // RFC 4643
+    const AUTHENTICATION_OUTOFSEQUENCE = 482; // RFC 4643
+
+    const COMMAND_UNKNOWN = 500; // RFC 3977
+    const COMMAND_UNAVAILABLE = 502; // RFC 4643
+    const PROGRAM_ERROR = 503; // RFC 2980
+
     /**
      * @var string
      */
