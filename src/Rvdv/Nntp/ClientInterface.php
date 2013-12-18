@@ -2,13 +2,30 @@
 
 namespace Rvdv\Nntp;
 
+use Rvdv\Nntp\Command\CommandInterface;
+
+/**
+ * ClientInterface
+ *
+ * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ */
 interface ClientInterface
 {
-    function authenticate($username, $password);
-
     function connect($host, $port, $secure = false, $timeout = 15);
 
     function disconnect();
 
-    function enableCompression();
+    function authInfo($type, $value);
+
+    function group($name);
+
+    function overview($from, $to, array $format);
+
+    function overviewFormat();
+
+    function quit();
+
+    function xfeature($feature);
+
+    function sendCommand(CommandInterface $command);
 }
