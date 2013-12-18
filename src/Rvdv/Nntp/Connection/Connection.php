@@ -7,7 +7,6 @@ use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
-use Rvdv\Nntp\Response\ResponseInterface;
 
 class Connection implements ConnectionInterface
 {
@@ -61,7 +60,7 @@ class Connection implements ConnectionInterface
 
         $response = $this->getResponse($command->isMultiLine());
         if (in_array($response->getStatusCode(), array(Response::COMMAND_UNKNOWN, Response::COMMAND_UNAVAILABLE))) {
-            throw new Exception('Sent command is either unknown or unavailable on server');
+            throw new RuntimeException('Sent command is either unknown or unavailable on server');
         }
 
         $expectedResponseCodes = $command->getExpectedResponseCodes();
