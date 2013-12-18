@@ -11,17 +11,17 @@ $connection = new Connection();
 $client->setConnection($connection);
 
 $client->connect('news.php.net', 119);
-$client->authenticate('username', 'password');
+// $client->authenticate('username', 'password');
 
 $command = $client->overviewFormat();
 $overviewFormat = $command->getResult();
 
-$command = $client->group('alt.binaries.moovee');
+$command = $client->group('php.doc');
 $group = $command->getResult();
 
 $command = $client->overview($group['first'], $group['first'] + 100, $overviewFormat);
 $articles = $command->getResult();
 
-var_dump(count($articles));
+// Process the articles further...
 
 $client->disconnect();
