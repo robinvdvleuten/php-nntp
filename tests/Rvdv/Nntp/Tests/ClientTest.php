@@ -70,15 +70,25 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testItErrorsWhenUnknownCommandIsCalled()
+    public function testItReturnsCommandInstanceWhenCallingShortcut()
     {
         $client = new Client();
 
-        try {
-            $client->unknownCommand();
-            $this->fail('->unknownCommand() throws a Rvdv\Nntp\Exception\InvalidArgumentException because the command class does not exists');
-        } catch (\Exception $e) {
-            $this->assertInstanceof('Rvdv\Nntp\Exception\InvalidArgumentException', $e, '->unknownCommand() throws a Rvdv\Nntp\Exception\InvalidArgumentException because the command class does not exists');
-        }
+        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
+            'connect', 'disconnect', 'sendCommand',
+        ));
+
+        $connection->expects($this->any())
+            ->method('sendCommand')
+            ->will($this->returnArgument(0));
+
+        $client->setConnection($connection);
+
+        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->authInfo('USER', 'user'));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->group('php.doc'));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->overview(1, 1, array()));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->overviewFormat());
+        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->quit());
+        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->xfeature('COMPRESS GZIP'));
     }
 }

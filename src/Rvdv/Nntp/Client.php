@@ -2,14 +2,16 @@
 
 namespace Rvdv\Nntp;
 
-use Rvdv\Nntp\Command\AuthInfoCommand;
-use Rvdv\Nntp\Command\XFeatureCommand;
-use Rvdv\Nntp\Connection\Connection;
+use Rvdv\Nntp\Command;
+use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\ConnectionInterface;
-use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Exception\RuntimeException;
-use Rvdv\Nntp\Response\ResponseInterface;
 
+/**
+ * Client
+ *
+ * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ */
 class Client implements ClientInterface
 {
     /**
@@ -17,35 +19,29 @@ class Client implements ClientInterface
      */
     private $connection;
 
+    /**
+     * Get the connection instance.
+     *
+     * @return \Rvdv\Nntp\Connection\ConnectionInterface
+     */
     public function getConnection()
     {
         return $this->connection;
     }
 
+    /**
+     * Set the connection instance.
+     *
+     * @param \Rvdv\Nntp\Connection\ConnectionInterface $connection A ConnectionInterface instance.
+     */
     public function setConnection(ConnectionInterface $connection)
     {
         $this->connection = $connection;
     }
 
-    public function authenticate($username, $password)
-    {
-        $command = $this->authInfo(AuthInfoCommand::AUTHINFO_USER, $username);
-
-        if (ResponseInterface::AUTHENTICATION_CONTINUE == $command->getResponse()->getStatusCode()) {
-            $command = $this->authInfo(AuthInfoCommand::AUTHINFO_PASS, $password);
-        }
-
-        if (ResponseInterface::AUTHENTICATION_ACCEPTED != $command->getResponse()->getStatusCode()) {
-            throw new RuntimeException(sprintf(
-                "Could not authenticate with the provided username/password: %s [%d]",
-                $command->getResponse()->getMessage(),
-                $command->getResponse()->getStatusCode()
-            ));
-        }
-
-        return $command;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public function connect($host, $port, $secure = false, $timeout = 15)
     {
         return $this->connection->connect($host, $port, $secure, $timeout);
@@ -63,34 +59,59 @@ class Client implements ClientInterface
         return true;
     }
 
-    public function enableCompression()
+    /**
+     * {@inheritDoc}
+     */
+    public function authInfo($type, $value)
     {
-        $command = $this->xfeature(XFeatureCommand::XFEATURE_COMPRESS_GZIP);
-        return $command->getResult();
+        return $this->sendCommand(new Command\AuthInfoCommand($type, $value));
     }
 
     /**
-     * @method \Rvdv\Nntp\Command\CommandInterface authInfo($type, $value)
-     * @method \Rvdv\Nntp\Command\CommandInterface group($name)
-     * @method \Rvdv\Nntp\Command\CommandInterface overview($range, $format)
-     * @method \Rvdv\Nntp\Command\CommandInterface overviewFormat()
-     * @method \Rvdv\Nntp\Command\CommandInterface quit()
-     * @method \Rvdv\Nntp\Command\CommandInterface xfeature($feature)
+     * {@inheritDoc}
      */
-    public function __call($command, $arguments)
+    public function group($name)
     {
-        $class = sprintf('Rvdv\Nntp\Command\%sCommand', str_replace(" ", "", ucwords(strtr($command, "_-", "  "))));
-        if (!class_exists($class) || !in_array('Rvdv\Nntp\Command\CommandInterface', class_implements($class))) {
-            throw new InvalidArgumentException(sprintf(
-                "Given command string '%s' is mapped to a non-callable command class (%s).",
-                $command,
-                $class
-            ));
-        }
+        return $this->sendCommand(new Command\GroupCommand($name));
+    }
 
-        $reflect  = new \ReflectionClass($class);
-        $command = $reflect->newInstanceArgs($arguments);
+    /**
+     * {@inheritDoc}
+     */
+    public function overview($from, $to, array $format)
+    {
+        return $this->sendCommand(new Command\OverviewCommand($from, $to, $format));
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function overviewFormat()
+    {
+        return $this->sendCommand(new Command\OverviewFormatCommand());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function quit()
+    {
+        return $this->sendCommand(new Command\QuitCommand());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function xfeature($feature)
+    {
+        return $this->sendCommand(new Command\XFeatureCommand($feature));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sendCommand(CommandInterface $command)
+    {
         return $this->connection->sendCommand($command);
     }
 }
