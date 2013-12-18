@@ -21,9 +21,9 @@ The recommended way to install the library is [through composer](http://getcompo
 
 ## NNTP?
 
-> The Network News Transfer Protocol (NNTP) is an application protocol used for transporting Usenet news articles (netnews) between news servers and for reading and posting articles by end user client applications. Brian Kantor of the University of California, San Diego and Phil Lapsley of the University of California, Berkeley authored RFC 977, the specification for the Network News Transfer Protocol, in March 1986. Other contributors included Stan O. Barber from the Baylor College of Medicine and Erik Fair of Apple Computer.
+> The Network News Transfer Protocol (NNTP) has been in use in the Internet for a decade, and remains one of the most popular protocols (by volume) in use today.  This document is a replacement for RFC 977, and officially updates the protocol specification.  It clarifies some vagueness in RFC 977, includes some new base functionality, and provides a specific mechanism to add standardized extensions to NNTP.
 
-> -- Wikipedia ([source](http://en.wikipedia.org/wiki/Network_News_Transfer_Protocol))
+> -- RFC Abstract ([source](http://tools.ietf.org/html/rfc3977))
 
 ## Usage
 
