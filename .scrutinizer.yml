@@ -1,0 +1,16 @@
+inherit: true
+
+before_commands:
+  - composer install --no-interaction
+
+filter:
+  excluded_paths:
+    - 'vendor/*'
+tools:
+  php_cpd:
+    filter:
+      excluded_paths: ['vendor/*']
+  php_pdepend: true
+  php_code_coverage:
+    filter:
+      excluded_paths: ['vendor/*']
