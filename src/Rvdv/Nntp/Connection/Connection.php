@@ -8,6 +8,11 @@ use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
 
+/**
+ * Connection
+ *
+ * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ */
 class Connection implements ConnectionInterface
 {
     /**
@@ -15,6 +20,9 @@ class Connection implements ConnectionInterface
      */
     private $bufferSize = 256;
 
+    /**
+     * @var resource
+     */
     private $socket;
 
     public function connect($host, $port, $secure = false, $timeout = 15)
