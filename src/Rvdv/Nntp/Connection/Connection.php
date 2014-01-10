@@ -59,7 +59,7 @@ class Connection implements ConnectionInterface
 
         stream_set_blocking($this->socket, 0);
 
-        $response = $this->getResponse();
+        return $this->getResponse();
     }
 
     /**
