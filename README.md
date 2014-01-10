@@ -40,10 +40,8 @@ Here is an example that fetches 100 articles from the _php.doc_ of the _news.php
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Client;
 
-$client = new Client();
-
 $connection = new Connection('news.php.net', 119);
-$client->setConnection($connection);
+$client = new Client($connection);
 
 $client->connect();
 

@@ -20,6 +20,16 @@ class Client implements ClientInterface
     private $connection;
 
     /**
+     * Constructor
+     *
+     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection A ConnectionInterface instance.
+     */
+    public function __construct(ConnectionInterface $connection)
+    {
+        $this->connection = $connection;
+    }
+
+    /**
      * Get the connection instance.
      *
      * @return \Rvdv\Nntp\Connection\ConnectionInterface
@@ -30,21 +40,11 @@ class Client implements ClientInterface
     }
 
     /**
-     * Set the connection instance.
-     *
-     * @param \Rvdv\Nntp\Connection\ConnectionInterface $connection A ConnectionInterface instance.
-     */
-    public function setConnection(ConnectionInterface $connection)
-    {
-        $this->connection = $connection;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    public function connect($host, $port, $secure = false, $timeout = 15)
+    public function connect()
     {
-        return $this->connection->connect($host, $port, $secure, $timeout);
+        return $this->connection->connect();
     }
 
     /**
