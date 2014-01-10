@@ -13,8 +13,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 {
     public function testItConnectsWithANntpServer()
     {
-        $client = new Client();
-
         $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
 
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
@@ -23,18 +21,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $connection->expects($this->once())
             ->method('connect')
-            ->with($this->equalTo('news.php.net'), $this->equalTo(119))
             ->will($this->returnValue($response));
 
-        $client->setConnection($connection);
+        $client = new Client($connection);
 
-        $this->assertSame($client->connect('news.php.net', 119), $response);
+        $this->assertSame($client->connect(), $response);
     }
 
     public function testItDisconnectsFromAnEstablishedConnection()
     {
-        $client = new Client();
-
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
             'connect', 'disconnect', 'sendCommand',
         ));
@@ -43,15 +38,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('disconnect')
             ->will($this->returnValue(true));
 
-        $client->setConnection($connection);
+        $client = new Client($connection);
 
         $this->assertTrue($client->disconnect());
     }
 
     public function testItErrorsWhenDisconnectFails()
     {
-        $client = new Client();
-
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
             'connect', 'disconnect', 'sendCommand',
         ));
@@ -60,7 +53,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('disconnect')
             ->will($this->returnValue(false));
 
-        $client->setConnection($connection);
+        $client = new Client($connection);
 
         try {
             $client->disconnect();
@@ -72,8 +65,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItReturnsCommandInstanceWhenCallingShortcut()
     {
-        $client = new Client();
-
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
             'connect', 'disconnect', 'sendCommand',
         ));
@@ -82,7 +73,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('sendCommand')
             ->will($this->returnArgument(0));
 
-        $client->setConnection($connection);
+        $client = new Client($connection);
 
         $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->authInfo('USER', 'user'));
         $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->group('php.doc'));

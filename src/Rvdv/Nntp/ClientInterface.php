@@ -11,7 +11,7 @@ use Rvdv\Nntp\Command\CommandInterface;
  */
 interface ClientInterface
 {
-    function connect($host, $port, $secure = false, $timeout = 15);
+    function connect();
 
     function disconnect();
 
