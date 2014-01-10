@@ -13,8 +13,8 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
     public function testConnectionCanBeEstablishedThroughSocket()
     {
-        $connection = new Connection();
-        $response = $connection->connect('localhost', 5000);
+        $connection = new Connection('localhost', 5000);
+        $response = $connection->connect();
 
         $this->assertInstanceof('Rvdv\Nntp\Response\Response', $response);
         $this->assertEquals(200, $response->getStatusCode());

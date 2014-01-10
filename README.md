@@ -42,10 +42,10 @@ use Rvdv\Nntp\Client;
 
 $client = new Client();
 
-$connection = new Connection();
+$connection = new Connection('news.php.net', 119);
 $client->setConnection($connection);
 
-$client->connect('news.php.net', 119);
+$client->connect();
 
 $command = $client->overviewFormat();
 $overviewFormat = $command->getResult();
