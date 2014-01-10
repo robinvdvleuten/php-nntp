@@ -25,24 +25,46 @@ class Connection implements ConnectionInterface
      */
     private $socket;
 
-    public function connect($host, $port, $secure = false, $timeout = 15)
+    /**
+     * Constructor
+     *
+     * @param string $host    The hostname of the NNTP server.
+     * @param int    $port    The port of the NNTP server.
+     * @param bool   $secure  A bool indicating if a secure connection should be established.
+     * @param int    $timeout The socket timeout in seconds.
+     */
+    public function __construct($host, $port, $secure = false, $timeout = 15)
     {
-        $address = gethostbyname($host);
-        $url = $this->getSocketUrl($address, $port);
+        $this->host = $host;
+        $this->port = $port;
+        $this->secure = $secure;
+        $this->timeout = $timeout;
+    }
 
-        if (!$this->socket = stream_socket_client($url, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT)) {
+    /**
+     * {@inheritDoc}
+     */
+    public function connect()
+    {
+        $address = gethostbyname($this->host);
+        $url = $this->getSocketUrl($address);
+
+        if (!$this->socket = stream_socket_client($url, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT)) {
             throw new RuntimeException(sprintf('Connection to %s:%d failed: %s', $address, $port, $errstr), $errno);
         }
 
-        if ($secure) {
+        if ($this->secure) {
             stream_socket_enable_crypto($this->socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
         }
 
         stream_set_blocking($this->socket, 0);
 
-        return $this->getResponse();
+        $response = $this->getResponse();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function disconnect()
     {
         if (is_resource($this->socket)) {
@@ -53,6 +75,9 @@ class Connection implements ConnectionInterface
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function sendCommand(CommandInterface $command)
     {
         $commandString = $command->execute();
@@ -134,13 +159,13 @@ class Connection implements ConnectionInterface
         }
     }
 
-    protected function getSocketUrl($host, $port)
+    protected function getSocketUrl($address)
     {
-        if (strpos($host, ':') !== false) {
+        if (strpos($address, ':') !== false) {
             // enclose IPv6 addresses in square brackets before appending port
-            $host = '[' . $host . ']';
+            $address = '[' . $address . ']';
         }
 
-        return sprintf('tcp://%s:%s', $host, $port);
+        return sprintf('tcp://%s:%s', $address, $this->port);
     }
 }
