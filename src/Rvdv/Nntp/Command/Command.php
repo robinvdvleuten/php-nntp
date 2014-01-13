@@ -15,7 +15,7 @@ abstract class Command implements CommandInterface
     /**
      * @var bool
      */
-    protected $isMultiline;
+    protected $isMultiLine;
 
     /**
      * @var \Rvdv\Nntp\Response\Response
@@ -33,9 +33,9 @@ abstract class Command implements CommandInterface
      * @param mixed $result      The default result for this command.
      * @param bool  $isMultiline A bool indicating the response is multiline or not.
      */
-    public function __construct($result = null, $isMultiline = false)
+    public function __construct($result = null, $isMultiLine = false)
     {
-        $this->isMultiLine = $isMultiline;
+        $this->isMultiLine = $isMultiLine;
         $this->result = $result;
     }
 
