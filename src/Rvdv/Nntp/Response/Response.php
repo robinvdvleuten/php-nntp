@@ -5,6 +5,11 @@ namespace Rvdv\Nntp\Response;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Exception\RuntimeException;
 
+/**
+ * Response
+ *
+ * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ */
 class Response implements ResponseInterface
 {
     const CONNECTION_CLOSING = 205; // RFC 3977
@@ -32,7 +37,7 @@ class Response implements ResponseInterface
     private $message;
 
     /**
-     * @var string
+     * @var int
      */
     private $statusCode;
 
@@ -57,7 +62,7 @@ class Response implements ResponseInterface
             );
         }
 
-        return new self($matches[1], $matches[2]);
+        return new self((int) $matches[1], $matches[2]);
     }
 
     public function __construct($statusCode, $message)
@@ -66,11 +71,17 @@ class Response implements ResponseInterface
         $this->message = $message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getMessage()
     {
         return $this->message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getStatusCode()
     {
         return $this->statusCode;
