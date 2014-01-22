@@ -5,14 +5,22 @@ namespace Rvdv\Nntp;
 use Rvdv\Nntp\Command\CommandInterface;
 
 /**
- * ClientInterface
- *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
 interface ClientInterface
 {
+    /**
+     * Establish a connection with the NNTP server.
+     *
+     * @return Rvdv\Nntp\Response\ResponseInterface A response containing the welcome message of the server.
+     */
     function connect();
 
+    /**
+     * Disconnect the connection with the NNTP server.
+     *
+     * @return bool A boolean indicating if the connection is disconnected.
+     */
     function disconnect();
 
     function authInfo($type, $value);
