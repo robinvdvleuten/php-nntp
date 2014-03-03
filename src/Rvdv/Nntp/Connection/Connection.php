@@ -49,8 +49,8 @@ class Connection implements ConnectionInterface
         $address = gethostbyname($this->host);
         $url = $this->getSocketUrl($address);
 
-        if (!$this->socket = stream_socket_client($url, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT)) {
-            throw new RuntimeException(sprintf('Connection to %s:%d failed: %s', $address, $port, $errstr), $errno);
+        if (!$this->socket = @stream_socket_client($url, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT)) {
+            throw new RuntimeException(sprintf('Connection to %s:%d failed: %s', $address, $this->port, $errstr), $errno);
         }
 
         if ($this->secure) {
