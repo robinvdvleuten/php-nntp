@@ -11,15 +11,15 @@ use Rvdv\Nntp\Response\ResponseInterface;
  */
 interface CommandInterface
 {
-    function isMultiLine();
+    public function isMultiLine();
 
-    function getResponse();
+    public function getResponse();
 
-    function setResponse(ResponseInterface $response);
+    public function setResponse(ResponseInterface $response);
 
-    function getExpectedResponseCodes();
+    public function getExpectedResponseCodes();
 
-    function getResult();
+    public function getResult();
 
-    function execute();
+    public function execute();
 }

@@ -2,7 +2,6 @@
 
 namespace Rvdv\Nntp;
 
-use Rvdv\Nntp\Command;
 use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\ConnectionInterface;
 use Rvdv\Nntp\Exception\RuntimeException;
