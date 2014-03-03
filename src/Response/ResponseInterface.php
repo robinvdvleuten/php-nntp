@@ -4,7 +4,7 @@ namespace Rvdv\Nntp\Response;
 
 interface ResponseInterface
 {
-    function getMessage();
+    public function getMessage();
 
-    function getStatusCode();
+    public function getStatusCode();
 }

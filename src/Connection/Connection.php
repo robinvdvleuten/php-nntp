@@ -69,6 +69,7 @@ class Connection implements ConnectionInterface
     {
         if (is_resource($this->socket)) {
             stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
+
             return fclose($this->socket);
         }
 
@@ -123,7 +124,7 @@ class Connection implements ConnectionInterface
         $buffer = "";
         $response = null;
 
-        while(!feof($this->socket)) {
+        while (!feof($this->socket)) {
             $buffer .= @fread($this->socket, $this->bufferSize);
 
             if (!$response && substr($buffer, -2) === "\r\n") {
