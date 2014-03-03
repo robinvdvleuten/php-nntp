@@ -16,4 +16,4 @@ before_script:
 
 script:
   - ./tests/server.php &
-  - php bin/phpunit
+  - php vendor/bin/phpunit
