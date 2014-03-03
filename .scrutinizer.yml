@@ -1,16 +1,19 @@
 inherit: true
 
-before_commands:
-  - composer install --no-interaction
-
 filter:
-  excluded_paths:
-    - 'vendor/*'
+  excluded_paths: [ 'vendor/*' ]
+
 tools:
+  php_code_sniffer: true
   php_cpd:
-    filter:
-      excluded_paths: ['vendor/*']
-  php_pdepend: true
-  php_code_coverage:
-    filter:
-      excluded_paths: ['vendor/*']
+    excluded_dirs: [ 'vendor/*' ]
+  php_cs_fixer:
+    config:
+      level: all
+  php_hhvm: true
+  php_mess_detector: true
+  php_pdepend:
+    excluded_dirs: [ 'vendor/*' ]
+  php_analyzer: true
+  external_code_coverage: true
+  sensiolabs_security_checker: true
