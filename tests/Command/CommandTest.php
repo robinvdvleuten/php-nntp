@@ -2,8 +2,6 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
-use Rvdv\Nntp\Command\CommandInterface;
-
 /**
  * CommandTest
  *
@@ -31,7 +29,7 @@ abstract class CommandTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected abstract function createCommandInstance();
+    abstract protected function createCommandInstance();
 
-    protected abstract function getRFCResponseCodes();
+    abstract protected function getRFCResponseCodes();
 }

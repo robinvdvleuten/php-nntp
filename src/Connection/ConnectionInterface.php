@@ -6,9 +6,9 @@ use Rvdv\Nntp\Command\CommandInterface;
 
 interface ConnectionInterface
 {
-    function connect();
+    public function connect();
 
-    function disconnect();
+    public function disconnect();
 
-    function sendCommand(CommandInterface $command);
+    public function sendCommand(CommandInterface $command);
 }
