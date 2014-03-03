@@ -1,4 +1,5 @@
 <?php
 
+/** @var Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__.'/../vendor/autoload.php';
-$loader->add('Rvdv\Nntp\Tests', __DIR__);
+$loader->addPsr4('Rvdv\\Nntp\\Tests\\', __DIR__);
