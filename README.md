@@ -14,7 +14,7 @@ The recommended way to install the library is [through composer](http://getcompo
 ```JSON
 {
     "require": {
-        "rvdv/nntp": "~0.3"
+        "rvdv/nntp": "~0.4"
     }
 }
 ```
@@ -65,7 +65,7 @@ To run the test suite, you need install the dependencies via composer, then run 
 
 ```bash
 $ composer install
-$ bin/phpunit
+$ php vendor/bin/phpunit
 ```
 
 ## License
