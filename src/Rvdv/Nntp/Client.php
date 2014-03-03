@@ -22,7 +22,7 @@ class Client implements ClientInterface
     /**
      * Constructor
      *
-     * @param Rvdv\Nntp\Connection\ConnectionInterface $connection A ConnectionInterface instance.
+     * @param \Rvdv\Nntp\Connection\ConnectionInterface $connection A ConnectionInterface instance.
      */
     public function __construct(ConnectionInterface $connection)
     {
