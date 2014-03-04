@@ -18,7 +18,7 @@ class Connection implements ConnectionInterface
     /**
      * @var int
      */
-    private $bufferSize = 256;
+    private $bufferSize = 1024;
 
     /**
      * @var resource
@@ -125,7 +125,7 @@ class Connection implements ConnectionInterface
         $response = null;
 
         while (!feof($this->socket)) {
-            $buffer .= @fread($this->socket, $this->bufferSize);
+            $buffer .= @fgets($this->socket, $this->bufferSize);
 
             if (!$response && substr($buffer, -2) === "\r\n") {
                 $response = Response::createFromString($buffer);
