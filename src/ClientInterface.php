@@ -12,16 +12,26 @@ interface ClientInterface
     /**
      * Establish a connection with the NNTP server.
      *
-     * @return \Rvdv\Nntp\Response\ResponseInterface A response containing the welcome message of the server.
+     * @return \Rvdv\Nntp\Response\ResponseInterface
      */
     public function connect();
 
     /**
      * Disconnect the connection with the NNTP server.
      *
-     * @return bool A boolean indicating if the connection is disconnected.
+     * @return boolean A boolean indicating if the connection is disconnected.
      */
     public function disconnect();
+
+    /**
+     * Authenticate with the given username/password.
+     *
+     * @param string      $username
+     * @param string|null $password
+     *
+     * @return \Rvdv\Nntp\Response\ResponseInterface
+     */
+    public function authenticate($username, $password = null);
 
     /**
      * Send the AUTHINFO command.

@@ -87,6 +87,9 @@ class Response implements ResponseInterface
         return $this->statusCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function __toString()
     {
         return sprintf('%s [%d]', $this->message, $this->statusCode);

@@ -54,4 +54,12 @@ class MultiLineResponse implements MultiLineResponseInterface
     {
         return $this->lines;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __toString()
+    {
+        return (string) $this->response;
+    }
 }

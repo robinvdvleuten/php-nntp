@@ -5,6 +5,7 @@ namespace Rvdv\Nntp;
 use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\ConnectionInterface;
 use Rvdv\Nntp\Exception\RuntimeException;
+use Rvdv\Nntp\Response\Response;
 
 /**
  * Client
@@ -56,6 +57,30 @@ class Client implements ClientInterface
         }
 
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function authenticate($username, $password = null)
+    {
+        $command = $this->authInfo(Command\AuthInfoCommand::AUTHINFO_USER, $username);
+        $response = $command->getResponse();
+
+        if ($response->getStatusCode() === Response::PASSWORD_REQUIRED) {
+            if (null === $password) {
+                throw new RuntimeException('NNTP server asks for further authentication but no password is given');
+            }
+
+            $command = $this->authInfo(Command\AuthInfoCommand::AUTHINFO_PASS, $password);
+            $response = $command->getResponse();
+        }
+
+        if ($response->getStatusCode() !== Response::AUTHENTICATION_ACCEPTED) {
+            throw new RuntimeException(sprintf('Could not authenticate with given username/password: %s', (string) $response));
+        }
+
+        return $response;
     }
 
     /**
