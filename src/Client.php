@@ -14,14 +14,14 @@ use Rvdv\Nntp\Exception\RuntimeException;
 class Client implements ClientInterface
 {
     /**
-     * @var \Rvdv\Nntp\Connection\ConnectionInterface
+     * @var ConnectionInterface
      */
     private $connection;
 
     /**
      * Constructor
      *
-     * @param \Rvdv\Nntp\Connection\ConnectionInterface $connection A ConnectionInterface instance.
+     * @param ConnectionInterface $connection
      */
     public function __construct(ConnectionInterface $connection)
     {
@@ -31,7 +31,7 @@ class Client implements ClientInterface
     /**
      * Get the connection instance.
      *
-     * @return \Rvdv\Nntp\Connection\ConnectionInterface
+     * @return ConnectionInterface
      */
     public function getConnection()
     {
