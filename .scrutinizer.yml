@@ -1,19 +1,19 @@
 inherit: true
 
 filter:
-  excluded_paths: [ 'vendor/*' ]
+  excluded_paths: [ 'vendor/*', 'tests/*' ]
 
 tools:
   php_code_sniffer: true
   php_cpd:
-    excluded_dirs: [ 'vendor/*' ]
+    excluded_dirs: [ 'vendor/*', 'tests/*' ]
   php_cs_fixer:
     config:
       level: all
   php_hhvm: true
   php_mess_detector: true
   php_pdepend:
-    excluded_dirs: [ 'vendor/*' ]
+    excluded_dirs: [ 'vendor/*', 'tests/*' ]
   php_analyzer: true
   external_code_coverage: true
   sensiolabs_security_checker: true
