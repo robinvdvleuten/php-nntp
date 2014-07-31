@@ -8,8 +8,6 @@ use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * Client
- *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
 class Client implements ClientInterface
@@ -40,7 +38,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function connect()
     {
@@ -48,7 +46,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function disconnect()
     {
@@ -60,7 +58,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function authenticate($username, $password = null)
     {
@@ -84,7 +82,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function authInfo($type, $value)
     {
@@ -92,7 +90,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function group($name)
     {
@@ -100,7 +98,15 @@ class Client implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     */
+    public function help()
+    {
+        return $this->sendCommand(new Command\HelpCommand());
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function overviewFormat()
     {
@@ -108,7 +114,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function quit()
     {
@@ -116,7 +122,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function xfeature($feature)
     {
@@ -124,7 +130,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function xoverview($from, $to, array $format)
     {
@@ -132,7 +138,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function sendCommand(CommandInterface $command)
     {

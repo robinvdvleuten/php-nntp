@@ -222,6 +222,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->authInfo('USER', 'user'));
         $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->group('php.doc'));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->help());
         $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->overviewFormat());
         $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->quit());
         $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->xfeature('COMPRESS GZIP'));
