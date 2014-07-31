@@ -44,6 +44,13 @@ interface ClientInterface
     public function authInfo($type, $value);
 
     /**
+     * Send the HELP command.
+     *
+     * @return \Rvdv\Nntp\Command\HelpCommand
+     */
+    public function help();
+
+    /**
      * Send the GROUP command.
      *
      * @param $name
