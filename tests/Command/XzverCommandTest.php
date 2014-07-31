@@ -55,7 +55,9 @@ class XzverCommandTest extends CommandTest
         $result = $command->getResult();
         $this->assertCount(1, $result);
 
-        $article = reset($result);
+        $result->rewind();
+        $article = $result->current();
+
         $this->assertEquals('123456789', $article->number);
         $this->assertEquals('Re: Are you checking out NNTP?', $article->subject);
         $this->assertEquals('robinvdvleuten@example.com ("Robin van der Vleuten")', $article->from);

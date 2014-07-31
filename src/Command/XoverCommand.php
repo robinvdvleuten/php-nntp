@@ -39,7 +39,7 @@ class XoverCommand extends Command implements CommandInterface
         $this->to = $to;
         $this->format = array_merge(array('number' => false), $format);
 
-        parent::__construct(array(), true);
+        parent::__construct(new \SplObjectStorage(), true);
     }
 
     /**
@@ -79,7 +79,7 @@ class XoverCommand extends Command implements CommandInterface
                 $field++;
             }
 
-            $this->result[] = $article;
+            $this->result->attach($article);
         }
 
         unset($lines);
