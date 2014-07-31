@@ -6,8 +6,6 @@ use Rvdv\Nntp\Response\Response;
 use Rvdv\Nntp\Response\ResponseInterface;
 
 /**
- * Command
- *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
 abstract class Command implements CommandInterface
@@ -28,19 +26,19 @@ abstract class Command implements CommandInterface
     protected $result;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param mixed $result      The default result for this command.
-     * @param bool  $isMultiline A bool indicating the response is multiline or not.
+     * @param mixed $result       The default result for this command.
+     * @param bool  $isMultiline  A bool indicating the response is multiline or not.
      */
     public function __construct($result = null, $isMultiLine = false)
     {
-        $this->isMultiLine = $isMultiLine;
         $this->result = $result;
+        $this->isMultiLine = $isMultiLine;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getResponse()
     {
@@ -48,7 +46,7 @@ abstract class Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setResponse(ResponseInterface $response)
     {
@@ -56,7 +54,7 @@ abstract class Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getResult()
     {
@@ -64,10 +62,18 @@ abstract class Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isMultiLine()
     {
         return $this->isMultiLine;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCompressed()
+    {
+        return false;
     }
 }

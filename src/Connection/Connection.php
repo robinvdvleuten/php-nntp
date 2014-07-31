@@ -88,7 +88,7 @@ class Connection implements ConnectionInterface
         $response = $this->getResponse();
 
         if ($command->isMultiLine()) {
-            $response = $this->getMultiLineResponse($response);
+            $response = $command->isCompressed() ? $this->getCompressedResponse($response) : $this->getMultiLineResponse($response);
         }
 
         if (in_array($response->getStatusCode(), array(Response::COMMAND_UNKNOWN, Response::COMMAND_UNAVAILABLE))) {
@@ -164,6 +164,40 @@ class Connection implements ConnectionInterface
 
         return new MultiLineResponse($response, $lines);
     }
+
+    public function getCompressedResponse(Response $response)
+    {
+        // Determine encoding by fetching first line.
+        $line = @fread($this->socket, 1024);
+
+        while (!feof($this->socket)) {
+            $buffer = @fread($this->socket, 32768);
+
+            if (strlen($buffer) === 0) {
+                $uncompressed = @gzuncompress($line);
+
+                if ($uncompressed !== false) {
+					break;
+				}
+			}
+
+            if ($buffer === false) {
+                $this->disconnect();
+                throw new RuntimeException('Incorrect data received from buffer');
+            }
+
+            $line .= $buffer;
+        }
+
+        $lines = explode("\r\n", trim($uncompressed));
+        if (end($lines) === ".") {
+            array_pop($lines);
+        }
+
+        $lines = array_filter($lines);
+        $lines = \SplFixedArray::fromArray($lines);
+
+        return new MultiLineResponse($response, $lines);
     }
 
     protected function getSocketUrl($address)

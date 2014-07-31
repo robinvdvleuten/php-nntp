@@ -13,6 +13,8 @@ interface CommandInterface
 {
     public function isMultiLine();
 
+    public function isCompressed();
+
     public function getResponse();
 
     public function setResponse(ResponseInterface $response);

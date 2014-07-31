@@ -94,6 +94,17 @@ interface ClientInterface
     public function xover($from, $to, array $format);
 
     /**
+     * Send the XZVER command.
+     *
+     * @param $from
+     * @param $to
+     * @param array $format
+     *
+     * @return \Rvdv\Nntp\Command\XzverCommand
+     */
+    public function xzver($from, $to, array $format);
+
+    /**
      * Send the given command to the NNTP server.
      *
      * @param \Rvdv\Nntp\Command\CommandInterface $command

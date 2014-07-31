@@ -136,6 +136,13 @@ class Client implements ClientInterface
     {
         return $this->sendCommand(new Command\XoverCommand($from, $to, $format));
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function xzver($from, $to, array $format)
+    {
+        return $this->sendCommand(new Command\XzverCommand($from, $to, $format));
     }
 
     /**
