@@ -10,7 +10,7 @@ namespace Rvdv\Nntp\Response;
 class MultiLineResponse implements MultiLineResponseInterface
 {
     /**
-     * @var array
+     * @var \ArrayAccess
      */
     private $lines;
 
@@ -22,8 +22,8 @@ class MultiLineResponse implements MultiLineResponseInterface
     /**
      * Constructor
      *
-     * @param Rvdv\Nntp\Response\ResponseInterface $response A ResponseInterface instance.
-     * @param ArrayAccess                          $lines    An ArrayAccess instance.
+     * @param ResponseInterface $response A ResponseInterface instance.
+     * @param \ArrayAccess      $lines    An ArrayAccess instance.
      */
     public function __construct(ResponseInterface $response, \ArrayAccess $lines)
     {

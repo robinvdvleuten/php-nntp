@@ -14,9 +14,29 @@ use Rvdv\Nntp\Response\Response;
 class Connection implements ConnectionInterface
 {
     /**
+     * @var string
+     */
+    private $host;
+
+    /**
+     * @var int
+     */
+    private $port;
+
+    /**
+     * @var bool
+     */
+    private $secure;
+
+    /**
      * @var resource
      */
     private $socket;
+
+    /**
+     * @var int
+     */
+    private $timeout;
 
     /**
      * Constructor.
@@ -117,7 +137,7 @@ class Connection implements ConnectionInterface
         return $command;
     }
 
-    protected function getResponse($multiLine = false)
+    protected function getResponse()
     {
         $buffer = "";
 
@@ -169,6 +189,9 @@ class Connection implements ConnectionInterface
     {
         // Determine encoding by fetching first line.
         $line = @fread($this->socket, 1024);
+
+        $buffer = "";
+        $uncompressed = "";
 
         while (!feof($this->socket)) {
             $buffer = @fread($this->socket, 32768);
