@@ -53,17 +53,6 @@ interface ClientInterface
     public function group($name);
 
     /**
-     * Send the XOVER command.
-     *
-     * @param $from
-     * @param $to
-     * @param array $format
-     *
-     * @return \Rvdv\Nntp\Command\OverviewCommand
-     */
-    public function overview($from, $to, array $format);
-
-    /**
      * Send the LIST OVERVIEW.FMT command.
      *
      * @return \Rvdv\Nntp\Command\OverviewFormatCommand
@@ -85,6 +74,17 @@ interface ClientInterface
      * @return \Rvdv\Nntp\Command\XFeatureCommand
      */
     public function xfeature($feature);
+
+    /**
+     * Send the XOVER command.
+     *
+     * @param $from
+     * @param $to
+     * @param array $format
+     *
+     * @return \Rvdv\Nntp\Command\OverviewCommand
+     */
+    public function xoverview($from, $to, array $format);
 
     /**
      * Send the given command to the NNTP server.

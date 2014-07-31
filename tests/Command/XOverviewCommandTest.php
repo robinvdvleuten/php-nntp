@@ -2,7 +2,7 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
-use Rvdv\Nntp\Command\OverviewCommand;
+use Rvdv\Nntp\Command\XOverviewCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
@@ -10,7 +10,7 @@ use Rvdv\Nntp\Response\Response;
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
-class OverviewCommandTest extends CommandTest
+class XOverviewCommandTest extends CommandTest
 {
     public function testItExpectsMultilineResponses()
     {
@@ -100,7 +100,7 @@ class OverviewCommandTest extends CommandTest
      */
     protected function createCommandInstance()
     {
-        return new OverviewCommand(1, 10, array(
+        return new XOverviewCommand(1, 10, array(
             'subject' => false,
             'from' => false,
             'date' => false,

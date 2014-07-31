@@ -52,7 +52,7 @@ $overviewFormat = $command->getResult();
 $command = $client->group('php.doc');
 $group = $command->getResult();
 
-$command = $client->overview($group['first'], $group['first'] + 100, $overviewFormat);
+$command = $client->xoverview($group['first'], $group['first'] + 100, $overviewFormat);
 $articles = $command->getResult();
 
 // Process the articles further...

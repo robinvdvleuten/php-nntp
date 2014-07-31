@@ -102,14 +102,6 @@ class Client implements ClientInterface
     /**
      * {@inheritDoc}
      */
-    public function overview($from, $to, array $format)
-    {
-        return $this->sendCommand(new Command\OverviewCommand($from, $to, $format));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function overviewFormat()
     {
         return $this->sendCommand(new Command\OverviewFormatCommand());
@@ -129,6 +121,14 @@ class Client implements ClientInterface
     public function xfeature($feature)
     {
         return $this->sendCommand(new Command\XFeatureCommand($feature));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function xoverview($from, $to, array $format)
+    {
+        return $this->sendCommand(new Command\XOverviewCommand($from, $to, $format));
     }
 
     /**

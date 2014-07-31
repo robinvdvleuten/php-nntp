@@ -7,11 +7,11 @@ use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * OverviewCommand
+ * XOverviewCommand
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
-class OverviewCommand extends Command implements CommandInterface
+class XOverviewCommand extends Command implements CommandInterface
 {
     /**
      * @var int
