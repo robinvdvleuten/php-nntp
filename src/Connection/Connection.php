@@ -9,24 +9,17 @@ use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * Connection
- *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
 class Connection implements ConnectionInterface
 {
-    /**
-     * @var int
-     */
-    private $bufferSize = 1024;
-
     /**
      * @var resource
      */
     private $socket;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $host    The hostname of the NNTP server.
      * @param int    $port    The port of the NNTP server.
@@ -42,7 +35,7 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function connect()
     {
@@ -63,7 +56,7 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function disconnect()
     {
@@ -77,7 +70,7 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function sendCommand(CommandInterface $command)
     {
@@ -92,7 +85,12 @@ class Connection implements ConnectionInterface
             throw new RuntimeException('Failed to write to socket');
         }
 
-        $response = $this->getResponse($command->isMultiLine());
+        $response = $this->getResponse();
+
+        if ($command->isMultiLine()) {
+            $response = $this->getMultiLineResponse($response);
+        }
+
         if (in_array($response->getStatusCode(), array(Response::COMMAND_UNKNOWN, Response::COMMAND_UNAVAILABLE))) {
             throw new RuntimeException('Sent command is either unknown or unavailable on server');
         }
@@ -122,42 +120,50 @@ class Connection implements ConnectionInterface
     protected function getResponse($multiLine = false)
     {
         $buffer = "";
-        $response = null;
 
         while (!feof($this->socket)) {
-            $buffer .= @fgets($this->socket, $this->bufferSize);
+            $buffer .= @fgets($this->socket, 1024);
 
-            if (!$response && substr($buffer, -2) === "\r\n") {
-                $response = Response::createFromString($buffer);
-
-                $lines = explode("\r\n", trim($buffer));
-                if (count($lines) > 1) {
-                    $buffer = implode("\r\n", array_slice($lines, 1))."\r\n";
-                } else {
-                    $buffer = "";
-                }
-
-                if (!$multiLine) {
-                    return $response;
-                }
+            if ("\r\n" === substr($buffer, -2)) {
+                break;
             }
 
-            if ($response && substr($buffer, -3) === ".\r\n") {
-                if (substr($response->getMessage(), -15) === '[COMPRESS=GZIP]') {
-                    $buffer = @gzuncompress($buffer);
-                }
-
-                $lines = explode("\r\n", trim($buffer));
-                if (end($lines) === ".") {
-                    array_pop($lines);
-                }
-
-                $lines = array_filter($lines);
-                $lines = \SplFixedArray::fromArray($lines);
-
-                return new MultiLineResponse($response, $lines);
+            if ($buffer === false) {
+                $this->disconnect();
+                throw new RuntimeException('Incorrect data received from buffer');
             }
         }
+
+        return Response::createFromString($buffer);
+    }
+
+    public function getMultiLineResponse(Response $response)
+    {
+        $buffer = "";
+
+        while (!feof($this->socket)) {
+            $buffer .= @fgets($this->socket, 1024);
+
+            if (".\r\n" === substr($buffer, -3)) {
+                break;
+            }
+
+            if ($buffer === false) {
+                $this->disconnect();
+                throw new RuntimeException('Incorrect data received from buffer');
+            }
+        }
+
+        $lines = explode("\r\n", trim($buffer));
+        if (end($lines) === ".") {
+            array_pop($lines);
+        }
+
+        $lines = array_filter($lines);
+        $lines = \SplFixedArray::fromArray($lines);
+
+        return new MultiLineResponse($response, $lines);
+    }
     }
 
     protected function getSocketUrl($address)
