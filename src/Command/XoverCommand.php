@@ -7,29 +7,27 @@ use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * XOverviewCommand
- *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
-class XOverviewCommand extends Command implements CommandInterface
+class XoverCommand extends Command implements CommandInterface
 {
     /**
      * @var int
      */
-    private $from;
+    protected $from;
 
     /**
      * @var int
      */
-    private $to;
+    protected $to;
 
     /**
      * @var array
      */
-    private $format;
+    protected $format;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param int   $from   The article number where the range begins.
      * @param int   $to     The article number where the range ends.
@@ -45,7 +43,7 @@ class XOverviewCommand extends Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute()
     {
@@ -53,7 +51,7 @@ class XOverviewCommand extends Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExpectedResponseCodes()
     {

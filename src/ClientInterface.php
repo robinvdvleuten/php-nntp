@@ -89,9 +89,9 @@ interface ClientInterface
      * @param $to
      * @param array $format
      *
-     * @return \Rvdv\Nntp\Command\OverviewCommand
+     * @return \Rvdv\Nntp\Command\XoverCommand
      */
-    public function xoverview($from, $to, array $format);
+    public function xover($from, $to, array $format);
 
     /**
      * Send the given command to the NNTP server.

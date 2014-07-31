@@ -2,15 +2,13 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
-use Rvdv\Nntp\Command\XOverviewCommand;
+use Rvdv\Nntp\Command\XoverCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * OverviewCommandTest
- *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
-class XOverviewCommandTest extends CommandTest
+class XoverCommandTest extends CommandTest
 {
     public function testItExpectsMultilineResponses()
     {
@@ -96,11 +94,11 @@ class XOverviewCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
-        return new XOverviewCommand(1, 10, array(
+        return new XoverCommand(1, 10, array(
             'subject' => false,
             'from' => false,
             'date' => false,
@@ -113,7 +111,7 @@ class XOverviewCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {

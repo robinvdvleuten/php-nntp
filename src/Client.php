@@ -132,9 +132,10 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function xoverview($from, $to, array $format)
+    public function xover($from, $to, array $format)
     {
-        return $this->sendCommand(new Command\XOverviewCommand($from, $to, $format));
+        return $this->sendCommand(new Command\XoverCommand($from, $to, $format));
+    }
     }
 
     /**
