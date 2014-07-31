@@ -62,7 +62,7 @@ class Client implements ClientInterface
      */
     public function authenticate($username, $password = null)
     {
-        $command = $this->authInfo(Command\AuthInfoCommand::AUTHINFO_USER, $username);
+        $command = $this->authInfo(Command\AuthInfoCommand::AUTHINFO_USER, (string) $username);
         $response = $command->getResponse();
 
         if ($response->getStatusCode() === Response::PASSWORD_REQUIRED) {
@@ -70,7 +70,7 @@ class Client implements ClientInterface
                 throw new RuntimeException('NNTP server asks for further authentication but no password is given');
             }
 
-            $command = $this->authInfo(Command\AuthInfoCommand::AUTHINFO_PASS, $password);
+            $command = $this->authInfo(Command\AuthInfoCommand::AUTHINFO_PASS, (string) $password);
             $response = $command->getResponse();
         }
 
