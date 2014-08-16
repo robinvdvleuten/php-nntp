@@ -194,7 +194,7 @@ class Connection implements ConnectionInterface
         $uncompressed = "";
 
         while (!feof($this->socket)) {
-            $buffer = @fread($this->socket, 32768);
+            $buffer .= @fread($this->socket, 32768);
 
             if (strlen($buffer) === 0) {
                 $uncompressed = @gzuncompress($line);
