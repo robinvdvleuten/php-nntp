@@ -5,10 +5,10 @@ namespace Rvdv\Nntp\Command;
 /**
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
-class XzverCommand extends XoverCommand implements CommandInterface
+class XzverCommand extends OverviewCommand
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function execute()
     {
@@ -16,7 +16,7 @@ class XzverCommand extends XoverCommand implements CommandInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isCompressed()
     {
