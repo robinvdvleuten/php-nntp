@@ -200,9 +200,9 @@ class Connection implements ConnectionInterface
                 $uncompressed = @gzuncompress($line);
 
                 if ($uncompressed !== false) {
-					break;
-				}
-			}
+                    break;
+                }
+            }
 
             if ($buffer === false) {
                 $this->disconnect();
@@ -223,6 +223,9 @@ class Connection implements ConnectionInterface
         return new MultiLineResponse($response, $lines);
     }
 
+    /**
+     * @param string $address
+     */
     protected function getSocketUrl($address)
     {
         if (strpos($address, ':') !== false) {

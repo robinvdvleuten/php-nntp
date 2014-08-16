@@ -2,7 +2,6 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Response\Response;
 use Rvdv\Nntp\Response\ResponseInterface;
 
 /**
@@ -29,7 +28,7 @@ abstract class Command implements CommandInterface
      * Constructor.
      *
      * @param mixed $result      The default result for this command.
-     * @param bool  $isMultiline A bool indicating the response is multiline or not.
+     * @param bool  $isMultiLine A bool indicating the response is multiline or not.
      */
     public function __construct($result = null, $isMultiLine = false)
     {

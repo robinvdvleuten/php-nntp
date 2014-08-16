@@ -8,7 +8,7 @@ namespace Rvdv\Nntp\Command;
 class XzverCommand extends OverviewCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute()
     {
@@ -16,7 +16,7 @@ class XzverCommand extends OverviewCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isCompressed()
     {

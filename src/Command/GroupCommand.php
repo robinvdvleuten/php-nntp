@@ -30,7 +30,7 @@ class GroupCommand extends Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute()
     {
@@ -38,7 +38,7 @@ class GroupCommand extends Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExpectedResponseCodes()
     {

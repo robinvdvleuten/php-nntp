@@ -43,6 +43,9 @@ class Response implements ResponseInterface
      */
     private $statusCode;
 
+    /**
+     * @param string $response
+     */
     public static function createFromString($response)
     {
         if (false === strpos($response, "\r\n")) {
@@ -67,6 +70,10 @@ class Response implements ResponseInterface
         return new self((int) $matches[1], $matches[2]);
     }
 
+    /**
+     * @param integer $statusCode
+     * @param string  $message
+     */
     public function __construct($statusCode, $message)
     {
         $this->statusCode = $statusCode;
@@ -74,7 +81,7 @@ class Response implements ResponseInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getMessage()
     {
@@ -82,7 +89,7 @@ class Response implements ResponseInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getStatusCode()
     {
@@ -90,7 +97,7 @@ class Response implements ResponseInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __toString()
     {

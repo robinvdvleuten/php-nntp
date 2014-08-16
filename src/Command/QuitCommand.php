@@ -12,7 +12,7 @@ use Rvdv\Nntp\Response\Response;
 class QuitCommand extends Command implements CommandInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute()
     {
@@ -20,7 +20,7 @@ class QuitCommand extends Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExpectedResponseCodes()
     {

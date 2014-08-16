@@ -8,7 +8,7 @@ namespace Rvdv\Nntp\Command;
 class XoverCommand extends OverviewCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute()
     {

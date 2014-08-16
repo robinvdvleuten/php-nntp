@@ -18,7 +18,7 @@ class OverviewFormatCommand extends Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute()
     {
@@ -26,7 +26,7 @@ class OverviewFormatCommand extends Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExpectedResponseCodes()
     {

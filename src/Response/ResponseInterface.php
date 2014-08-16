@@ -10,6 +10,7 @@ interface ResponseInterface
 
     /**
      * Get a string representation of the response
+     * @return string
      */
     public function __toString();
 }

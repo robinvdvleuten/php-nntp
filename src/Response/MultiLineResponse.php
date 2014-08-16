@@ -32,7 +32,7 @@ class MultiLineResponse implements MultiLineResponseInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getMessage()
     {
@@ -40,7 +40,7 @@ class MultiLineResponse implements MultiLineResponseInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getStatusCode()
     {
@@ -48,7 +48,7 @@ class MultiLineResponse implements MultiLineResponseInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLines()
     {
@@ -56,7 +56,7 @@ class MultiLineResponse implements MultiLineResponseInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __toString()
     {

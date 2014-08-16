@@ -43,7 +43,7 @@ abstract class OverviewCommand extends Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExpectedResponseCodes()
     {
