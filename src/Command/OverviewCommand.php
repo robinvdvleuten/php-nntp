@@ -39,7 +39,7 @@ abstract class OverviewCommand extends Command implements CommandInterface
         $this->to = $to;
         $this->format = array_merge(array('number' => false), $format);
 
-        parent::__construct(new \SplObjectStorage(), true);
+        parent::__construct(new \SplFixedArray(), true);
     }
 
     /**
@@ -57,21 +57,24 @@ abstract class OverviewCommand extends Command implements CommandInterface
     public function onOverviewInformationFollows(MultiLineResponse $response)
     {
         $lines = $response->getLines();
+        $totalLines = count($lines);
 
-        foreach ($lines as $index => $line) {
-            $segments = explode("\t", $line);
+        $this->result->setSize($totalLines);
+
+        for ($i = 0; $i < $totalLines; $i++) {
+            $segments = explode("\t", $lines[$i]);
 
             $field = 0;
-            $article = new \stdClass();
+            $message = new \stdClass();
 
             foreach ($this->format as $name => $full) {
                 $value = $full ? ltrim(substr($segments[$field], strpos($segments[$field], ':') + 1), " \t") : $segments[$field];
-                $article->{$name} = $value;
+                $message->{$name} = $value;
 
                 $field++;
             }
 
-            $this->result->attach($article);
+            $this->result[$i] = $message;
         }
 
         unset($lines);
