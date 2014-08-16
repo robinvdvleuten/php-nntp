@@ -13,6 +13,15 @@ use Rvdv\Nntp\Response\Response;
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
+    public function testItReturnsConnectionInstance()
+    {
+        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface');
+
+        $client = new Client($connection);
+
+        $this->assertSame($client->getConnection(), $connection);
+    }
+
     public function testItConnectsWithANntpServer()
     {
         $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
@@ -220,12 +229,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $client = new Client($connection);
 
-        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->authInfo('USER', 'user'));
-        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->group('php.doc'));
-        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->help());
-        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->overviewFormat());
-        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->quit());
-        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->xfeature('COMPRESS GZIP'));
-        $this->assertInstanceOf('Rvdv\Nntp\Command\CommandInterface', $client->xover(1, 1, array()));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand', $client->authInfo('USER', 'user'));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\GroupCommand', $client->group('php.doc'));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\HelpCommand', $client->help());
+        $this->assertInstanceOf('Rvdv\Nntp\Command\OverviewFormatCommand', $client->overviewFormat());
+        $this->assertInstanceOf('Rvdv\Nntp\Command\QuitCommand', $client->quit());
+        $this->assertInstanceOf('Rvdv\Nntp\Command\XfeatureCommand', $client->xfeature('COMPRESS GZIP'));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\XoverCommand', $client->xover(1, 1, array()));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\XzverCommand', $client->xzver(1, 1, array()));
     }
 }

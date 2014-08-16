@@ -16,6 +16,12 @@ class XoverCommandTest extends CommandTest
         $this->assertTrue($command->isMultiLine());
     }
 
+    public function testItNotExpectsCompressedResponses()
+    {
+        $command = $this->createCommandInstance();
+        $this->assertFalse($command->isCompressed());
+    }
+
     public function testItHasDefaultResult()
     {
         $command = $this->createCommandInstance();

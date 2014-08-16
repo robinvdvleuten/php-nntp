@@ -18,6 +18,12 @@ class GroupCommandTest extends CommandTest
         $this->assertFalse($command->isMultiLine());
     }
 
+    public function testItNotExpectsCompressedResponses()
+    {
+        $command = $this->createCommandInstance();
+        $this->assertFalse($command->isCompressed());
+    }
+
     public function testItHasDefaultResult()
     {
         $command = $this->createCommandInstance();
