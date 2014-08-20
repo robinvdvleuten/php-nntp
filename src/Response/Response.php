@@ -14,6 +14,9 @@ class Response implements ResponseInterface
 {
     const HELP_TEXT_FOLLOWS = 100; // RFC 3977
 
+    const POSTING_ALLOWED = 200; // RFC 3977
+    const POSTING_PROHIBITED = 201; // RFC 3977
+
     const CONNECTION_CLOSING = 205; // RFC 3977
     const GROUP_SELECTED = 211; // RFC 3977
     const INFORMATION_FOLLOWS = 215; // RFC 2980

@@ -3,6 +3,7 @@
 namespace Rvdv\Nntp;
 
 use Rvdv\Nntp\Command\CommandInterface;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 /**
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
@@ -12,7 +13,7 @@ interface ClientInterface
     /**
      * Establish a connection with the NNTP server.
      *
-     * @return \Rvdv\Nntp\Response\ResponseInterface
+     * @return ResponseInterface
      */
     public function connect();
 
@@ -29,9 +30,20 @@ interface ClientInterface
      * @param string      $username
      * @param string|null $password
      *
-     * @return \Rvdv\Nntp\Response\ResponseInterface
+     * @return ResponseInterface
      */
     public function authenticate($username, $password = null);
+
+    /**
+     * Connect and optionally authenticate with the NNTP server if
+     * a username and/or password are given.
+     *
+     * @param string|null $username
+     * @param string|null $password
+     *
+     * @return ResponseInterface
+     */
+    public function connectAndAuthenticate($username = null, $password = null);
 
     /**
      * Send the AUTHINFO command.
@@ -107,9 +119,9 @@ interface ClientInterface
     /**
      * Send the given command to the NNTP server.
      *
-     * @param \Rvdv\Nntp\Command\CommandInterface $command
+     * @param CommandInterface $command
      *
-     * @return \Rvdv\Nntp\Command\CommandInterface
+     * @return CommandInterface
      */
     public function sendCommand(CommandInterface $command);
 }

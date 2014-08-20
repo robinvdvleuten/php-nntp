@@ -84,6 +84,24 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
+    public function connectAndAuthenticate($username = null, $password = null)
+    {
+        $response = $this->connect();
+
+        if (!in_array($response->getStatusCode(), array(Response::POSTING_ALLOWED, RESPONSE::POSTING_PROHIBITED))) {
+            throw new RuntimeException(sprintf('Unsuccessful response received: %s', (string) $response));
+        }
+
+        if ($username !== null) {
+            return $this->authenticate($username, $password);
+        }
+
+        return $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function authInfo($type, $value)
     {
         return $this->sendCommand(new Command\AuthInfoCommand($type, $value));
