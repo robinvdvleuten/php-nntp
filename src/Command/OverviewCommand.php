@@ -39,7 +39,7 @@ abstract class OverviewCommand extends Command implements CommandInterface
         $this->to = $to;
         $this->format = array_merge(array('number' => false), $format);
 
-        parent::__construct(new \SplFixedArray(), true);
+        parent::__construct(new \SplFixedArray($this->to - $this->from), true);
     }
 
     /**
@@ -58,8 +58,6 @@ abstract class OverviewCommand extends Command implements CommandInterface
     {
         $lines = $response->getLines();
         $totalLines = count($lines);
-
-        $this->result->setSize($totalLines);
 
         for ($i = 0; $i < $totalLines; $i++) {
             $segments = explode("\t", $lines[$i]);
