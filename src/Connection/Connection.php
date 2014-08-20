@@ -190,11 +190,10 @@ class Connection implements ConnectionInterface
         // Determine encoding by fetching first line.
         $line = @fread($this->socket, 1024);
 
-        $buffer = "";
         $uncompressed = "";
 
         while (!feof($this->socket)) {
-            $buffer .= @fread($this->socket, 32768);
+            $buffer = @fread($this->socket, 32768);
 
             if (strlen($buffer) === 0) {
                 $uncompressed = @gzuncompress($line);
