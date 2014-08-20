@@ -58,15 +58,15 @@ class XoverCommandTest extends CommandTest
         $result->rewind();
         $article = $result->current();
 
-        $this->assertEquals('123456789', $article->number);
-        $this->assertEquals('Re: Are you checking out NNTP?', $article->subject);
-        $this->assertEquals('robinvdvleuten@example.com ("Robin van der Vleuten")', $article->from);
-        $this->assertEquals('Sat,3 Aug 2013 13:19:22 -0000', $article->date);
-        $this->assertEquals('<nntp123456789@nntp>', $article->message_id);
-        $this->assertEquals('<nntp987654321@nntp>', $article->references);
-        $this->assertEquals('321', $article->bytes);
-        $this->assertEquals('123', $article->lines);
-        $this->assertEquals('nntp:123456789', $article->xref);
+        $this->assertEquals('123456789', $article['number']);
+        $this->assertEquals('Re: Are you checking out NNTP?', $article['subject']);
+        $this->assertEquals('robinvdvleuten@example.com ("Robin van der Vleuten")', $article['from']);
+        $this->assertEquals('Sat,3 Aug 2013 13:19:22 -0000', $article['date']);
+        $this->assertEquals('<nntp123456789@nntp>', $article['message_id']);
+        $this->assertEquals('<nntp987654321@nntp>', $article['references']);
+        $this->assertEquals('321', $article['bytes']);
+        $this->assertEquals('123', $article['lines']);
+        $this->assertEquals('nntp:123456789', $article['xref']);
     }
 
     public function testItErrorsWhenNoNewsGroupCurrentSelectedResponse()
