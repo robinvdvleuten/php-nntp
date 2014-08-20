@@ -6,6 +6,7 @@ Client for communicating with servers throught the Network News Transfer Protoco
 [![Build Status](http://img.shields.io/travis/RobinvdVleuten/php-nntp.svg?style=flat)](https://travis-ci.org/RobinvdVleuten/php-nntp)
 [![Scrutinizer Quality Score](http://img.shields.io/scrutinizer/g/RobinvdVleuten/php-nntp.svg?style=flat)](https://scrutinizer-ci.com/g/RobinvdVleuten/php-nntp/)
 [![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/RobinvdVleuten/php-nntp.svg?style=flat)](https://scrutinizer-ci.com/g/RobinvdVleuten/php-nntp/)
+[![Gittip](http://img.shields.io/gittip/RobinvdVleuten.svg?style=flat)](https://www.gittip.com/RobinvdVleuten/)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/115c5524-7c3a-4463-a48c-2e21257f25b4/mini.png)](https://insight.sensiolabs.com/projects/115c5524-7c3a-4463-a48c-2e21257f25b4)
 
 ## Installation
