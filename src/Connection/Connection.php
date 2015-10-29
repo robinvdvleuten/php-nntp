@@ -164,7 +164,7 @@ class Connection implements ConnectionInterface
         while (!feof($this->socket)) {
             $buffer .= @fgets($this->socket, 1024);
 
-            if (".\r\n" === substr($buffer, -3)) {
+            if ("\n.\r\n" === substr($buffer, -4)) {
                 break;
             }
 
