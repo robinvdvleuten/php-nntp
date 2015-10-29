@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the NNTP library.
+ *
+ * (c) Robin van der Vleuten <robinvdvleuten@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rvdv\Nntp\Connection;
 
 use Rvdv\Nntp\Command\CommandInterface;
@@ -139,7 +148,7 @@ class Connection implements ConnectionInterface
 
     protected function getResponse()
     {
-        $buffer = "";
+        $buffer = '';
 
         while (!feof($this->socket)) {
             $buffer .= @fgets($this->socket, 1024);
@@ -159,7 +168,7 @@ class Connection implements ConnectionInterface
 
     public function getMultiLineResponse(Response $response)
     {
-        $buffer = "";
+        $buffer = '';
 
         while (!feof($this->socket)) {
             $buffer .= @fgets($this->socket, 1024);
@@ -175,7 +184,7 @@ class Connection implements ConnectionInterface
         }
 
         $lines = explode("\r\n", trim($buffer));
-        if (end($lines) === ".") {
+        if (end($lines) === '.') {
             array_pop($lines);
         }
 
@@ -190,7 +199,7 @@ class Connection implements ConnectionInterface
         // Determine encoding by fetching first line.
         $line = @fread($this->socket, 1024);
 
-        $uncompressed = "";
+        $uncompressed = '';
 
         while (!feof($this->socket)) {
             $buffer = @fread($this->socket, 32768);
@@ -212,7 +221,7 @@ class Connection implements ConnectionInterface
         }
 
         $lines = explode("\r\n", trim($uncompressed));
-        if (end($lines) === ".") {
+        if (end($lines) === '.') {
             array_pop($lines);
         }
 
@@ -229,7 +238,7 @@ class Connection implements ConnectionInterface
     {
         if (strpos($address, ':') !== false) {
             // enclose IPv6 addresses in square brackets before appending port
-            $address = '[' . $address . ']';
+            $address = '['.$address.']';
         }
 
         return sprintf('tcp://%s:%s', $address, $this->port);

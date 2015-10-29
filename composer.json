@@ -13,10 +13,14 @@
         "php": ">=5.3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit": "@stable",
+        "fabpot/php-cs-fixer": "@stable"
     },
     "autoload": {
         "psr-4": {"Rvdv\\Nntp\\": "src"}
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit; vendor/bin/php-cs-fixer fix -v --diff --dry-run;"
     },
     "extra": {
         "branch-alias": {
