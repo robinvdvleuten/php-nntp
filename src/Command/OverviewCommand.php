@@ -39,7 +39,7 @@ abstract class OverviewCommand extends Command implements CommandInterface
         $this->to = $to;
         $this->format = array_merge(array('number' => false), $format);
 
-        parent::__construct(new \SplFixedArray($this->to - $this->from), true);
+        parent::__construct(new \SplFixedArray($this->to - $this->from + 1), true);
     }
 
     /**
