@@ -29,7 +29,7 @@ class XpathCommand extends Command implements CommandInterface
     {
         $this->reference = $reference;
 
-        parent::__construct([]);
+        parent::__construct(array());
     }
 
     /**
@@ -45,10 +45,10 @@ class XpathCommand extends Command implements CommandInterface
      */
     public function getExpectedResponseCodes()
     {
-        return [
+        return array(
             self::FOUND_PATH        => 'onFoundPath',
             self::INVALID_REFERENCE => 'onInvalidMessage',
-        ];
+        );
     }
 
     /**
