@@ -9,18 +9,21 @@
             "email": "robinvdvleuten@gmail.com"
         }
     ],
+    "homepage" : "https://github.com/robinvdvleuten/php-nntp",
     "require": {
-        "php": ">=5.3.0"
+        "php": "^5.5|^7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
-        "fabpot/php-cs-fixer": "@stable"
+        "fabpot/php-cs-fixer": "@stable",
+        "scrutinizer/ocular": "@stable"
     },
     "autoload": {
         "psr-4": {"Rvdv\\Nntp\\": "src"}
     },
     "scripts": {
-        "test": "vendor/bin/phpunit; vendor/bin/php-cs-fixer fix -v --diff --dry-run;"
+        "test": "vendor/bin/phpunit --coverage-text; vendor/bin/php-cs-fixer fix -v --diff --dry-run;",
+        "test:travis": "vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover; vendor/bin/php-cs-fixer fix -v --diff --dry-run;"
     },
     "extra": {
         "branch-alias": {
