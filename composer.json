@@ -21,6 +21,9 @@
     "autoload": {
         "psr-4": {"Rvdv\\Nntp\\": "src"}
     },
+    "autoload-dev": {
+        "psr-4": {"Rvdv\\Nntp\\Tests\\": "tests"}
+    },
     "scripts": {
         "test": "vendor/bin/phpunit --coverage-text; vendor/bin/php-cs-fixer fix -v --diff --dry-run;",
         "test:travis": "vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover; vendor/bin/php-cs-fixer fix -v --diff --dry-run;"
