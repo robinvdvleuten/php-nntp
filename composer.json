@@ -14,9 +14,9 @@
         "php": "^5.5|^7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable",
-        "fabpot/php-cs-fixer": "@stable",
-        "scrutinizer/ocular": "@stable"
+        "phpunit/phpunit": "^4.8",
+        "fabpot/php-cs-fixer": "^1.10",
+        "scrutinizer/ocular": "^1.1"
     },
     "autoload": {
         "psr-4": {"Rvdv\\Nntp\\": "src"}
