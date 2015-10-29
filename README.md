@@ -3,10 +3,10 @@
 Client for communicating with servers throught the Network News Transfer Protocol (NNTP) protocol.
 
 [![Latest Version](http://img.shields.io/packagist/v/rvdv/nntp.svg?style=flat)](https://packagist.org/packages/rvdv/nntp)
-[![Build Status](http://img.shields.io/travis/RobinvdVleuten/php-nntp.svg?style=flat)](https://travis-ci.org/RobinvdVleuten/php-nntp)
-[![Scrutinizer Quality Score](http://img.shields.io/scrutinizer/g/RobinvdVleuten/php-nntp.svg?style=flat)](https://scrutinizer-ci.com/g/RobinvdVleuten/php-nntp/)
-[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/RobinvdVleuten/php-nntp.svg?style=flat)](https://scrutinizer-ci.com/g/RobinvdVleuten/php-nntp/)
-[![Gittip](http://img.shields.io/gittip/RobinvdVleuten.svg?style=flat)](https://www.gittip.com/RobinvdVleuten/)
+[![Build Status](http://img.shields.io/travis/RobinvdVleuten/php-nntp.svg?style=flat)](https://travis-ci.org/robinvdvleuten/php-nntp)
+[![Scrutinizer Quality Score](http://img.shields.io/scrutinizer/g/robinvdvleuten/php-nntp.svg?style=flat)](https://scrutinizer-ci.com/g/robinvdvleuten/php-nntp/)
+[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/robinvdvleuten/php-nntp.svg?style=flat)](https://scrutinizer-ci.com/g/robinvdvleuten/php-nntp/)
+[![Gittip](http://img.shields.io/gittip/robinvdvleuten.svg?style=flat)](https://www.gittip.com/robinvdvleuten/)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/115c5524-7c3a-4463-a48c-2e21257f25b4/mini.png)](https://insight.sensiolabs.com/projects/115c5524-7c3a-4463-a48c-2e21257f25b4)
 
 ## Installation
