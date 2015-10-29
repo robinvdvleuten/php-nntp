@@ -63,8 +63,10 @@ class XpathCommand extends Command implements CommandInterface
 
     /**
      * If we didn't find the message, just return an empty response
+     *
+     * @param Response $response
      */
-    public function onInvalidMessage()
+    public function onInvalidMessage(Response $response)
     {
         $this->result = null;
     }
