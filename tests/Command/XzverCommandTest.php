@@ -25,7 +25,7 @@ class XzverCommandTest extends CommandTest
     public function testItHasDefaultResult()
     {
         $command = $this->createCommandInstance();
-        $this->assertCount(10, $command->getResult());
+        $this->assertCount(11, $command->getResult());
     }
 
     public function testItReturnsStringWhenExecuting()
@@ -53,7 +53,7 @@ class XzverCommandTest extends CommandTest
         $command->onOverviewInformationFollows($response);
 
         $result = $command->getResult();
-        $this->assertCount(10, $result);
+        $this->assertCount(11, $result);
 
         $result->rewind();
         $article = $result->current();
