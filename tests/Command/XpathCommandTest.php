@@ -57,9 +57,9 @@ class XpathCommandTest extends CommandTest
      */
     protected function getRFCResponseCodes()
     {
-        return [
+        return array(
             XpathCommand::FOUND_PATH,
             XpathCommand::INVALID_REFERENCE,
-        ];
+        );
     }
 }
