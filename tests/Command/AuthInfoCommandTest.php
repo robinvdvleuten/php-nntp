@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\AuthInfoCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * AuthInfoCommandTest
+ * AuthInfoCommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -107,7 +107,7 @@ class AuthInfoCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
@@ -120,7 +120,7 @@ class AuthInfoCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {

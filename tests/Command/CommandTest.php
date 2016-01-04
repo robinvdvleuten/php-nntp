@@ -12,7 +12,7 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 /**
- * CommandTest
+ * CommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */

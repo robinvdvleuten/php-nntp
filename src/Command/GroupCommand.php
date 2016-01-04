@@ -15,7 +15,7 @@ use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * GroupCommand
+ * GroupCommand.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -27,7 +27,7 @@ class GroupCommand extends Command implements CommandInterface
     private $group;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $group The name of the group.
      */

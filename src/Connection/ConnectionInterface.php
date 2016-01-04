@@ -22,7 +22,7 @@ interface ConnectionInterface
     public function connect();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function disconnect();
 

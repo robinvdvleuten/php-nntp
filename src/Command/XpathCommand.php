@@ -56,13 +56,13 @@ class XpathCommand extends Command implements CommandInterface
     public function getExpectedResponseCodes()
     {
         return array(
-            self::FOUND_PATH        => 'onFoundPath',
+            self::FOUND_PATH => 'onFoundPath',
             self::INVALID_REFERENCE => 'onInvalidMessage',
         );
     }
 
     /**
-     * Return the message's reference
+     * Return the message's reference.
      *
      * @param Response $response
      */
@@ -72,7 +72,7 @@ class XpathCommand extends Command implements CommandInterface
     }
 
     /**
-     * If we didn't find the message, just return an empty response
+     * If we didn't find the message, just return an empty response.
      *
      * @param Response $response
      */

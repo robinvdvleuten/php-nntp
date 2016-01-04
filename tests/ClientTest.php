@@ -16,7 +16,7 @@ use Rvdv\Nntp\Command\AuthInfoCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * ClientTest
+ * ClientTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */

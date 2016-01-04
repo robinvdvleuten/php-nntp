@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\XFeatureCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * XFeatureCommandTest
+ * XFeatureCommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -59,7 +59,7 @@ class XFeatureCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
@@ -67,7 +67,7 @@ class XFeatureCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {

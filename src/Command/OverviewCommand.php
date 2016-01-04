@@ -68,7 +68,7 @@ abstract class OverviewCommand extends Command implements CommandInterface
         $lines = $response->getLines();
         $totalLines = count($lines);
 
-        for ($i = 0; $i < $totalLines; $i++) {
+        for ($i = 0; $i < $totalLines; ++$i) {
             $segments = explode("\t", $lines[$i]);
 
             $field = 0;
@@ -78,7 +78,7 @@ abstract class OverviewCommand extends Command implements CommandInterface
                 $value = $full ? ltrim(substr($segments[$field], strpos($segments[$field], ':') + 1), " \t") : $segments[$field];
                 $message[$name] = $value;
 
-                $field++;
+                ++$field;
             }
 
             $this->result[$i] = $message;
