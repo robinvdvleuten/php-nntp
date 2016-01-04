@@ -14,7 +14,7 @@ namespace Rvdv\Nntp\Tests\Connection;
 use Rvdv\Nntp\Connection\Connection;
 
 /**
- * ConnectionTest
+ * ConnectionTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */

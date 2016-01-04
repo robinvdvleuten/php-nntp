@@ -15,7 +15,7 @@ use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * OverviewFormatCommand
+ * OverviewFormatCommand.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -49,7 +49,7 @@ class OverviewFormatCommand extends Command implements CommandInterface
         $this->result = array();
 
         foreach ($response->getLines() as $line) {
-            if (0 == strcasecmp(substr($line, -5, 5), ':full')) {
+            if (0 === strcasecmp(substr($line, -5, 5), ':full')) {
                 // ':full' is _not_ included in tag, but value set to true
                 $this->result[str_replace('-', '_', strtolower(substr($line, 0, -5)))] = true;
             } else {

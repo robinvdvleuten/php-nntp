@@ -14,7 +14,7 @@ namespace Rvdv\Nntp\Command;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * QuitCommand
+ * QuitCommand.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */

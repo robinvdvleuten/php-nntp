@@ -27,7 +27,7 @@ class Client implements ClientInterface
     private $connection;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param ConnectionInterface $connection
      */

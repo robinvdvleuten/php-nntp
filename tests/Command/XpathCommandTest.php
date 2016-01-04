@@ -23,7 +23,7 @@ class XpathCommandTest extends CommandTest
 
     public function testItCanReturnResults()
     {
-        $command  = $this->createCommandInstance();
+        $command = $this->createCommandInstance();
         $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
                          ->disableOriginalConstructor()
                          ->getMock();
@@ -39,7 +39,7 @@ class XpathCommandTest extends CommandTest
 
     public function testItReturnsNothingIfNoFoundPath()
     {
-        $command  = $this->createCommandInstance();
+        $command = $this->createCommandInstance();
         $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
                          ->disableOriginalConstructor()
                          ->getMock();

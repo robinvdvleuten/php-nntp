@@ -14,7 +14,7 @@ namespace Rvdv\Nntp\Command;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * XFeatureCommand
+ * XFeatureCommand.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -28,7 +28,7 @@ class XFeatureCommand extends Command implements CommandInterface
     private $feature;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $feature The feature to enable
      */

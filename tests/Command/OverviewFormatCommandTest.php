@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\OverviewFormatCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * OverviewFormatCommandTest
+ * OverviewFormatCommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -77,7 +77,7 @@ class OverviewFormatCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
@@ -85,7 +85,7 @@ class OverviewFormatCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {

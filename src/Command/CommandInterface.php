@@ -14,19 +14,19 @@ namespace Rvdv\Nntp\Command;
 use Rvdv\Nntp\Response\ResponseInterface;
 
 /**
- * CommandInterface
+ * CommandInterface.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
 interface CommandInterface
 {
     /**
-     * @return boolean
+     * @return bool
      */
     public function isMultiLine();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isCompressed();
 

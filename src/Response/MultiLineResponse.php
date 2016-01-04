@@ -12,7 +12,7 @@
 namespace Rvdv\Nntp\Response;
 
 /**
- * MultiLineResponse
+ * MultiLineResponse.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -29,7 +29,7 @@ class MultiLineResponse implements MultiLineResponseInterface
     private $response;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param ResponseInterface $response A ResponseInterface instance.
      * @param \ArrayAccess      $lines    An ArrayAccess instance.

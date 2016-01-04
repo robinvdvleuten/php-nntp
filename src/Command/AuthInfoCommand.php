@@ -15,7 +15,7 @@ use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * AuthInfoCommand
+ * AuthInfoCommand.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */

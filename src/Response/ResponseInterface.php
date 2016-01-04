@@ -18,7 +18,8 @@ interface ResponseInterface
     public function getStatusCode();
 
     /**
-     * Get a string representation of the response
+     * Get a string representation of the response.
+     *
      * @return string
      */
     public function __toString();
