@@ -4,6 +4,7 @@ Client for communicating with servers throught the Network News Transfer Protoco
 
 [![Latest Version](http://img.shields.io/packagist/v/rvdv/nntp.svg?style=flat)](https://packagist.org/packages/rvdv/nntp)
 [![Build Status](http://img.shields.io/travis/robinvdvleuten/php-nntp.svg?style=flat)](https://travis-ci.org/robinvdvleuten/php-nntp)
+[![Build status](https://img.shields.io/appveyor/ci/robinvdvleuten/php-nntp.svg?style=flat)](https://ci.appveyor.com/project/robinvdvleuten/php-nntp)
 [![Scrutinizer Quality Score](http://img.shields.io/scrutinizer/g/robinvdvleuten/php-nntp.svg?style=flat)](https://scrutinizer-ci.com/g/robinvdvleuten/php-nntp/)
 [![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/robinvdvleuten/php-nntp.svg?style=flat)](https://scrutinizer-ci.com/g/robinvdvleuten/php-nntp/)
 [![Gittip](http://img.shields.io/gittip/robinvdvleuten.svg?style=flat)](https://www.gittip.com/robinvdvleuten/)
