@@ -215,4 +215,12 @@ class Client implements ClientInterface
     {
         return $this->connection->sendCommand($command);
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function sendArticle(CommandInterface $command)
+    {
+        return $this->connection->sendArticle($command);
+    }
 }
