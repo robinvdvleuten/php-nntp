@@ -139,6 +139,42 @@ class Client implements ClientInterface
     {
         return $this->sendCommand(new Command\OverviewFormatCommand());
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+	public function post($groups, $subject, $body, $from, $headers = null)
+	{
+		$command = $this->postCommand(new Command\PostCommand());
+        $response = $command->getResponse();
+        
+        if ($response->getStatusCode() === Response::SEND_ARTICLE) {
+            $command = $this->postArticle($groups, $subject, $body, $from, $headers);
+            $response = $command->getResponse();
+        }
+
+        if ($response->getStatusCode() !== Response::ARTICLE_RECEIVED) {
+            throw new RuntimeException(sprintf('Posting failed: %s', (string) $response));
+        }
+        
+        return $response;
+	}
+	
+    /**
+     * {@inheritdoc}
+     */
+    public function postArticle($groups, $subject, $body, $from, $headers = null)
+    {
+    	return $this->sendArticle(new Command\PostArticleCommand($groups, $subject, $body, $from, $headers));
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function postCommand()
+    {
+    	return $this->sendCommand(new Command\PostCommand());
+    }
 
     /**
      * {@inheritdoc}

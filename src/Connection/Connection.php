@@ -145,6 +145,38 @@ class Connection implements ConnectionInterface
 
         return $command;
     }
+    
+    public function sendArticle(CommandInterface $command)
+    {
+        $commandString = $command->execute();
+
+        if (!@fwrite($this->socket, $commandString."\r\n.\r\n")) {
+            throw new RuntimeException('Failed to write to socket');
+        }
+
+        $response = $this->getResponse();
+
+        $expectedResponseCodes = $command->getExpectedResponseCodes();
+
+        // Check if we received a response expected by the command.
+        if (!isset($expectedResponseCodes[$response->getStatusCode()])) {
+            throw new RuntimeException(sprintf(
+                'Unexpected response received: [%d] %s',
+                $response->getStatusCode(),
+                $response->getMessage()
+            ));
+        }
+
+        $expectedResponseHandler = $expectedResponseCodes[$response->getStatusCode()];
+        if (!is_callable(array($command, $expectedResponseHandler))) {
+            throw new RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $expectedResponseHandler));
+        }
+
+        $command->setResponse($response);
+        $command->$expectedResponseHandler($response);
+
+        return $command;
+    }
 
     protected function getResponse()
     {
