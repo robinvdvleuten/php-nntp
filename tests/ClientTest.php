@@ -36,7 +36,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
 
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
-            'connect', 'disconnect', 'sendCommand',
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ));
 
         $connection->expects($this->once())
@@ -51,7 +51,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testItDisconnectsFromAnEstablishedConnection()
     {
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
-            'connect', 'disconnect', 'sendCommand',
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ));
 
         $connection->expects($this->once())
@@ -66,7 +66,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testItErrorsWhenDisconnectFails()
     {
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
-            'connect', 'disconnect', 'sendCommand',
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ));
 
         $connection->expects($this->once())
@@ -98,7 +98,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnvalue($response));
 
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
-            'connect', 'disconnect', 'sendCommand',
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ));
 
         $connection->expects($this->once())
@@ -129,7 +129,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnvalue($response));
 
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
-            'connect', 'disconnect', 'sendCommand',
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ));
 
         $connection->expects($this->exactly(2))
@@ -167,7 +167,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnvalue($response));
 
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
-            'connect', 'disconnect', 'sendCommand',
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ));
 
         $connection->expects($this->once())
@@ -204,7 +204,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnvalue($response));
 
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
-            'connect', 'disconnect', 'sendCommand',
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ));
 
         $connection->expects($this->once())
@@ -229,7 +229,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsCommandInstanceWhenCallingShortcut()
     {
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
-            'connect', 'disconnect', 'sendCommand',
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ));
 
         $connection->expects($this->any())
