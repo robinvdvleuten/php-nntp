@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\PostCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * AuthInfoCommandTest
+ * PostCommandTest
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
