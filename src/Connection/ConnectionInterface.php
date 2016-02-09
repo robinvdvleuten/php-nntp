@@ -30,4 +30,9 @@ interface ConnectionInterface
      * @return CommandInterface
      */
     public function sendCommand(CommandInterface $command);
+    
+    /**
+     * @return CommandInterface
+     */
+    public function sendArticle(CommandInterface $command);
 }

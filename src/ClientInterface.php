@@ -88,6 +88,39 @@ interface ClientInterface
     public function overviewFormat();
 
     /**
+     * Post an article to usenet.
+     *
+     * @param string $groups
+     * @param string $subject
+     * @param string $body
+     * @param string $from
+     * @param string|null $headers
+     *
+     * @return ResponseInterface
+     */
+	public function post($groups, $subject, $body, $from, $headers = null);
+	
+	/**
+     * Send the article.
+     *
+     * @param string $groups
+     * @param string $subject
+     * @param string $body
+     * @param string $from
+     * @param string|null $headers
+     *
+     * @return ResponseInterface
+     */
+	public function postArticle($groups, $subject, $body, $from, $headers = null);
+	
+	/**
+     * Send the POST command.
+     *
+     * @return \Rvdv\Nntp\Command\PostCommand
+     */
+    public function postCommand();
+    
+    /**
      * Send the QUIT command.
      *
      * @return \Rvdv\Nntp\Command\QuitCommand
