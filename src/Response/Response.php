@@ -34,7 +34,7 @@ class Response implements ResponseInterface
     const AUTHENTICATION_ACCEPTED = 281; // RFC 4643
     const XFEATURE_ENABLED = 290;
 
-	const SEND_ARTICLE = 340; // RFC 3977
+    const SEND_ARTICLE = 340; // RFC 3977
     const PASSWORD_REQUIRED = 381; // RFC 4643
 
     const NO_SUCH_GROUP = 411; // RFC 3977

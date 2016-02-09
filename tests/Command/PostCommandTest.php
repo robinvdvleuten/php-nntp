@@ -44,8 +44,8 @@ class PostCommandTest extends CommandTest
         $command = $this->createCommandInstance();
         $this->assertEquals('POST', $command->execute());
     }
-	
-	public function testItErrorsWhenPostingNotPermittedResponse()
+    
+    public function testItErrorsWhenPostingNotPermittedResponse()
     {
         $command = $this->createCommandInstance();
 

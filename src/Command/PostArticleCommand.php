@@ -25,56 +25,56 @@ class PostArticleCommand extends Command implements CommandInterface
      * @var string
      */
     private $groups;
-	
-	/**
+    
+    /**
      * @var string
      */
-	private $subject;
-	
-	/**
+    private $subject;
+    
+    /**
      * @var string
      */
-	private $body;
-	
-	/**
+    private $body;
+    
+    /**
      * @var string
      */
-	private $from;
-	
-	/**
+    private $from;
+    
+    /**
      * @var string
      */
-	private $headers;
+    private $headers;
    
    /**
     * Constructor.
     */
    public function __construct($groups, $subject, $body, $from, $headers)
-    {
-        $this->groups = $groups;
-        $this->subject = $subject;
-        $this->body = $body;
-        $this->from = $from;
-        $this->headers = $headers;
+   {
+       $this->groups = $groups;
+       $this->subject = $subject;
+       $this->body = $body;
+       $this->from = $from;
+       $this->headers = $headers;
         
-        parent::__construct(array());
-    }
+       parent::__construct(array());
+   }
 
     /**
      * {@inheritdoc}
      */
     public function execute()
     {
-        $article  = "From: ".$this->from."\r\n";
-        $article .= "Newsgroups: ".$this->groups."\r\n";
-        $article .= "Subject: ".$this->subject."\r\n";
+        $article  = 'From: '.$this->from."\r\n";
+        $article .= 'Newsgroups: '.$this->groups."\r\n";
+        $article .= 'Subject: '.$this->subject."\r\n";
         $article .= "X-poster: php-nntp\r\n";
-    	if ($this->headers !== null) {
-    	    $article .= $this->headers."\r\n";
-    	}
+        if ($this->headers !== null) {
+            $article .= $this->headers."\r\n";
+        }
         $article .= "\r\n";
-		$article .= $this->body;
-		
+        $article .= $this->body;
+        
         return $article;
     }
 
@@ -91,7 +91,7 @@ class PostArticleCommand extends Command implements CommandInterface
     
     public function onArticleReceived(Response $response)
     {
-    	return true;
+        return true;
     }
 
     public function onPostingFailed(Response $response)

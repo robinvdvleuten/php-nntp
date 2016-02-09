@@ -44,8 +44,8 @@ class PostArticleCommandTest extends CommandTest
         $command = $this->createCommandInstance();
         $this->assertEquals("From: from <user@example.com>\r\nNewsgroups: php.doc\r\nSubject: subject\r\nX-poster: php-nntp\r\n\r\nbody", $command->execute());
     }
-	
-	public function testItErrorsWhenPostingFailedResponse()
+    
+    public function testItErrorsWhenPostingFailedResponse()
     {
         $command = $this->createCommandInstance();
 
@@ -79,7 +79,6 @@ class PostArticleCommandTest extends CommandTest
      */
     protected function createCommandInstance()
     {
-        
         return new PostArticleCommand('php.doc', 'subject', 'body', 'from <user@example.com>', null);
     }
 

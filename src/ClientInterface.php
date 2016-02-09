@@ -90,30 +90,30 @@ interface ClientInterface
     /**
      * Post an article to usenet.
      *
-     * @param string $groups
-     * @param string $subject
-     * @param string $body
-     * @param string $from
+     * @param string      $groups
+     * @param string      $subject
+     * @param string      $body
+     * @param string      $from
      * @param string|null $headers
      *
      * @return ResponseInterface
      */
-	public function post($groups, $subject, $body, $from, $headers = null);
-	
-	/**
+    public function post($groups, $subject, $body, $from, $headers = null);
+    
+    /**
      * Send the article.
      *
-     * @param string $groups
-     * @param string $subject
-     * @param string $body
-     * @param string $from
+     * @param string      $groups
+     * @param string      $subject
+     * @param string      $body
+     * @param string      $from
      * @param string|null $headers
      *
      * @return ResponseInterface
      */
-	public function postArticle($groups, $subject, $body, $from, $headers = null);
-	
-	/**
+    public function postArticle($groups, $subject, $body, $from, $headers = null);
+    
+    /**
      * Send the POST command.
      *
      * @return \Rvdv\Nntp\Command\PostCommand
