@@ -114,13 +114,6 @@ interface ClientInterface
     public function postArticle($groups, $subject, $body, $from, $headers = null);
     
     /**
-     * Send the POST command.
-     *
-     * @return \Rvdv\Nntp\Command\PostCommand
-     */
-    public function postCommand();
-    
-    /**
      * Send the QUIT command.
      *
      * @return \Rvdv\Nntp\Command\QuitCommand
