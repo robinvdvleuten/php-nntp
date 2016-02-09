@@ -115,6 +115,14 @@ class Client implements ClientInterface
     {
         return $this->sendCommand(new Command\AuthInfoCommand($type, $value));
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function body($article)
+    {
+        return $this->sendCommand(new Command\BodyCommand($article));
+    }
 
     /**
      * {@inheritdoc}

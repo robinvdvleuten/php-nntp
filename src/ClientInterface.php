@@ -65,6 +65,15 @@ interface ClientInterface
     public function authInfo($type, $value);
 
     /**
+     * Send the BODY command.
+	 *
+     * @param $article
+     *
+     * @return \Rvdv\Nntp\Command\BodyCommand
+     */
+    public function body($article);
+
+    /**
      * Send the HELP command.
      *
      * @return \Rvdv\Nntp\Command\HelpCommand
