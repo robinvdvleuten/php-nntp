@@ -131,6 +131,13 @@ class Client implements ClientInterface
     {
         return $this->sendCommand(new Command\GroupCommand($name));
     }
+    
+    /**
+    * Send command "LIST NEWSGROUPS"
+    */
+    public function listNewsGroups() {
+        return $this->sendCommand(new Command\ListNewsGroupsCommand());
+    }    
 
     /**
      * {@inheritdoc}
