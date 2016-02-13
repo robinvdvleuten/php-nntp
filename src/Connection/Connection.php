@@ -76,6 +76,7 @@ class Connection implements ConnectionInterface
         }
 
         if ($this->secure) {
+			stream_context_set_option($this->socket, 'ssl', 'peer_name', $this->host);
             stream_socket_enable_crypto($this->socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
         }
 
