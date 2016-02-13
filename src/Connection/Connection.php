@@ -116,7 +116,7 @@ class Connection implements ConnectionInterface
 
         $response = $this->getResponse();
 
-        if ($command->isMultiLine()) {
+        if ($command->isMultiLine() && ($response->getStatusCode() >= 200 && $response->getStatusCode() <= 399)) {
             $response = $command->isCompressed() ? $this->getCompressedResponse($response) : $this->getMultiLineResponse($response);
         }
 

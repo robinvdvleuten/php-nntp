@@ -65,6 +65,15 @@ interface ClientInterface
     public function authInfo($type, $value);
 
     /**
+     * Send the BODY command.
+	 *
+     * @param $article
+     *
+     * @return \Rvdv\Nntp\Command\BodyCommand
+     */
+    public function body($article);
+
+    /**
      * Send the HELP command.
      *
      * @return \Rvdv\Nntp\Command\HelpCommand
@@ -112,13 +121,6 @@ interface ClientInterface
      * @return ResponseInterface
      */
     public function postArticle($groups, $subject, $body, $from, $headers = null);
-    
-    /**
-     * Send the POST command.
-     *
-     * @return \Rvdv\Nntp\Command\PostCommand
-     */
-    public function postCommand();
     
     /**
      * Send the QUIT command.
