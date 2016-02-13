@@ -42,7 +42,7 @@ class BodyCommandTest extends CommandTest
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals("BODY 12345", $command->execute());
+        $this->assertEquals('BODY 12345', $command->execute());
     }
     
     public function testItReceivesAResultWhenBodyFollowsResponse()
@@ -119,7 +119,6 @@ class BodyCommandTest extends CommandTest
      */
     protected function createCommandInstance()
     {
-        
         return new BodyCommand('12345');
     }
 

@@ -66,7 +66,7 @@ interface ClientInterface
 
     /**
      * Send the BODY command.
-	 *
+     *
      * @param $article
      *
      * @return \Rvdv\Nntp\Command\BodyCommand
