@@ -28,8 +28,6 @@ interface ClientInterface
 
     /**
      * Disconnect the connection with the NNTP server.
-     *
-     * @return boolean A boolean indicating if the connection is disconnected.
      */
     public function disconnect();
 

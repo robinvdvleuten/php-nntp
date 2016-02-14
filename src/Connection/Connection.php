@@ -16,12 +16,20 @@ use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
+use Socket\Raw\Exception;
+use Socket\Raw\Factory;
+use Socket\Raw\Socket;
 
 /**
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
 class Connection implements ConnectionInterface
 {
+    /**
+     * @var Factory
+     */
+    private $factory;
+
     /**
      * @var string
      */
@@ -38,7 +46,7 @@ class Connection implements ConnectionInterface
     private $secure;
 
     /**
-     * @var resource
+     * @var Socket
      */
     private $socket;
 
@@ -50,17 +58,19 @@ class Connection implements ConnectionInterface
     /**
      * Constructor.
      *
-     * @param string $host    The hostname of the NNTP server.
-     * @param int    $port    The port of the NNTP server.
-     * @param bool   $secure  A bool indicating if a secure connection should be established.
-     * @param int    $timeout The socket timeout in seconds.
+     * @param string $host     The hostname of the NNTP server.
+     * @param int    $port     The port of the NNTP server.
+     * @param bool   $secure   A bool indicating if a secure connection should be established.
+     * @param int    $timeout  The socket timeout in seconds.
+     * @param Factory $factory The socket client factory.
      */
-    public function __construct($host, $port, $secure = false, $timeout = 15)
+    public function __construct($host, $port, $secure = false, $timeout = 15, Factory $factory = null)
     {
         $this->host = $host;
         $this->port = $port;
         $this->secure = $secure;
         $this->timeout = $timeout;
+        $this->factory = $factory ?: new Factory();
     }
 
     /**
@@ -71,15 +81,18 @@ class Connection implements ConnectionInterface
         $address = gethostbyname($this->host);
         $url = $this->getSocketUrl($address);
 
-        if (!$this->socket = @stream_socket_client($url, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT)) {
-            throw new RuntimeException(sprintf('Connection to %s:%d failed: %s', $address, $this->port, $errstr), $errno);
+        try {
+            $this->socket = $this->factory->createFromString($url, $scheme)
+                ->connectTimeout($url, $this->timeout);
+        } catch (Exception $e) {
+            throw new RuntimeException(sprintf('Connection to %s:%d failed: %s', $address, $this->port, $e->getMessage()), 0, $e);
         }
 
         if ($this->secure) {
-            stream_socket_enable_crypto($this->socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+            stream_socket_enable_crypto($this->socket->getResource(), true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
         }
 
-        stream_set_blocking($this->socket, 0);
+        $this->socket->setBlocking(false);
 
         return $this->getResponse();
     }
@@ -89,13 +102,9 @@ class Connection implements ConnectionInterface
      */
     public function disconnect()
     {
-        if (is_resource($this->socket)) {
-            stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
-
-            return fclose($this->socket);
-        }
-
-        return false;
+        $this->socket
+            ->shutdown()
+            ->close();
     }
 
     /**
@@ -110,7 +119,7 @@ class Connection implements ConnectionInterface
             throw new InvalidArgumentException('Failed to write to socket: command exceeded 510 characters');
         }
 
-        if (!@fwrite($this->socket, $commandString."\r\n")) {
+        if (!$this->socket->selectWrite() || strlen($commandString."\r\n") !== $this->socket->write($commandString."\r\n")) {
             throw new RuntimeException('Failed to write to socket');
         }
 
@@ -145,12 +154,12 @@ class Connection implements ConnectionInterface
 
         return $command;
     }
-    
+
     public function sendArticle(CommandInterface $command)
     {
         $commandString = $command->execute();
 
-        if (!@fwrite($this->socket, $commandString."\r\n.\r\n")) {
+        if (!$this->socket->selectWrite() || strlen($commandString."\r\n.\r\n") !== $this->socket->write($commandString."\r\n.\r\n")) {
             throw new RuntimeException('Failed to write to socket');
         }
 
@@ -182,8 +191,8 @@ class Connection implements ConnectionInterface
     {
         $buffer = '';
 
-        while (!feof($this->socket)) {
-            $buffer .= @fgets($this->socket, 1024);
+        while ($this->socket->selectRead($this->timeout)) {
+            $buffer .= $this->socket->read(1024);
 
             if ("\r\n" === substr($buffer, -2)) {
                 break;
@@ -202,8 +211,8 @@ class Connection implements ConnectionInterface
     {
         $buffer = '';
 
-        while (!feof($this->socket)) {
-            $buffer .= @fgets($this->socket, 1024);
+        while ($this->socket->selectRead($this->timeout)) {
+            $buffer .= $this->socket->read(1024);
 
             if ("\n.\r\n" === substr($buffer, -4)) {
                 break;
@@ -229,12 +238,12 @@ class Connection implements ConnectionInterface
     public function getCompressedResponse(Response $response)
     {
         // Determine encoding by fetching first line.
-        $line = @fread($this->socket, 1024);
+        $line = $this->socket->read(1024);
 
         $uncompressed = '';
 
-        while (!feof($this->socket)) {
-            $buffer = @fread($this->socket, 32768);
+        while ($this->socket->selectRead($this->timeout)) {
+            $buffer = $this->socket->read(1024);
 
             if (strlen($buffer) === 0) {
                 $uncompressed = @gzuncompress($line);

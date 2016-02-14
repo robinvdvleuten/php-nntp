@@ -59,11 +59,7 @@ class Client implements ClientInterface
      */
     public function disconnect()
     {
-        if (!$this->connection->disconnect()) {
-            throw new RuntimeException('Error while disconnecting from NNTP server');
-        }
-
-        return true;
+        $this->connection->disconnect();
     }
 
     /**
