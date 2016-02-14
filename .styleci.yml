@@ -1,5 +1,11 @@
 preset: symfony
 
 enabled:
+    - align_double_arrow
     - ordered_use
-    - strict
+    - phpdoc_order
+    - short_array_syntax
+
+disabled:
+    - psr0
+    - empty_return
