@@ -12,7 +12,7 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 /**
- * CommandTest
+ * CommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -23,7 +23,7 @@ abstract class CommandTest extends \PHPUnit_Framework_TestCase
         $command = $this->createCommandInstance();
 
         foreach ($command->getExpectedResponseCodes() as $responseCode => $callable) {
-            $this->assertTrue(is_callable(array($command, $callable)),
+            $this->assertTrue(is_callable([$command, $callable]),
                 '->getExpectedResponseCodes() should return callable response code handlers'
             );
         }

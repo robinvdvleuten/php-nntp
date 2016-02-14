@@ -131,7 +131,7 @@ class Connection implements ConnectionInterface
             $response = $command->isCompressed() ? $this->getCompressedResponse($response) : $this->getMultiLineResponse($response);
         }
 
-        if (in_array($response->getStatusCode(), array(Response::COMMAND_UNKNOWN, Response::COMMAND_UNAVAILABLE))) {
+        if (in_array($response->getStatusCode(), [Response::COMMAND_UNKNOWN, Response::COMMAND_UNAVAILABLE])) {
             throw new RuntimeException('Sent command is either unknown or unavailable on server');
         }
 
@@ -147,7 +147,7 @@ class Connection implements ConnectionInterface
         }
 
         $expectedResponseHandler = $expectedResponseCodes[$response->getStatusCode()];
-        if (!is_callable(array($command, $expectedResponseHandler))) {
+        if (!is_callable([$command, $expectedResponseHandler])) {
             throw new RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $expectedResponseHandler));
         }
 
@@ -179,7 +179,7 @@ class Connection implements ConnectionInterface
         }
 
         $expectedResponseHandler = $expectedResponseCodes[$response->getStatusCode()];
-        if (!is_callable(array($command, $expectedResponseHandler))) {
+        if (!is_callable([$command, $expectedResponseHandler])) {
             throw new RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $expectedResponseHandler));
         }
 

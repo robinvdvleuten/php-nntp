@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\PostArticleCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * PostArticleCommandTest
+ * PostArticleCommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -44,7 +44,7 @@ class PostArticleCommandTest extends CommandTest
         $command = $this->createCommandInstance();
         $this->assertEquals("From: from <user@example.com>\r\nNewsgroups: php.doc\r\nSubject: subject\r\nX-poster: php-nntp\r\n\r\nbody", $command->execute());
     }
-    
+
     public function testItErrorsWhenPostingFailedResponse()
     {
         $command = $this->createCommandInstance();
@@ -60,7 +60,7 @@ class PostArticleCommandTest extends CommandTest
             $this->assertInstanceof('Rvdv\Nntp\Exception\RuntimeException', $e, '->onPostingFailed() throws a Rvdv\Nntp\Exception\RuntimeException because the server indicated the post has failed');
         }
     }
-    
+
     public function testItNotReceivesAResultWhenArticleReceivedResponse()
     {
         $command = $this->createCommandInstance();
@@ -75,7 +75,7 @@ class PostArticleCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
@@ -83,13 +83,13 @@ class PostArticleCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {
-        return array(
+        return [
             Response::ARTICLE_RECEIVED,
             Response::POSTING_FAILED,
-        );
+        ];
     }
 }

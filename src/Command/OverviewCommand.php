@@ -46,7 +46,7 @@ abstract class OverviewCommand extends Command implements CommandInterface
     {
         $this->from = $from;
         $this->to = $to;
-        $this->format = array_merge(array('number' => false), $format);
+        $this->format = array_merge(['number' => false], $format);
 
         parent::__construct(new \SplFixedArray($this->to - $this->from + 1), true);
     }
@@ -56,11 +56,11 @@ abstract class OverviewCommand extends Command implements CommandInterface
      */
     public function getExpectedResponseCodes()
     {
-        return array(
-            Response::OVERVIEW_INFORMATION_FOLLOWS => 'onOverviewInformationFollows',
+        return [
+            Response::OVERVIEW_INFORMATION_FOLLOWS  => 'onOverviewInformationFollows',
             Response::NO_NEWSGROUP_CURRENT_SELECTED => 'onNoNewsGroupCurrentSelected',
-            Response::NO_ARTICLES_SELECTED => 'onNoArticlesSelected',
-        );
+            Response::NO_ARTICLES_SELECTED          => 'onNoArticlesSelected',
+        ];
     }
 
     public function onOverviewInformationFollows(MultiLineResponse $response)
@@ -68,17 +68,17 @@ abstract class OverviewCommand extends Command implements CommandInterface
         $lines = $response->getLines();
         $totalLines = count($lines);
 
-        for ($i = 0; $i < $totalLines; $i++) {
+        for ($i = 0; $i < $totalLines; ++$i) {
             $segments = explode("\t", $lines[$i]);
 
             $field = 0;
-            $message = array();
+            $message = [];
 
             foreach ($this->format as $name => $full) {
                 $value = $full ? ltrim(substr($segments[$field], strpos($segments[$field], ':') + 1), " \t") : $segments[$field];
                 $message[$name] = $value;
 
-                $field++;
+                ++$field;
             }
 
             $this->result[$i] = $message;

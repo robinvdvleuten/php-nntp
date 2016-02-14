@@ -106,7 +106,7 @@ interface ClientInterface
      * @return ResponseInterface
      */
     public function post($groups, $subject, $body, $from, $headers = null);
-    
+
     /**
      * Send the article.
      *
@@ -119,7 +119,7 @@ interface ClientInterface
      * @return ResponseInterface
      */
     public function postArticle($groups, $subject, $body, $from, $headers = null);
-    
+
     /**
      * Send the QUIT command.
      *

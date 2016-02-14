@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\PostCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * PostCommandTest
+ * PostCommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -44,7 +44,7 @@ class PostCommandTest extends CommandTest
         $command = $this->createCommandInstance();
         $this->assertEquals('POST', $command->execute());
     }
-    
+
     public function testItErrorsWhenPostingNotPermittedResponse()
     {
         $command = $this->createCommandInstance();
@@ -60,7 +60,7 @@ class PostCommandTest extends CommandTest
             $this->assertInstanceof('Rvdv\Nntp\Exception\RuntimeException', $e, '->onPostingNotPermitted() throws a Rvdv\Nntp\Exception\RuntimeException because the server indicated posting is not permitted');
         }
     }
-    
+
     public function testItNotReceivesAResultWhenSendArticleResponse()
     {
         $command = $this->createCommandInstance();
@@ -75,7 +75,7 @@ class PostCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
@@ -83,13 +83,13 @@ class PostCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {
-        return array(
+        return [
             Response::SEND_ARTICLE,
             Response::POSTING_NOT_PERMITTED,
-        );
+        ];
     }
 }

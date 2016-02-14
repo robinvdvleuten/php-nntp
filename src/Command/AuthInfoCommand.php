@@ -15,7 +15,7 @@ use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * AuthInfoCommand
+ * AuthInfoCommand.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -55,22 +55,20 @@ class AuthInfoCommand extends Command implements CommandInterface
      */
     public function getExpectedResponseCodes()
     {
-        return array(
-            Response::AUTHENTICATION_ACCEPTED => 'onAuthenticationAccepted',
-            Response::PASSWORD_REQUIRED => 'onPasswordRequired',
-            Response::AUTHENTICATION_REJECTED => 'onAuthenticationRejected',
+        return [
+            Response::AUTHENTICATION_ACCEPTED      => 'onAuthenticationAccepted',
+            Response::PASSWORD_REQUIRED            => 'onPasswordRequired',
+            Response::AUTHENTICATION_REJECTED      => 'onAuthenticationRejected',
             Response::AUTHENTICATION_OUTOFSEQUENCE => 'onAuthenticationOutOfSequence',
-        );
+        ];
     }
 
     public function onAuthenticationAccepted(Response $response)
     {
-        return;
     }
 
     public function onPasswordRequired(Response $response)
     {
-        return;
     }
 
     public function onAuthenticationRejected(Response $response)

@@ -29,7 +29,7 @@ interface ConnectionInterface
      * @return CommandInterface
      */
     public function sendCommand(CommandInterface $command);
-    
+
     /**
      * @return CommandInterface
      */

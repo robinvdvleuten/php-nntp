@@ -15,7 +15,7 @@ use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Exception\RuntimeException;
 
 /**
- * Response
+ * Response.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -90,8 +90,8 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @param integer $statusCode
-     * @param string  $message
+     * @param int    $statusCode
+     * @param string $message
      */
     public function __construct($statusCode, $message)
     {

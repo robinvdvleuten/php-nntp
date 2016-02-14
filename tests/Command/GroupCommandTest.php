@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\GroupCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * GroupCommandTest
+ * GroupCommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -83,7 +83,7 @@ class GroupCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
@@ -91,13 +91,13 @@ class GroupCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {
-        return array(
+        return [
             Response::GROUP_SELECTED,
             Response::NO_SUCH_GROUP,
-        );
+        ];
     }
 }

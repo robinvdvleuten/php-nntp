@@ -27,7 +27,7 @@ class Client implements ClientInterface
     private $connection;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param ConnectionInterface $connection
      */
@@ -93,7 +93,7 @@ class Client implements ClientInterface
     {
         $response = $this->connect();
 
-        if (!in_array($response->getStatusCode(), array(Response::POSTING_ALLOWED, RESPONSE::POSTING_PROHIBITED))) {
+        if (!in_array($response->getStatusCode(), [Response::POSTING_ALLOWED, RESPONSE::POSTING_PROHIBITED])) {
             throw new RuntimeException(sprintf('Unsuccessful response received: %s', (string) $response));
         }
 
@@ -111,7 +111,7 @@ class Client implements ClientInterface
     {
         return $this->sendCommand(new Command\AuthInfoCommand($type, $value));
     }
-    
+
     /**
      * {@inheritdoc}
      */

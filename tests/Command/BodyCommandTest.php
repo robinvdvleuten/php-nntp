@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\BodyCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * BodyCommandTest
+ * BodyCommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -44,7 +44,7 @@ class BodyCommandTest extends CommandTest
         $command = $this->createCommandInstance();
         $this->assertEquals('BODY 12345', $command->execute());
     }
-    
+
     public function testItReceivesAResultWhenBodyFollowsResponse()
     {
         $command = $this->createCommandInstance();
@@ -52,8 +52,8 @@ class BodyCommandTest extends CommandTest
         $response = $this->getMockBuilder('Rvdv\Nntp\Response\MultiLineResponse')
             ->disableOriginalConstructor()
             ->getMock();
-        
-        $lines = \SplFixedArray::fromArray(array('Lorem ipsum dolor sit amet, ', 'consectetur adipiscing elit. ', 'Sed volutpat sit amet leo sit amet sagittis.'));
+
+        $lines = \SplFixedArray::fromArray(['Lorem ipsum dolor sit amet, ', 'consectetur adipiscing elit. ', 'Sed volutpat sit amet leo sit amet sagittis.']);
 
         $response->expects($this->once())
             ->method('getLines')
@@ -62,10 +62,10 @@ class BodyCommandTest extends CommandTest
         $command->onBodyFollows($response);
 
         $result = $command->getResult();
-        
+
         $this->assertEquals(implode("\r\n", $lines->toArray()), $result);
     }
-    
+
     public function testItErrorsWhenGroupNotSelectedResponse()
     {
         $command = $this->createCommandInstance();
@@ -81,7 +81,7 @@ class BodyCommandTest extends CommandTest
             $this->assertInstanceof('Rvdv\Nntp\Exception\RuntimeException', $e, '->onNoNewsGroupCurrentSelected() throws a Rvdv\Nntp\Exception\RuntimeException because the server indicated a newsgroup has not been selected');
         }
     }
-    
+
     public function testItErrorsWhenNoSuchArticleNumberResponse()
     {
         $command = $this->createCommandInstance();
@@ -97,7 +97,7 @@ class BodyCommandTest extends CommandTest
             $this->assertInstanceof('Rvdv\Nntp\Exception\RuntimeException', $e, '->onNoSuchArticleNumber() throws a Rvdv\Nntp\Exception\RuntimeException because the server indicated the article number does not exist');
         }
     }
-    
+
     public function testItErrorsWhenNoSuchArticleIdResponse()
     {
         $command = $this->createCommandInstance();
@@ -115,7 +115,7 @@ class BodyCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
@@ -123,15 +123,15 @@ class BodyCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {
-        return array(
+        return [
             Response::BODY_FOLLOWS,
             Response::NO_NEWSGROUP_CURRENT_SELECTED,
             Response::NO_SUCH_ARTICLE_NUMBER,
             Response::NO_SUCH_ARTICLE_ID,
-        );
+        ];
     }
 }

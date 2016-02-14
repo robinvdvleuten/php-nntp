@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\QuitCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * QuitCommandTest
+ * QuitCommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -59,7 +59,7 @@ class QuitCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
@@ -67,12 +67,12 @@ class QuitCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {
-        return array(
+        return [
             Response::CONNECTION_CLOSING,
-        );
+        ];
     }
 }

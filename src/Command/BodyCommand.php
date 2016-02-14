@@ -16,7 +16,7 @@ use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * BodyCommand
+ * BodyCommand.
  *
  * @author thebandit
  */
@@ -28,7 +28,7 @@ class BodyCommand extends Command implements CommandInterface
     private $article;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $article The number or msg-id of the article.
      */
@@ -36,7 +36,7 @@ class BodyCommand extends Command implements CommandInterface
     {
         $this->article = $article;
 
-        parent::__construct(array(), true);
+        parent::__construct([], true);
     }
 
     /**
@@ -52,12 +52,12 @@ class BodyCommand extends Command implements CommandInterface
      */
     public function getExpectedResponseCodes()
     {
-        return array(
-            Response::BODY_FOLLOWS => 'onBodyFollows',
+        return [
+            Response::BODY_FOLLOWS                  => 'onBodyFollows',
             Response::NO_NEWSGROUP_CURRENT_SELECTED => 'onNoNewsGroupCurrentSelected',
-            Response::NO_SUCH_ARTICLE_NUMBER => 'onNoSuchArticleNumber',
-            Response::NO_SUCH_ARTICLE_ID => 'onNoSuchArticleId',
-        );
+            Response::NO_SUCH_ARTICLE_NUMBER        => 'onNoSuchArticleNumber',
+            Response::NO_SUCH_ARTICLE_ID            => 'onNoSuchArticleId',
+        ];
     }
 
     public function onBodyFollows(MultiLineResponse $response)
@@ -65,17 +65,17 @@ class BodyCommand extends Command implements CommandInterface
         $lines = $response->getLines();
         $this->result = implode("\r\n", $lines->toArray());
     }
-    
+
     public function onNoNewsGroupCurrentSelected(Response $response)
     {
         throw new RuntimeException('A group must be selected first before getting an article body.', $response->getStatusCode());
     }
-    
+
     public function onNoSuchArticleNumber(Response $response)
     {
         throw new RuntimeException('No article with that number.', $response->getStatusCode());
     }
-    
+
     public function onNoSuchArticleId(Response $response)
     {
         throw new RuntimeException('No article with that message-id.', $response->getStatusCode());

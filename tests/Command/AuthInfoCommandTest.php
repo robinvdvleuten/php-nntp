@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\AuthInfoCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * AuthInfoCommandTest
+ * AuthInfoCommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -107,28 +107,28 @@ class AuthInfoCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
         $args = func_get_args();
         if (empty($args)) {
-            $args = array(AuthInfoCommand::AUTHINFO_USER, 'user');
+            $args = [AuthInfoCommand::AUTHINFO_USER, 'user'];
         }
 
         return new AuthInfoCommand($args[0], $args[1]);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {
-        return array(
+        return [
             Response::AUTHENTICATION_ACCEPTED,
             Response::PASSWORD_REQUIRED,
             Response::AUTHENTICATION_REJECTED,
             Response::AUTHENTICATION_OUTOFSEQUENCE,
-        );
+        ];
     }
 }

@@ -51,9 +51,9 @@ class XzverCommandTest extends CommandTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $lines = array(
+        $lines = [
             "123456789\tRe: Are you checking out NNTP?\trobinvdvleuten@example.com (\"Robin van der Vleuten\")\tSat,3 Aug 2013 13:19:22 -0000\t<nntp123456789@nntp>\t<nntp987654321@nntp>\t321\t123\tXref: nntp:123456789",
-        );
+        ];
 
         $response->expects($this->once())
             ->method('getLines')
@@ -115,16 +115,16 @@ class XzverCommandTest extends CommandTest
      */
     protected function createCommandInstance()
     {
-        return new XzverCommand(1, 11, array(
-            'subject' => false,
-            'from' => false,
-            'date' => false,
+        return new XzverCommand(1, 11, [
+            'subject'    => false,
+            'from'       => false,
+            'date'       => false,
             'message_id' => false,
             'references' => false,
-            'bytes' => false,
-            'lines' => false,
-            'xref' => true,
-        ));
+            'bytes'      => false,
+            'lines'      => false,
+            'xref'       => true,
+        ]);
     }
 
     /**
@@ -132,10 +132,10 @@ class XzverCommandTest extends CommandTest
      */
     protected function getRFCResponseCodes()
     {
-        return array(
+        return [
             Response::OVERVIEW_INFORMATION_FOLLOWS,
             Response::NO_NEWSGROUP_CURRENT_SELECTED,
             Response::NO_ARTICLES_SELECTED,
-        );
+        ];
     }
 }

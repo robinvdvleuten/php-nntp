@@ -15,7 +15,7 @@ use Rvdv\Nntp\Command\OverviewFormatCommand;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * OverviewFormatCommandTest
+ * OverviewFormatCommandTest.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -53,7 +53,7 @@ class OverviewFormatCommandTest extends CommandTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $lines = array('Subject:', 'From:', 'Date:', 'Message-ID:', 'References:', 'Bytes:', 'Lines:', 'Xref:full');
+        $lines = ['Subject:', 'From:', 'Date:', 'Message-ID:', 'References:', 'Bytes:', 'Lines:', 'Xref:full'];
 
         $response->expects($this->once())
             ->method('getLines')
@@ -64,20 +64,20 @@ class OverviewFormatCommandTest extends CommandTest
         $result = $command->getResult();
         $this->assertCount(8, $result);
 
-        $this->assertEmpty(array_diff_assoc($result, array(
-            'subject' => false,
-            'from' => false,
-            'date' => false,
+        $this->assertEmpty(array_diff_assoc($result, [
+            'subject'    => false,
+            'from'       => false,
+            'date'       => false,
             'message_id' => false,
             'references' => false,
-            'bytes' => false,
-            'lines' => false,
-            'xref' => true,
-        )));
+            'bytes'      => false,
+            'lines'      => false,
+            'xref'       => true,
+        ]));
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function createCommandInstance()
     {
@@ -85,12 +85,12 @@ class OverviewFormatCommandTest extends CommandTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getRFCResponseCodes()
     {
-        return array(
+        return [
             Response::INFORMATION_FOLLOWS,
-        );
+        ];
     }
 }
