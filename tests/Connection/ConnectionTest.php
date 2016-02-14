@@ -47,17 +47,17 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
         $this->socket->expects($this->once())
             ->method('connectTimeout')
-            ->with('tcp://127.0.0.1:5000', 15)
+            ->with('localhost:5000', 15)
             ->willReturnSelf();
 
         $this->factory = $this->getMock('Socket\Raw\Factory');
 
         $this->factory->expects($this->once())
             ->method('createFromString')
-            ->with('tcp://127.0.0.1:5000')
+            ->with('localhost:5000')
             ->willReturn($this->socket);
 
-        $this->connection = new Connection('localhost', 5000, false, 15, $this->factory);
+        $this->connection = new Connection('localhost:5000', false, 15, $this->factory);
     }
 
     public function testConnectionCanBeEstablishedThroughSocket()
@@ -86,7 +86,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->socket->expects($this->once())
             ->method('connectTimeout')
-            ->with('tcp://127.0.0.1:5000', 15)
+            ->with('localhost:5000', 15)
             ->willThrowException(new Exception());
 
         $this->connection->connect();

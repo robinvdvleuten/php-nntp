@@ -31,16 +31,6 @@ class Connection implements ConnectionInterface
     private $factory;
 
     /**
-     * @var string
-     */
-    private $host;
-
-    /**
-     * @var int
-     */
-    private $port;
-
-    /**
      * @var bool
      */
     private $secure;
@@ -56,18 +46,21 @@ class Connection implements ConnectionInterface
     private $timeout;
 
     /**
+     * @var string
+     */
+    private $url;
+
+    /**
      * Constructor.
      *
-     * @param string  $host    The hostname of the NNTP server.
-     * @param int     $port    The port of the NNTP server.
+     * @param string  $url     The url of the NNTP server.
      * @param bool    $secure  A bool indicating if a secure connection should be established.
      * @param int     $timeout The socket timeout in seconds.
      * @param Factory $factory The socket client factory.
      */
-    public function __construct($host, $port, $secure = false, $timeout = 15, Factory $factory = null)
+    public function __construct($url, $secure = false, $timeout = 15, Factory $factory = null)
     {
-        $this->host = $host;
-        $this->port = $port;
+        $this->url = $url;
         $this->secure = $secure;
         $this->timeout = $timeout;
         $this->factory = $factory ?: new Factory();
@@ -78,14 +71,11 @@ class Connection implements ConnectionInterface
      */
     public function connect()
     {
-        $address = gethostbyname($this->host);
-        $url = $this->getSocketUrl($address);
-
         try {
-            $this->socket = $this->factory->createFromString($url, $scheme)
-                ->connectTimeout($url, $this->timeout);
+            $this->socket = $this->factory->createFromString($this->url, $scheme)
+                ->connectTimeout($this->url, $this->timeout);
         } catch (Exception $e) {
-            throw new RuntimeException(sprintf('Connection to %s:%d failed: %s', $address, $this->port, $e->getMessage()), 0, $e);
+            throw new RuntimeException(sprintf('Connection to %s://%s failed: %s', $scheme, $this->url, $e->getMessage()), 0, $e);
         }
 
         if ($this->secure) {
@@ -272,18 +262,5 @@ class Connection implements ConnectionInterface
         $lines = \SplFixedArray::fromArray($lines);
 
         return new MultiLineResponse($response, $lines);
-    }
-
-    /**
-     * @param string $address
-     */
-    protected function getSocketUrl($address)
-    {
-        if (strpos($address, ':') !== false) {
-            // enclose IPv6 addresses in square brackets before appending port
-            $address = '['.$address.']';
-        }
-
-        return sprintf('tcp://%s:%s', $address, $this->port);
     }
 }
