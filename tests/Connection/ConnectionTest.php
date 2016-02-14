@@ -12,33 +12,91 @@
 namespace Rvdv\Nntp\Tests\Connection;
 
 use Rvdv\Nntp\Connection\Connection;
+use Rvdv\Nntp\Connection\ConnectionInterface;
+use Rvdv\Nntp\Exception\RuntimeException;
+use Socket\Raw\Exception;
 
 /**
- * ConnectionTest
- *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
 class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ConnectionInterface
+     */
+    private $connection;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $factory;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $socket;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setup()
+    {
+        $this->socket = $this->getMockBuilder('Socket\Raw\Socket')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->socket->expects($this->once())
+            ->method('connectTimeout')
+            ->with('tcp://127.0.0.1:5000', 15)
+            ->willReturnSelf();
+
+        $this->factory = $this->getMock('Socket\Raw\Factory');
+
+        $this->factory->expects($this->once())
+            ->method('createFromString')
+            ->with('tcp://127.0.0.1:5000')
+            ->willReturn($this->socket);
+
+        $this->connection = new Connection('localhost', 5000, false, 15, $this->factory);
+    }
+
     public function testConnectionCanBeEstablishedThroughSocket()
     {
-        $connection = new Connection('localhost', 5000);
-        $response = $connection->connect();
+        $this->socket->expects($this->atLeastOnce())
+            ->method('selectRead')
+            ->with(15)
+            ->willReturn(true);
+
+        $this->socket->expects($this->once())
+            ->method('read')
+            ->with(1024)
+            ->willReturn("200 server ready - posting allowed\r\n");
+
+        $response = $this->connection->connect();
 
         $this->assertInstanceof('Rvdv\Nntp\Response\Response', $response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('server ready - posting allowed', $response->getMessage());
     }
 
+    /**
+     * @expectedException RuntimeException
+     */
     public function testErrorIsThrownWhenConnectionCannotBeEstablished()
     {
-        $connection = new Connection('unknownhost', 3000);
+        $this->socket->expects($this->once())
+            ->method('connectTimeout')
+            ->with('tcp://127.0.0.1:5000', 15)
+            ->willThrowException(new Exception());
 
-        try {
-            $connection->connect();
-            $this->fail('->connect() throws a Rvdv\Nntp\Exception\RuntimeException because the connection cannot be established');
-        } catch (\Exception $e) {
-            $this->assertInstanceof('Rvdv\Nntp\Exception\RuntimeException', $e, '->connect() throws a Rvdv\Nntp\Exception\RuntimeException because the connection cannot be established');
-        }
+        $this->connection->connect();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function teardown()
+    {
+        unset($this->factory, $this->socket);
     }
 }

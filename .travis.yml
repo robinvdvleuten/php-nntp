@@ -26,7 +26,6 @@ install:
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script:
-  - ./tests/server.php &
   - composer test:travis
 
 after_script:

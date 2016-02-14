@@ -13,6 +13,7 @@ namespace Rvdv\Nntp\Tests;
 
 use Rvdv\Nntp\Client;
 use Rvdv\Nntp\Command\AuthInfoCommand;
+use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 
 /**
@@ -55,14 +56,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ));
 
         $connection->expects($this->once())
-            ->method('disconnect')
-            ->will($this->returnValue(true));
+            ->method('disconnect');
 
         $client = new Client($connection);
-
-        $this->assertTrue($client->disconnect());
+        $client->disconnect();
     }
 
+    /**
+     * @expectedException RuntimeException
+     */
     public function testItErrorsWhenDisconnectFails()
     {
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
@@ -71,16 +73,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $connection->expects($this->once())
             ->method('disconnect')
-            ->will($this->returnValue(false));
+            ->willThrowException(new RuntimeException());
 
         $client = new Client($connection);
-
-        try {
-            $client->disconnect();
-            $this->fail('->disconnect() throws a Rvdv\Nntp\Exception\RuntimeException if the established connection cannot be disconnected');
-        } catch (\Exception $e) {
-            $this->assertInstanceof('Rvdv\Nntp\Exception\RuntimeException', $e, '->disconnect() throws a Rvdv\Nntp\Exception\RuntimeException if the established connection cannot be disconnected');
-        }
+        $client->disconnect();
     }
 
     public function testItAuthenticatesUsernameWithConnectedServer()

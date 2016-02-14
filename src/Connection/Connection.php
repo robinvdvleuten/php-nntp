@@ -58,10 +58,10 @@ class Connection implements ConnectionInterface
     /**
      * Constructor.
      *
-     * @param string $host     The hostname of the NNTP server.
-     * @param int    $port     The port of the NNTP server.
-     * @param bool   $secure   A bool indicating if a secure connection should be established.
-     * @param int    $timeout  The socket timeout in seconds.
+     * @param string  $host    The hostname of the NNTP server.
+     * @param int     $port    The port of the NNTP server.
+     * @param bool    $secure  A bool indicating if a secure connection should be established.
+     * @param int     $timeout The socket timeout in seconds.
      * @param Factory $factory The socket client factory.
      */
     public function __construct($host, $port, $secure = false, $timeout = 15, Factory $factory = null)
@@ -102,9 +102,11 @@ class Connection implements ConnectionInterface
      */
     public function disconnect()
     {
-        $this->socket
-            ->shutdown()
-            ->close();
+        try {
+            $this->socket->shutdown()->close();
+        } catch (Exception $e) {
+            throw new RuntimeException(sprintf('Error while disconnecting from NNTP server: %s', $e->getMessage()), 0, $e);
+        }
     }
 
     /**
