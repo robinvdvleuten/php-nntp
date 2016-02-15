@@ -14,7 +14,7 @@ namespace Rvdv\Nntp\Tests\Connection;
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Connection\ConnectionInterface;
 use Rvdv\Nntp\Exception\RuntimeException;
-use Socket\Raw\Exception;
+use Rvdv\Nntp\Exception\SocketException;
 
 /**
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
@@ -29,11 +29,6 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    private $factory;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
     private $socket;
 
     /**
@@ -41,31 +36,23 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function setup()
     {
-        $this->socket = $this->getMockBuilder('Socket\Raw\Socket')
+        $this->socket = $this->getMockBuilder('Rvdv\Nntp\Socket\Socket')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->socket->expects($this->once())
-            ->method('connectTimeout')
-            ->with('localhost:5000', 15)
+            ->method('connect')
+            ->with('tcp://localhost:5000', 15)
             ->willReturnSelf();
 
-        $this->factory = $this->getMock('Socket\Raw\Factory');
-
-        $this->factory->expects($this->once())
-            ->method('createFromString')
-            ->with('localhost:5000')
-            ->willReturn($this->socket);
-
-        $this->connection = new Connection('localhost:5000', false, 15, $this->factory);
+        $this->connection = new Connection('localhost', 5000, false, 15, $this->socket);
     }
 
     public function testConnectionCanBeEstablishedThroughSocket()
     {
         $this->socket->expects($this->atLeastOnce())
-            ->method('selectRead')
-            ->with(15)
-            ->willReturn(true);
+            ->method('eof')
+            ->willReturn(false);
 
         $this->socket->expects($this->once())
             ->method('read')
@@ -85,9 +72,9 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     public function testErrorIsThrownWhenConnectionCannotBeEstablished()
     {
         $this->socket->expects($this->once())
-            ->method('connectTimeout')
-            ->with('localhost:5000', 15)
-            ->willThrowException(new Exception());
+            ->method('connect')
+            ->with('tcp://localhost:5000', 15)
+            ->willThrowException(new SocketException());
 
         $this->connection->connect();
     }
@@ -97,6 +84,6 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function teardown()
     {
-        unset($this->factory, $this->socket);
+        unset($this->socket);
     }
 }

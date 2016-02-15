@@ -16,9 +16,8 @@ use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
-use Socket\Raw\Exception;
-use Socket\Raw\Factory;
-use Socket\Raw\Socket;
+use Rvdv\Nntp\Socket\Socket;
+use Rvdv\Nntp\Socket\SocketInterface;
 
 /**
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
@@ -26,9 +25,14 @@ use Socket\Raw\Socket;
 class Connection implements ConnectionInterface
 {
     /**
-     * @var Factory
+     * @var string
      */
-    private $factory;
+    private $host;
+
+    /**
+     * @var int
+     */
+    private $port;
 
     /**
      * @var bool
@@ -36,7 +40,7 @@ class Connection implements ConnectionInterface
     private $secure;
 
     /**
-     * @var Socket
+     * @var SocketInterface
      */
     private $socket;
 
@@ -53,17 +57,19 @@ class Connection implements ConnectionInterface
     /**
      * Constructor.
      *
-     * @param string  $url     The url of the NNTP server.
+     * @param string  $host     The host of the NNTP server.
+     * @param int  $port     The port of the NNTP server.
      * @param bool    $secure  A bool indicating if a secure connection should be established.
      * @param int     $timeout The socket timeout in seconds.
-     * @param Factory $factory The socket client factory.
+     * @param SocketInterface $socket An optional socket wrapper instance.
      */
-    public function __construct($url, $secure = false, $timeout = 15, Factory $factory = null)
+    public function __construct($host, $port, $secure = false, $timeout = null, SocketInterface $socket = null)
     {
-        $this->url = $url;
+        $this->host = $host;
+        $this->port = $port;
         $this->secure = $secure;
         $this->timeout = $timeout;
-        $this->factory = $factory ?: new Factory();
+        $this->socket = $socket ?: new Socket();
     }
 
     /**
@@ -71,18 +77,13 @@ class Connection implements ConnectionInterface
      */
     public function connect()
     {
-        try {
-            $this->socket = $this->factory->createFromString($this->url, $scheme)
-                ->connectTimeout($this->url, $this->timeout);
-        } catch (Exception $e) {
-            throw new RuntimeException(sprintf('Connection to %s://%s failed: %s', $scheme, $this->url, $e->getMessage()), 0, $e);
-        }
+        $this->socket
+            ->connect(sprintf('tcp://%s:%d', $this->host, $this->port), $this->timeout)
+            ->setBlocking(false);
 
         if ($this->secure) {
-            stream_socket_enable_crypto($this->socket->getResource(), true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+            $this->socket->enableCrypto(true);
         }
-
-        $this->socket->setBlocking(false);
 
         return $this->getResponse();
     }
@@ -92,11 +93,7 @@ class Connection implements ConnectionInterface
      */
     public function disconnect()
     {
-        try {
-            $this->socket->shutdown()->close();
-        } catch (Exception $e) {
-            throw new RuntimeException(sprintf('Error while disconnecting from NNTP server: %s', $e->getMessage()), 0, $e);
-        }
+        $this->socket->disconnect();
     }
 
     /**
@@ -111,7 +108,7 @@ class Connection implements ConnectionInterface
             throw new InvalidArgumentException('Failed to write to socket: command exceeded 510 characters');
         }
 
-        if (!$this->socket->selectWrite() || strlen($commandString."\r\n") !== $this->socket->write($commandString."\r\n")) {
+        if (strlen($commandString."\r\n") !== $this->socket->write($commandString."\r\n")) {
             throw new RuntimeException('Failed to write to socket');
         }
 
@@ -183,7 +180,7 @@ class Connection implements ConnectionInterface
     {
         $buffer = '';
 
-        while ($this->socket->selectRead($this->timeout)) {
+        while (!$this->socket->eof()) {
             $buffer .= $this->socket->read(1024);
 
             if ("\r\n" === substr($buffer, -2)) {
@@ -203,7 +200,7 @@ class Connection implements ConnectionInterface
     {
         $buffer = '';
 
-        while ($this->socket->selectRead($this->timeout)) {
+        while (!$this->socket->eof()) {
             $buffer .= $this->socket->read(1024);
 
             if ("\n.\r\n" === substr($buffer, -4)) {
@@ -234,7 +231,7 @@ class Connection implements ConnectionInterface
 
         $uncompressed = '';
 
-        while ($this->socket->selectRead($this->timeout)) {
+        while (!$this->socket->eof()) {
             $buffer = $this->socket->read(1024);
 
             if (strlen($buffer) === 0) {
