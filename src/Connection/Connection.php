@@ -57,11 +57,11 @@ class Connection implements ConnectionInterface
     /**
      * Constructor.
      *
-     * @param string  $host     The host of the NNTP server.
-     * @param int  $port     The port of the NNTP server.
-     * @param bool    $secure  A bool indicating if a secure connection should be established.
-     * @param int     $timeout The socket timeout in seconds.
-     * @param SocketInterface $socket An optional socket wrapper instance.
+     * @param string          $host    The host of the NNTP server.
+     * @param int             $port    The port of the NNTP server.
+     * @param bool            $secure  A bool indicating if a secure connection should be established.
+     * @param int             $timeout The socket timeout in seconds.
+     * @param SocketInterface $socket  An optional socket wrapper instance.
      */
     public function __construct($host, $port, $secure = false, $timeout = null, SocketInterface $socket = null)
     {

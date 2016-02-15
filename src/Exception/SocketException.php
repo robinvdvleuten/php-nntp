@@ -7,5 +7,4 @@ namespace Rvdv\Nntp\Exception;
  */
 class SocketException extends RuntimeException
 {
-
 }
