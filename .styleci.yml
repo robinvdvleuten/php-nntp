@@ -8,3 +8,4 @@ enabled:
 
 disabled:
     - empty_return
+    - unalign_double_arrow
