@@ -42,10 +42,10 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
         $this->socket->expects($this->once())
             ->method('connect')
-            ->with('tcp://localhost:5000', 15)
+            ->with('tcp://localhost:5000', 1.0)
             ->willReturnSelf();
 
-        $this->connection = new Connection('localhost', 5000, false, 15, $this->socket);
+        $this->connection = new Connection('localhost', 5000, false, $this->socket);
     }
 
     public function testConnectionCanBeEstablishedThroughSocket()
@@ -55,7 +55,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             ->willReturn(false);
 
         $this->socket->expects($this->once())
-            ->method('read')
+            ->method('gets')
             ->with(1024)
             ->willReturn("200 server ready - posting allowed\r\n");
 
@@ -73,7 +73,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->socket->expects($this->once())
             ->method('connect')
-            ->with('tcp://localhost:5000', 15)
+            ->with('tcp://localhost:5000', 1.0)
             ->willThrowException(new SocketException());
 
         $this->connection->connect();

@@ -15,6 +15,13 @@ interface SocketInterface
     public function setBlocking($blocking);
 
     /**
+     * @param int $buffer
+     *
+     * @return self
+     */
+    public function setReadBuffer($buffer);
+
+    /**
      * @param bool $enable
      * @param int  $cryptoType
      *
@@ -24,7 +31,7 @@ interface SocketInterface
 
     /**
      * @param string $address
-     * @param int    $timeout
+     * @param float  $timeout
      *
      * @return self
      */
@@ -40,6 +47,18 @@ interface SocketInterface
      */
     public function eof();
 
+    /**
+     * @param int $length
+     *
+     * @return string
+     */
+    public function gets($length = null);
+
+    /**
+     * @param int $length
+     *
+     * @return string
+     */
     public function read($length);
 
     /**

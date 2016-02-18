@@ -12,14 +12,26 @@ class Socket implements SocketInterface
     /**
      * @var resource
      */
-    private $resource;
+    private $stream;
 
     /**
      * {@inheritdoc}
      */
     public function setBlocking($blocking)
     {
-        if (!stream_set_blocking($this->resource, $blocking ? 1 : 0)) {
+        if (!stream_set_blocking($this->stream, $blocking ? 1 : 0)) {
+            throw new SocketException();
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setReadBuffer($buffer)
+    {
+        if (stream_set_read_buffer($this->stream, $buffer) !== 0) {
             throw new SocketException();
         }
 
@@ -31,7 +43,7 @@ class Socket implements SocketInterface
      */
     public function enableCrypto($enable, $cryptoType = STREAM_CRYPTO_METHOD_TLS_CLIENT)
     {
-        if (!stream_socket_enable_crypto($this->resource, $enable, $cryptoType)) {
+        if (!stream_socket_enable_crypto($this->stream, $enable, $cryptoType)) {
             throw new SocketException();
         }
 
@@ -43,9 +55,17 @@ class Socket implements SocketInterface
      */
     public function connect($address, $timeout = null)
     {
-        if (!$this->resource = stream_socket_client($address, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT)) {
+        if (!$this->stream = stream_socket_client($address, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT)) {
             throw new SocketException(sprintf('Connection to %s failed: %s', $address, $errstr));
         }
+
+        // Use unbuffered read operations on the underlying stream resource.
+        // Reading chunks from the stream may otherwise leave unread bytes in
+        // PHP's stream buffers which some event loop implementations do not
+        // trigger events on (edge triggered).
+        // This does not affect the default event loop implementation (level
+        // triggered), so we can ignore platforms not supporting this (HHVM).
+        $this->setReadBuffer(0);
 
         return $this;
     }
@@ -55,7 +75,7 @@ class Socket implements SocketInterface
      */
     public function disconnect()
     {
-        if (!fclose($this->resource)) {
+        if (!fclose($this->stream)) {
             throw new SocketException();
         }
 
@@ -67,7 +87,19 @@ class Socket implements SocketInterface
      */
     public function eof()
     {
-        return feof($this->resource);
+        return feof($this->stream);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function gets($length = null)
+    {
+        if (($data = fgets($this->stream, $length)) === false) {
+            throw new SocketException();
+        }
+
+        return $data;
     }
 
     /**
@@ -75,7 +107,7 @@ class Socket implements SocketInterface
      */
     public function read($length)
     {
-        if (($data = fread($this->resource, $length)) === false) {
+        if (($data = fread($this->stream, $length)) === false) {
             throw new SocketException();
         }
 
@@ -87,7 +119,7 @@ class Socket implements SocketInterface
      */
     public function write($data)
     {
-        if (($bytes = fwrite($this->resource, $data)) === false) {
+        if (($bytes = fwrite($this->stream, $data)) === false) {
             throw new SocketException();
         }
 

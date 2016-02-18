@@ -24,6 +24,8 @@ use Rvdv\Nntp\Socket\SocketInterface;
  */
 class Connection implements ConnectionInterface
 {
+    const BUFFER_SIZE = 1024;
+
     /**
      * @var string
      */
@@ -55,15 +57,13 @@ class Connection implements ConnectionInterface
      * @param string          $host    The host of the NNTP server.
      * @param int             $port    The port of the NNTP server.
      * @param bool            $secure  A bool indicating if a secure connection should be established.
-     * @param int             $timeout The socket timeout in seconds.
      * @param SocketInterface $socket  An optional socket wrapper instance.
      */
-    public function __construct($host, $port, $secure = false, $timeout = null, SocketInterface $socket = null)
+    public function __construct($host, $port, $secure = false, SocketInterface $socket = null)
     {
         $this->host = $host;
         $this->port = $port;
         $this->secure = $secure;
-        $this->timeout = $timeout;
         $this->socket = $socket ?: new Socket();
     }
 
@@ -73,8 +73,8 @@ class Connection implements ConnectionInterface
     public function connect()
     {
         $this->socket
-            ->connect(sprintf('tcp://%s:%d', $this->host, $this->port), $this->timeout)
-            ->setBlocking(false);
+            ->connect(sprintf('tcp://%s:%d', $this->host, $this->port), 1.0)
+            ->setBlocking(true);
 
         if ($this->secure) {
             $this->socket->enableCrypto(true);
@@ -176,7 +176,7 @@ class Connection implements ConnectionInterface
         $buffer = '';
 
         while (!$this->socket->eof()) {
-            $buffer .= $this->socket->read(1024);
+            $buffer .= $this->socket->gets(self::BUFFER_SIZE);
 
             if ("\r\n" === substr($buffer, -2)) {
                 break;
@@ -196,7 +196,7 @@ class Connection implements ConnectionInterface
         $buffer = '';
 
         while (!$this->socket->eof()) {
-            $buffer .= $this->socket->read(1024);
+            $buffer .= $this->socket->gets(self::BUFFER_SIZE);
 
             if ("\n.\r\n" === substr($buffer, -4)) {
                 break;
@@ -222,12 +222,12 @@ class Connection implements ConnectionInterface
     public function getCompressedResponse(Response $response)
     {
         // Determine encoding by fetching first line.
-        $line = $this->socket->read(1024);
+        $line = $this->socket->gets();
 
         $uncompressed = '';
 
         while (!$this->socket->eof()) {
-            $buffer = $this->socket->read(1024);
+            $buffer = $this->socket->gets(self::BUFFER_SIZE);
 
             if (strlen($buffer) === 0) {
                 $uncompressed = @gzuncompress($line);

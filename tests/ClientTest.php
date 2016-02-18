@@ -17,8 +17,6 @@ use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * ClientTest.
- *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
