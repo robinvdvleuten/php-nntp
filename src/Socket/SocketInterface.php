@@ -8,20 +8,6 @@ namespace Rvdv\Nntp\Socket;
 interface SocketInterface
 {
     /**
-     * @param bool $toggle
-     *
-     * @return self
-     */
-    public function setBlocking($blocking);
-
-    /**
-     * @param int $buffer
-     *
-     * @return self
-     */
-    public function setReadBuffer($buffer);
-
-    /**
      * @param bool $enable
      * @param int  $cryptoType
      *
@@ -31,11 +17,10 @@ interface SocketInterface
 
     /**
      * @param string $address
-     * @param float  $timeout
      *
      * @return self
      */
-    public function connect($address, $timeout = null);
+    public function connect($address);
 
     /**
      * @return self

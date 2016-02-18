@@ -47,11 +47,6 @@ class Connection implements ConnectionInterface
     private $socket;
 
     /**
-     * @var int
-     */
-    private $timeout;
-
-    /**
      * Constructor.
      *
      * @param string          $host   The host of the NNTP server.
@@ -72,9 +67,7 @@ class Connection implements ConnectionInterface
      */
     public function connect()
     {
-        $this->socket
-            ->connect(sprintf('tcp://%s:%d', $this->host, $this->port), 1.0)
-            ->setBlocking(true);
+        $this->socket->connect(sprintf('tcp://%s:%d', $this->host, $this->port));
 
         if ($this->secure) {
             $this->socket->enableCrypto(true);

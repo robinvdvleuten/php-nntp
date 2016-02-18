@@ -42,7 +42,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
         $this->socket->expects($this->once())
             ->method('connect')
-            ->with('tcp://localhost:5000', 1.0)
+            ->with('tcp://localhost:5000')
             ->willReturnSelf();
 
         $this->connection = new Connection('localhost', 5000, false, $this->socket);
@@ -73,7 +73,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->socket->expects($this->once())
             ->method('connect')
-            ->with('tcp://localhost:5000', 1.0)
+            ->with('tcp://localhost:5000')
             ->willThrowException(new SocketException());
 
         $this->connection->connect();

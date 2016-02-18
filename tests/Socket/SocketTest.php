@@ -13,8 +13,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     {
         $socket = new Socket();
 
-        $this->assertSame($socket, $socket->connect('www.google.nl:80', 1.0));
-        $this->assertSame($socket, $socket->setBlocking(true));
+        $this->assertSame($socket, $socket->connect('www.google.nl:80'));
 
         // Send HTTP request to remote server.
         $data = "GET / HTTP/1.1\r\nHost: www.google.com\r\n\r\n";
@@ -29,5 +28,14 @@ class SocketTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($socket->read(8192));
 
         $this->assertSame($socket, $socket->disconnect());
+    }
+
+    /**
+     * @expectedException \Rvdv\Nntp\Exception\SocketException
+     */
+    public function testConnectFail()
+    {
+        $socket = new Socket();
+        $socket->connect('localhost:2');
     }
 }

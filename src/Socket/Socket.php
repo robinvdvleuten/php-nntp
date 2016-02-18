@@ -17,30 +17,6 @@ class Socket implements SocketInterface
     /**
      * {@inheritdoc}
      */
-    public function setBlocking($blocking)
-    {
-        if (!stream_set_blocking($this->stream, $blocking ? 1 : 0)) {
-            throw new SocketException();
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setReadBuffer($buffer)
-    {
-        if (stream_set_read_buffer($this->stream, $buffer) !== 0) {
-            throw new SocketException();
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function enableCrypto($enable, $cryptoType = STREAM_CRYPTO_METHOD_TLS_CLIENT)
     {
         if (!stream_socket_enable_crypto($this->stream, $enable, $cryptoType)) {
@@ -53,11 +29,13 @@ class Socket implements SocketInterface
     /**
      * {@inheritdoc}
      */
-    public function connect($address, $timeout = null)
+    public function connect($address)
     {
-        if (!$this->stream = stream_socket_client($address, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT)) {
+        if (!$this->stream = @stream_socket_client($address, $errno, $errstr, 1.0, STREAM_CLIENT_CONNECT)) {
             throw new SocketException(sprintf('Connection to %s failed: %s', $address, $errstr));
         }
+
+        stream_set_blocking($this->stream, 1);
 
         // Use unbuffered read operations on the underlying stream resource.
         // Reading chunks from the stream may otherwise leave unread bytes in
@@ -65,7 +43,9 @@ class Socket implements SocketInterface
         // trigger events on (edge triggered).
         // This does not affect the default event loop implementation (level
         // triggered), so we can ignore platforms not supporting this (HHVM).
-        $this->setReadBuffer(0);
+        if (function_exists('stream_set_read_buffer')) {
+            stream_set_read_buffer($this->stream, 0);
+        }
 
         return $this;
     }
