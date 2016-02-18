@@ -50,11 +50,6 @@ class Connection implements ConnectionInterface
     private $timeout;
 
     /**
-     * @var string
-     */
-    private $url;
-
-    /**
      * Constructor.
      *
      * @param string          $host    The host of the NNTP server.
