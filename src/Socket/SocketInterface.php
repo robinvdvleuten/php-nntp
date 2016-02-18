@@ -42,5 +42,10 @@ interface SocketInterface
 
     public function read($length);
 
+    /**
+     * @param $data
+     *
+     * @return int
+     */
     public function write($data);
 }

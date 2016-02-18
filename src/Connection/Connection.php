@@ -143,7 +143,7 @@ class Connection implements ConnectionInterface
     {
         $commandString = $command->execute();
 
-        if (!$this->socket->selectWrite() || strlen($commandString."\r\n.\r\n") !== $this->socket->write($commandString."\r\n.\r\n")) {
+        if (strlen($commandString."\r\n.\r\n") !== $this->socket->write($commandString."\r\n.\r\n")) {
             throw new RuntimeException('Failed to write to socket');
         }
 
