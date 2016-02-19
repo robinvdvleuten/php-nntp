@@ -31,6 +31,8 @@ class ListCommand extends Command
      */
     public function __construct($keyword = null, $arguments = null)
     {
+        $this->keyword = $keyword;
+        $this->arguments = $arguments;
         parent::__construct([], true);
     }
 
@@ -51,7 +53,7 @@ class ListCommand extends Command
      */
     public function execute()
     {
-        return sprintf('LIST %s %s', $this->keyword, $this->arguments);
+        return trim(sprintf('LIST %s %s', $this->keyword, $this->arguments));
     }
 
     /**
