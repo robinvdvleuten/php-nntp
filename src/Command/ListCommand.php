@@ -1,18 +1,19 @@
 <?php
+
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Exception\RuntimeException;
+use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
 
 class ListCommand extends Command
 {
-    const KEYWORD_ACTIVE        = 'ACTIVE';
-    const KEYWORD_ACTIVE_TIMES  = 'ACTIVE.TIMES';
-    const KEYWORD_DISTRIB_PATS  = 'DISTRIB.PATS';
-    const KEYWORD_HEADERS       = 'HEADERS';
-    const KEYWORD_NEWSGROUPS    = 'NEWSGROUPS';
-    const KEYWORD_OVERVIEW_FMT  = 'OVERVIEW.FMT';
+    const KEYWORD_ACTIVE = 'ACTIVE';
+    const KEYWORD_ACTIVE_TIMES = 'ACTIVE.TIMES';
+    const KEYWORD_DISTRIB_PATS = 'DISTRIB.PATS';
+    const KEYWORD_HEADERS = 'HEADERS';
+    const KEYWORD_NEWSGROUPS = 'NEWSGROUPS';
+    const KEYWORD_OVERVIEW_FMT = 'OVERVIEW.FMT';
 
     /**
      * @var string
@@ -40,8 +41,8 @@ class ListCommand extends Command
     {
         return [
             Response::INFORMATION_FOLLOWS => 'onListFollows',
-            Response::INVALID_KEYWORD => 'onInvalidKeyword',
-            Response::PROGRAM_ERROR => 'onError',
+            Response::INVALID_KEYWORD     => 'onInvalidKeyword',
+            Response::PROGRAM_ERROR       => 'onError',
         ];
     }
 
@@ -54,7 +55,7 @@ class ListCommand extends Command
     }
 
     /**
-     * Called when the list is received from the server
+     * Called when the list is received from the server.
      *
      * @param MultiLineResponse $response
      */
@@ -67,9 +68,9 @@ class ListCommand extends Command
             list($name, $high, $low, $status) = explode(' ', $lines[$i]);
 
             $this->result[$i] = [
-                'name' => $name,
-                'high' => $high,
-                'low' => $low,
+                'name'   => $name,
+                'high'   => $high,
+                'low'    => $low,
                 'status' => $status,
             ];
         }
