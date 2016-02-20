@@ -49,6 +49,7 @@ class Response implements ResponseInterface
     const AUTHENTICATION_OUTOFSEQUENCE = 482; // RFC 4643
 
     const COMMAND_UNKNOWN = 500; // RFC 3977
+    const INVALID_KEYWORD = 501; // RFC 3977
     const COMMAND_UNAVAILABLE = 502; // RFC 4643
     const PROGRAM_ERROR = 503; // RFC 2980
 

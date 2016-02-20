@@ -123,6 +123,14 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
+    public function listGroups($keyword = null, $arguments = null)
+    {
+        return $this->sendCommand(new Command\ListCommand($keyword, $arguments));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function group($name)
     {
         return $this->sendCommand(new Command\GroupCommand($name));

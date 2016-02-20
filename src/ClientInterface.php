@@ -79,6 +79,16 @@ interface ClientInterface
     public function help();
 
     /**
+     * Send the LIST command.
+     *
+     * @param string|null $keyword
+     * @param string|null $arguments
+     *
+     * @return \Rvdv\Nntp\Command\GroupCommand
+     */
+    public function listGroups($keyword = null, $arguments = null);
+
+    /**
      * Send the GROUP command.
      *
      * @param $name
