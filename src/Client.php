@@ -27,7 +27,7 @@ class Client implements ClientInterface
     private $connection;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param ConnectionInterface $connection
      */
@@ -59,11 +59,7 @@ class Client implements ClientInterface
      */
     public function disconnect()
     {
-        if (!$this->connection->disconnect()) {
-            throw new RuntimeException('Error while disconnecting from NNTP server');
-        }
-
-        return true;
+        $this->connection->disconnect();
     }
 
     /**
@@ -97,7 +93,7 @@ class Client implements ClientInterface
     {
         $response = $this->connect();
 
-        if (!in_array($response->getStatusCode(), array(Response::POSTING_ALLOWED, RESPONSE::POSTING_PROHIBITED))) {
+        if (!in_array($response->getStatusCode(), [Response::POSTING_ALLOWED, RESPONSE::POSTING_PROHIBITED])) {
             throw new RuntimeException(sprintf('Unsuccessful response received: %s', (string) $response));
         }
 
@@ -114,6 +110,22 @@ class Client implements ClientInterface
     public function authInfo($type, $value)
     {
         return $this->sendCommand(new Command\AuthInfoCommand($type, $value));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function body($article)
+    {
+        return $this->sendCommand(new Command\BodyCommand($article));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function listGroups($keyword = null, $arguments = null)
+    {
+        return $this->sendCommand(new Command\ListCommand($keyword, $arguments));
     }
 
     /**

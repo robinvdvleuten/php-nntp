@@ -51,7 +51,7 @@ class HelpCommandTest extends CommandTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $lines = array('body [MessageID|Number]', 'date', 'head [MessageID|Number]', 'help', 'ihave');
+        $lines = ['body [MessageID|Number]', 'date', 'head [MessageID|Number]', 'help', 'ihave'];
 
         $response->expects($this->once())
             ->method('getLines')
@@ -76,8 +76,8 @@ class HelpCommandTest extends CommandTest
      */
     protected function getRFCResponseCodes()
     {
-        return array(
+        return [
             Response::HELP_TEXT_FOLLOWS,
-        );
+        ];
     }
 }

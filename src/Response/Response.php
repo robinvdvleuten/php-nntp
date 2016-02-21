@@ -15,7 +15,7 @@ use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Exception\RuntimeException;
 
 /**
- * Response
+ * Response.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -29,6 +29,7 @@ class Response implements ResponseInterface
     const CONNECTION_CLOSING = 205; // RFC 3977
     const GROUP_SELECTED = 211; // RFC 3977
     const INFORMATION_FOLLOWS = 215; // RFC 2980
+    const BODY_FOLLOWS = 222; //RFC 3977
     const OVERVIEW_INFORMATION_FOLLOWS = 224; // RFC 2980
     const ARTICLE_RECEIVED = 240; //RFC 3977
     const AUTHENTICATION_ACCEPTED = 281; // RFC 4643
@@ -40,12 +41,15 @@ class Response implements ResponseInterface
     const NO_SUCH_GROUP = 411; // RFC 3977
     const NO_NEWSGROUP_CURRENT_SELECTED = 412; // RFC 2980
     const NO_ARTICLES_SELECTED = 420; // RFC 2980
+    const NO_SUCH_ARTICLE_NUMBER = 423; // RFC 3977
+    const NO_SUCH_ARTICLE_ID = 430; // RFC 3977
     const POSTING_NOT_PERMITTED = 440; // RFC 3977
     const POSTING_FAILED = 441; // RFC 3977
     const AUTHENTICATION_REJECTED = 481; // RFC 4643
     const AUTHENTICATION_OUTOFSEQUENCE = 482; // RFC 4643
 
     const COMMAND_UNKNOWN = 500; // RFC 3977
+    const INVALID_KEYWORD = 501; // RFC 3977
     const COMMAND_UNAVAILABLE = 502; // RFC 4643
     const PROGRAM_ERROR = 503; // RFC 2980
 
@@ -87,8 +91,8 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @param integer $statusCode
-     * @param string  $message
+     * @param int    $statusCode
+     * @param string $message
      */
     public function __construct($statusCode, $message)
     {

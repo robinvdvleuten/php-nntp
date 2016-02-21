@@ -15,7 +15,7 @@ use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * GroupCommand
+ * GroupCommand.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -27,7 +27,7 @@ class GroupCommand extends Command implements CommandInterface
     private $group;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $group The name of the group.
      */
@@ -35,7 +35,7 @@ class GroupCommand extends Command implements CommandInterface
     {
         $this->group = $group;
 
-        parent::__construct(array());
+        parent::__construct([]);
     }
 
     /**
@@ -51,16 +51,16 @@ class GroupCommand extends Command implements CommandInterface
      */
     public function getExpectedResponseCodes()
     {
-        return array(
+        return [
             Response::GROUP_SELECTED => 'onGroupSelected',
-            Response::NO_SUCH_GROUP => 'onNoSuchGroup',
-        );
+            Response::NO_SUCH_GROUP  => 'onNoSuchGroup',
+        ];
     }
 
     public function onGroupSelected(Response $response)
     {
         $message = $response->getMessage();
-        $this->result = array_combine(array('count', 'first', 'last', 'name'), explode(' ', $message));
+        $this->result = array_combine(['count', 'first', 'last', 'name'], explode(' ', $message));
     }
 
     public function onNoSuchGroup(Response $response)

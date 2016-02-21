@@ -15,7 +15,7 @@ use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * PostCommand
+ * PostCommand.
  *
  * @author thebandit
  */
@@ -26,7 +26,7 @@ class PostCommand extends Command implements CommandInterface
     */
    public function __construct()
    {
-       parent::__construct(array());
+       parent::__construct([]);
    }
 
     /**
@@ -42,15 +42,14 @@ class PostCommand extends Command implements CommandInterface
      */
     public function getExpectedResponseCodes()
     {
-        return array(
-            Response::SEND_ARTICLE => 'onSendArticle',
+        return [
+            Response::SEND_ARTICLE          => 'onSendArticle',
             Response::POSTING_NOT_PERMITTED => 'onPostingNotPermitted',
-        );
+        ];
     }
 
     public function onSendArticle(Response $response)
     {
-        return;
     }
 
     public function onPostingNotPermitted(Response $response)

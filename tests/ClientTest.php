@@ -13,11 +13,10 @@ namespace Rvdv\Nntp\Tests;
 
 use Rvdv\Nntp\Client;
 use Rvdv\Nntp\Command\AuthInfoCommand;
+use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * ClientTest
- *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
@@ -35,9 +34,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
 
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
+        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ));
+        ]);
 
         $connection->expects($this->once())
             ->method('connect')
@@ -50,37 +49,32 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItDisconnectsFromAnEstablishedConnection()
     {
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
+        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ));
+        ]);
 
         $connection->expects($this->once())
-            ->method('disconnect')
-            ->will($this->returnValue(true));
+            ->method('disconnect');
 
         $client = new Client($connection);
-
-        $this->assertTrue($client->disconnect());
+        $client->disconnect();
     }
 
+    /**
+     * @expectedException RuntimeException
+     */
     public function testItErrorsWhenDisconnectFails()
     {
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
+        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ));
+        ]);
 
         $connection->expects($this->once())
             ->method('disconnect')
-            ->will($this->returnValue(false));
+            ->willThrowException(new RuntimeException());
 
         $client = new Client($connection);
-
-        try {
-            $client->disconnect();
-            $this->fail('->disconnect() throws a Rvdv\Nntp\Exception\RuntimeException if the established connection cannot be disconnected');
-        } catch (\Exception $e) {
-            $this->assertInstanceof('Rvdv\Nntp\Exception\RuntimeException', $e, '->disconnect() throws a Rvdv\Nntp\Exception\RuntimeException if the established connection cannot be disconnected');
-        }
+        $client->disconnect();
     }
 
     public function testItAuthenticatesUsernameWithConnectedServer()
@@ -97,9 +91,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('getResponse')
             ->will($this->returnvalue($response));
 
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
+        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ));
+        ]);
 
         $connection->expects($this->once())
             ->method('sendCommand')
@@ -128,23 +122,23 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('getResponse')
             ->will($this->returnvalue($response));
 
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
+        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ));
+        ]);
 
         $connection->expects($this->exactly(2))
             ->method('sendCommand')
             ->withConsecutive(
-                array($this->logicalAnd(
+                [$this->logicalAnd(
                     $this->isInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand'),
                     $this->attributeEqualTo('type', AuthInfoCommand::AUTHINFO_USER),
                     $this->attributeEqualTo('value', 'username')
-                )),
-                array($this->logicalAnd(
+                )],
+                [$this->logicalAnd(
                     $this->isInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand'),
                     $this->attributeEqualTo('type', AuthInfoCommand::AUTHINFO_PASS),
                     $this->attributeEqualTo('value', 'password')
-                ))
+                )]
             )
             ->will($this->returnValue($command));
 
@@ -166,9 +160,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('getResponse')
             ->will($this->returnvalue($response));
 
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
+        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ));
+        ]);
 
         $connection->expects($this->once())
             ->method('sendCommand')
@@ -203,9 +197,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('getResponse')
             ->will($this->returnvalue($response));
 
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
+        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ));
+        ]);
 
         $connection->expects($this->once())
             ->method('sendCommand')
@@ -228,9 +222,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItReturnsCommandInstanceWhenCallingShortcut()
     {
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', array(
+        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ));
+        ]);
 
         $connection->expects($this->any())
             ->method('sendCommand')
@@ -244,7 +238,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Rvdv\Nntp\Command\OverviewFormatCommand', $client->overviewFormat());
         $this->assertInstanceOf('Rvdv\Nntp\Command\QuitCommand', $client->quit());
         $this->assertInstanceOf('Rvdv\Nntp\Command\XfeatureCommand', $client->xfeature('COMPRESS GZIP'));
-        $this->assertInstanceOf('Rvdv\Nntp\Command\XoverCommand', $client->xover(1, 1, array()));
-        $this->assertInstanceOf('Rvdv\Nntp\Command\XzverCommand', $client->xzver(1, 1, array()));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\XoverCommand', $client->xover(1, 1, []));
+        $this->assertInstanceOf('Rvdv\Nntp\Command\XzverCommand', $client->xzver(1, 1, []));
     }
 }

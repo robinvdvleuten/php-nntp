@@ -22,7 +22,6 @@ interface ConnectionInterface
     public function connect();
 
     /**
-     * @return boolean
      */
     public function disconnect();
 
@@ -30,7 +29,7 @@ interface ConnectionInterface
      * @return CommandInterface
      */
     public function sendCommand(CommandInterface $command);
-    
+
     /**
      * @return CommandInterface
      */

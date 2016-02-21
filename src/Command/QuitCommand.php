@@ -14,7 +14,7 @@ namespace Rvdv\Nntp\Command;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * QuitCommand
+ * QuitCommand.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -33,13 +33,12 @@ class QuitCommand extends Command implements CommandInterface
      */
     public function getExpectedResponseCodes()
     {
-        return array(
+        return [
             Response::CONNECTION_CLOSING => 'onConnectionClosing',
-        );
+        ];
     }
 
     public function onConnectionClosing(Response $response)
     {
-        return;
     }
 }

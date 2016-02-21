@@ -24,7 +24,7 @@ class HelpCommand extends Command implements CommandInterface
      */
     public function __construct()
     {
-        parent::__construct(array(), true);
+        parent::__construct([], true);
     }
 
     /**
@@ -40,9 +40,9 @@ class HelpCommand extends Command implements CommandInterface
      */
     public function getExpectedResponseCodes()
     {
-        return array(
+        return [
             Response::HELP_TEXT_FOLLOWS => 'onHelpTextFollow',
-        );
+        ];
     }
 
     /**

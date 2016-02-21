@@ -15,7 +15,7 @@ use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
 
 /**
- * OverviewFormatCommand
+ * OverviewFormatCommand.
  *
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
@@ -23,7 +23,7 @@ class OverviewFormatCommand extends Command implements CommandInterface
 {
     public function __construct()
     {
-        parent::__construct(array(), true);
+        parent::__construct([], true);
     }
 
     /**
@@ -31,7 +31,7 @@ class OverviewFormatCommand extends Command implements CommandInterface
      */
     public function execute()
     {
-        return sprintf('LIST OVERVIEW.FMT');
+        return 'LIST OVERVIEW.FMT';
     }
 
     /**
@@ -39,14 +39,14 @@ class OverviewFormatCommand extends Command implements CommandInterface
      */
     public function getExpectedResponseCodes()
     {
-        return array(
+        return [
             Response::INFORMATION_FOLLOWS => 'onInformationFollows',
-        );
+        ];
     }
 
     public function onInformationFollows(MultiLineResponse $response)
     {
-        $this->result = array();
+        $this->result = [];
 
         foreach ($response->getLines() as $line) {
             if (0 == strcasecmp(substr($line, -5, 5), ':full')) {

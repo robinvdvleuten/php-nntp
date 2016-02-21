@@ -17,25 +17,14 @@ EOF;
 HeaderCommentFixer::setHeader($header);
 
 return Config::create()
-    ->level(FixerInterface::PSR2_LEVEL)
+    ->level(FixerInterface::SYMFONY_LEVEL)
     ->fixers([
-        'ordered_use',
-        'unused_use',
-        'remove_lines_between_uses',
-        'remove_leading_slash_use',
-        'phpdoc_no_empty_return',
-        'phpdoc_params',
-        'phpdoc_to_comment',
-        'phpdoc_order',
-        'header_comment',
-        'single_array_no_trailing_comma',
-        'multiline_array_trailing_comma',
-        'concat_without_spaces',
-        'single_quote',
-        'ternary_spaces',
-        'operators_spaces',
-        'new_with_braces',
         '-psr0',
+        '-empty_return',
+        'align_double_arrow',
+        'ordered_use',
+        'phpdoc_order',
+        'short_array_syntax',
     ])
     ->finder(
         DefaultFinder::create()
