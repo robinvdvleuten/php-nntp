@@ -29,6 +29,7 @@ class Response implements ResponseInterface
     const CONNECTION_CLOSING = 205; // RFC 3977
     const GROUP_SELECTED = 211; // RFC 3977
     const INFORMATION_FOLLOWS = 215; // RFC 2980
+    const ARTICLE_FOLLOWS = 220; //RFC 3977
     const BODY_FOLLOWS = 222; //RFC 3977
     const OVERVIEW_INFORMATION_FOLLOWS = 224; // RFC 2980
     const ARTICLE_RECEIVED = 240; //RFC 3977
