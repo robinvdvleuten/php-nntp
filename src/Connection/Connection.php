@@ -221,7 +221,7 @@ class Connection implements ConnectionInterface
             $this->disconnect();
             throw new RuntimeException('yEnc encoded overviews are not currently supported.');
         }
-        
+
         $uncompressed = '';
 
         while (!$this->socket->eof()) {
