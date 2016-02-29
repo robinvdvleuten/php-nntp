@@ -215,7 +215,12 @@ class Connection implements ConnectionInterface
     public function getCompressedResponse(Response $response)
     {
         // Determine encoding by fetching first line.
-        $line = $this->socket->gets();
+        $line = $this->socket->gets(self::BUFFER_SIZE);
+
+        if (substr($line, 0, 7) == '=ybegin') {
+            $this->disconnect();
+            throw new RuntimeException('yEnc encoded overviews are not currently supported.');
+        }
 
         $uncompressed = '';
 
