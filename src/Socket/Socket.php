@@ -5,7 +5,7 @@ namespace Rvdv\Nntp\Socket;
 use Rvdv\Nntp\Exception\SocketException;
 
 /**
- * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ * @author Robin van der Vleuten <robin@webstronauts.co>
  */
 class Socket implements SocketInterface
 {

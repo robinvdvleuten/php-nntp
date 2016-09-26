@@ -5,7 +5,7 @@ namespace Rvdv\Nntp\Tests\Socket;
 use Rvdv\Nntp\Socket\Socket;
 
 /**
- * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ * @author Robin van der Vleuten <robin@webstronauts.co>
  */
 class SocketTest extends \PHPUnit_Framework_TestCase
 {

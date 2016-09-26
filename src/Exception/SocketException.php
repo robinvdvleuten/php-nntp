@@ -3,7 +3,7 @@
 namespace Rvdv\Nntp\Exception;
 
 /**
- * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
+ * @author Robin van der Vleuten <robin@webstronauts.co>
  */
 class SocketException extends RuntimeException
 {
