@@ -17,7 +17,7 @@ The recommended way to install the library is [through composer](http://getcompo
 ```JSON
 {
     "require": {
-        "rvdv/nntp": "^0.7"
+        "rvdv/nntp": "^0.8"
     }
 }
 ```
