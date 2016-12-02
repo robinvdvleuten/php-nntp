@@ -47,10 +47,12 @@ class ArticleCommand extends Command
         return sprintf('ARTICLE %s', $this->article);
     }
 
+    /**
+     * @return string
+     */
     public function onArticleFollows(MultiLineResponse $response)
     {
-        $lines = $response->getLines();
-        $this->result = implode("\r\n", $lines->toArray());
+        return implode("\r\n", $response->getLines()->toArray());
     }
 
     public function onNoNewsGroupCurrentSelected(Response $response)

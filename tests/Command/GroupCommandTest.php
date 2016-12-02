@@ -57,8 +57,7 @@ class GroupCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getMessage')
             ->will($this->returnValue('1234 3000234 3002322 php.doc'));
 
-        $command->onGroupSelected($response);
-        $result = $command->getResult();
+        $result = $command->onGroupSelected($response);
 
         $this->assertEquals('1234', $result['count']);
         $this->assertEquals('3000234', $result['first']);

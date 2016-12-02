@@ -67,8 +67,7 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
                 'php.beta 0000000161 0000000001 n',
             ]));
 
-        $command->onListFollows($response);
-        $result = $command->getResult();
+        $result = $command->onListFollows($response);
 
         $this->assertCount(3, $result);
 

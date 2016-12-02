@@ -57,10 +57,7 @@ class HelpCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getLines')
             ->will($this->returnValue($lines));
 
-        $command->onHelpTextFollow($response);
-
-        $result = $command->getResult();
-        $this->assertEquals(implode("\n", $lines), $result);
+        $this->assertEquals(implode("\n", $lines), $command->onHelpTextFollow($response));
     }
 
     /**

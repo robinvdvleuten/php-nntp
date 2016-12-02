@@ -47,10 +47,12 @@ class BodyCommand extends Command implements CommandInterface
         return sprintf('BODY %s', $this->article);
     }
 
+    /**
+     * @return string
+     */
     public function onBodyFollows(MultiLineResponse $response)
     {
-        $lines = $response->getLines();
-        $this->result = implode("\r\n", $lines->toArray());
+        return implode("\r\n", $response->getLines()->toArray());
     }
 
     public function onNoNewsGroupCurrentSelected(Response $response)

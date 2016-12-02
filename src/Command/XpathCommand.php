@@ -57,7 +57,7 @@ class XpathCommand extends Command implements CommandInterface
      */
     public function onFoundPath(Response $response)
     {
-        $this->result = $response->getMessage();
+        return $response->getMessage();
     }
 
     /**
@@ -67,6 +67,6 @@ class XpathCommand extends Command implements CommandInterface
      */
     public function onInvalidMessage(Response $response)
     {
-        $this->result = null;
+        return null;
     }
 }

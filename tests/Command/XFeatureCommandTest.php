@@ -53,9 +53,7 @@ class XFeatureCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onXFeatureEnabled($response);
-
-        $this->assertTrue($command->getResult());
+        $this->assertTrue($command->onXFeatureEnabled($response));
     }
 
     /**

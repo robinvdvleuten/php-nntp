@@ -59,9 +59,8 @@ class OverviewFormatCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getLines')
             ->will($this->returnValue($lines));
 
-        $command->onInformationFollows($response);
+        $result = $command->onInformationFollows($response);
 
-        $result = $command->getResult();
         $this->assertCount(8, $result);
 
         $this->assertEmpty(array_diff_assoc($result, [

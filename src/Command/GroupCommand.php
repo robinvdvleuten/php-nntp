@@ -46,10 +46,12 @@ class GroupCommand extends Command implements CommandInterface
         return sprintf('GROUP %s', $this->group);
     }
 
+    /**
+     * @return array
+     */
     public function onGroupSelected(Response $response)
     {
-        $message = $response->getMessage();
-        $this->result = array_combine(['count', 'first', 'last', 'name'], explode(' ', $message));
+        return array_combine(['count', 'first', 'last', 'name'], explode(' ', $response->getMessage()));
     }
 
     public function onNoSuchGroup(Response $response)

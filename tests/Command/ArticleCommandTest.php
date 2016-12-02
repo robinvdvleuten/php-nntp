@@ -59,11 +59,7 @@ class ArticleCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getLines')
             ->will($this->returnValue($lines));
 
-        $command->onArticleFollows($response);
-
-        $result = $command->getResult();
-
-        $this->assertEquals(implode("\r\n", $lines->toArray()), $result);
+        $this->assertEquals(implode("\r\n", $lines->toArray()), $command->onArticleFollows($response));
     }
 
     public function testItErrorsWhenGroupNotSelectedResponse()

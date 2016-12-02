@@ -49,6 +49,6 @@ class XFeatureCommand extends Command implements CommandInterface
 
     public function onXFeatureEnabled(Response $response)
     {
-        $this->result = true;
+        return true;
     }
 }

@@ -36,12 +36,12 @@ class HelpCommand extends Command implements CommandInterface
     }
 
     /**
-     * Called when help text is received from server.
-     *
      * @param MultiLineResponse $response
+     *
+     * @return string
      */
     public function onHelpTextFollow(MultiLineResponse $response)
     {
-        $this->result = implode("\n", (array) $response->getLines());
+        return implode("\n", (array) $response->getLines());
     }
 }

@@ -17,6 +17,7 @@ use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Exception\UnknownHandlerException;
 use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
+use Rvdv\Nntp\Response\ResponseInterface;
 use Rvdv\Nntp\Socket\Socket;
 use Rvdv\Nntp\Socket\SocketInterface;
 
@@ -107,29 +108,7 @@ class Connection implements ConnectionInterface
             $response = $command->isCompressed() ? $this->getCompressedResponse($response) : $this->getMultiLineResponse($response);
         }
 
-        if (in_array($response->getStatusCode(), [Response::$codes['CommandUnknown'], Response::$codes['CommandUnavailable']])) {
-            throw new RuntimeException('Sent command is either unknown or unavailable on server');
-        }
-
-        // Check if we received a response code that we're aware of.
-        if (($responseName = array_search($response->getStatusCode(), Response::$codes, true)) === false) {
-            throw new RuntimeException(sprintf(
-                'Unexpected response received: [%d] %s',
-                $response->getStatusCode(),
-                $response->getMessage()
-            ));
-        }
-
-        $responseHandlerMethod = 'on'.$responseName;
-
-        if (!is_callable([$command, $responseHandlerMethod])) {
-            throw new UnknownHandlerException(sprintf('Response handler (%s) is not a callable method on given command object', $responseHandlerMethod));
-        }
-
-        $command->setResponse($response);
-        $command->$responseHandlerMethod($response);
-
-        return $command;
+        return $this->callCommandHandlerForResponse($command, $response);
     }
 
     public function sendArticle(CommandInterface $command)
@@ -142,29 +121,10 @@ class Connection implements ConnectionInterface
 
         $response = $this->getResponse();
 
-        $expectedResponseCodes = $command->getExpectedResponseCodes();
-
-        // Check if we received a response expected by the command.
-        if (!isset($expectedResponseCodes[$response->getStatusCode()])) {
-            throw new RuntimeException(sprintf(
-                'Unexpected response received: [%d] %s',
-                $response->getStatusCode(),
-                $response->getMessage()
-            ));
-        }
-
-        $expectedResponseHandler = $expectedResponseCodes[$response->getStatusCode()];
-        if (!is_callable([$command, $expectedResponseHandler])) {
-            throw new RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $expectedResponseHandler));
-        }
-
-        $command->setResponse($response);
-        $command->$expectedResponseHandler($response);
-
-        return $command;
+        return $this->callCommandHandlerForResponse($command, $response);
     }
 
-    protected function getResponse()
+    private function getResponse()
     {
         $buffer = '';
 
@@ -184,7 +144,7 @@ class Connection implements ConnectionInterface
         return Response::createFromString($buffer);
     }
 
-    public function getMultiLineResponse(Response $response)
+    private function getMultiLineResponse(Response $response)
     {
         $lines = [];
 
@@ -199,11 +159,7 @@ class Connection implements ConnectionInterface
 
             // Check if the line terminates the text response.
             if ($line === '.') {
-                // Return all previous lines.
-                $lines = array_filter($lines);
-                $lines = \SplFixedArray::fromArray($lines);
-
-                return new MultiLineResponse($response, $lines);
+                return new MultiLineResponse($response, array_filter($lines));
             }
 
             // If 1st char is '.' it's doubled (NNTP/RFC977 2.4.1).
@@ -216,7 +172,7 @@ class Connection implements ConnectionInterface
         }
     }
 
-    public function getCompressedResponse(Response $response)
+    private function getCompressedResponse(Response $response)
     {
         // Determine encoding by fetching first line.
         $line = $this->socket->gets(self::BUFFER_SIZE);
@@ -256,5 +212,29 @@ class Connection implements ConnectionInterface
         $lines = \SplFixedArray::fromArray($lines);
 
         return new MultiLineResponse($response, $lines);
+    }
+
+    private function callCommandHandlerForResponse(CommandInterface $command, ResponseInterface $response)
+    {
+        if (in_array($response->getStatusCode(), [Response::$codes['CommandUnknown'], Response::$codes['CommandUnavailable']])) {
+            throw new RuntimeException('Sent command is either unknown or unavailable on server');
+        }
+
+        // Check if we received a response code that we're aware of.
+        if (($responseName = array_search($response->getStatusCode(), Response::$codes, true)) === false) {
+            throw new RuntimeException(sprintf(
+                'Unexpected response received: [%d] %s',
+                $response->getStatusCode(),
+                $response->getMessage()
+            ));
+        }
+
+        $responseHandlerMethod = 'on'.$responseName;
+
+        if (!is_callable([$command, $responseHandlerMethod])) {
+            throw new UnknownHandlerException(sprintf('Response handler (%s) is not a callable method on given command object', $responseHandlerMethod));
+        }
+
+        return call_user_func([$command, $responseHandlerMethod], $response);
     }
 }

@@ -32,9 +32,7 @@ class XpathCommandTest extends \PHPUnit_Framework_TestCase
                  ->method('getMessage')
                  ->will($this->returnValue('1'));
 
-        $command->onFoundPath($response);
-        $result = $command->getResult();
-        $this->assertEquals('1', $result);
+        $this->assertEquals('1', $command->onFoundPath($response));
     }
 
     public function testItReturnsNothingIfNoFoundPath()
@@ -48,9 +46,7 @@ class XpathCommandTest extends \PHPUnit_Framework_TestCase
                  ->method('getMessage')
                  ->will($this->returnValue('501 invalid msgid'));
 
-        $command->onInvalidMessage($response);
-        $result = $command->getResult();
-        $this->assertNull($result);
+        $this->assertNull($command->onInvalidMessage($response));
     }
 
     /**

@@ -54,25 +54,29 @@ class ListCommand extends Command
     }
 
     /**
-     * Called when the list is received from the server.
-     *
      * @param MultiLineResponse $response
+     *
+     * @return array
      */
     public function onListFollows(MultiLineResponse $response)
     {
         $lines = $response->getLines();
         $totalLines = count($lines);
 
+        $result = [];
+
         for ($i = 0; $i < $totalLines; ++$i) {
             list($name, $high, $low, $status) = explode(' ', $lines[$i]);
 
-            $this->result[$i] = [
+            $result[$i] = [
                 'name' => $name,
                 'high' => $high,
                 'low' => $low,
                 'status' => $status,
             ];
         }
+
+        return $result;
     }
 
     public function onInvalidKeyword(Response $response)

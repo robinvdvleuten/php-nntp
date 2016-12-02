@@ -53,26 +53,17 @@ abstract class OverviewCommand extends Command implements CommandInterface
 
     public function onOverviewInformationFollows(MultiLineResponse $response)
     {
-        $lines = $response->getLines();
-        $totalLines = count($lines);
-
-        for ($i = 0; $i < $totalLines; ++$i) {
-            $segments = explode("\t", $lines[$i]);
-
+        return array_map(function ($line) {
+            $segments = explode("\t", $line);
             $field = 0;
-            $message = [];
 
-            foreach ($this->format as $name => $full) {
-                $value = $full ? ltrim(substr($segments[$field], strpos($segments[$field], ':') + 1), " \t") : $segments[$field];
-                $message[$name] = $value;
-
+            return array_reduce(array_keys($this->format), function ($message, $name) use ($segments, &$field) {
+                $message[$name] = $this->format[$name] ? ltrim(substr($segments[$field], strpos($segments[$field], ':') + 1), " \t") : $segments[$field];
                 ++$field;
-            }
 
-            $this->result[$i] = $message;
-        }
-
-        unset($lines);
+                return $message;
+            }, []);
+        }, $response->getLines());
     }
 
     public function onNoNewsGroupCurrentSelected(Response $response)

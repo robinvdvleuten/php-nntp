@@ -36,16 +36,18 @@ class OverviewFormatCommand extends Command implements CommandInterface
 
     public function onInformationFollows(MultiLineResponse $response)
     {
-        $this->result = [];
+        $result = [];
 
         foreach ($response->getLines() as $line) {
             if (0 == strcasecmp(substr($line, -5, 5), ':full')) {
                 // ':full' is _not_ included in tag, but value set to true
-                $this->result[str_replace('-', '_', strtolower(substr($line, 0, -5)))] = true;
+                $result[str_replace('-', '_', strtolower(substr($line, 0, -5)))] = true;
             } else {
                 // ':' is _not_ included in tag; value set to false
-                $this->result[str_replace('-', '_', strtolower(substr($line, 0, -1)))] = false;
+                $result[str_replace('-', '_', strtolower(substr($line, 0, -1)))] = false;
             }
         }
+
+        return $result;
     }
 }
