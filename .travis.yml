@@ -10,12 +10,9 @@ php:
   - 5.5
   - 5.6
   - 7.0
-  - hhvm
+  - nightly
 
 matrix:
-  include:
-    - php: 5.5
-      env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
   fast_finish: true
 
 before_install:
@@ -23,10 +20,10 @@ before_install:
   - travis_retry composer validate
 
 install:
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+  - travis_retry composer install
 
 script:
   - composer test:travis
 
 after_script:
-  - if [[ $TRAVIS_PHP_VERSION != 'hhvm' && $TRAVIS_PHP_VERSION != '7.0' ]]; then php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover; fi
+  - if [[ $TRAVIS_PHP_VERSION != 'nightly' && $TRAVIS_PHP_VERSION != '7.0' ]]; then php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover; fi
