@@ -42,7 +42,7 @@ class AuthInfoCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('AUTHINFO PASS pass', $command());
     }
 
-    public function testItNotReceivesAResultWhenAuthenticatedAcceptedResponse()
+    public function testItReceivesResponseAsResultWhenAuthenticatedAcceptedResponse()
     {
         $command = $this->createCommandInstance();
 
@@ -50,10 +50,10 @@ class AuthInfoCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->assertNull($command->onAuthenticationAccepted($response));
+        $this->assertSame($response, $command->onAuthenticationAccepted($response));
     }
 
-    public function testItNotReceivesAResultWhenPasswordRequiredResponse()
+    public function testItReceivesResponseAsResultWhenPasswordRequiredResponse()
     {
         $command = $this->createCommandInstance();
 
@@ -61,7 +61,7 @@ class AuthInfoCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->assertNull($command->onPasswordRequired($response));
+        $this->assertSame($response, $command->onPasswordRequired($response));
     }
 
     public function testItErrorsWhenAuthenticationRejectedResponse()

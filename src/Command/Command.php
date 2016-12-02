@@ -24,11 +24,6 @@ abstract class Command implements CommandInterface
     protected $isMultiLine;
 
     /**
-     * @var ResponseInterface
-     */
-    protected $response;
-
-    /**
      * Constructor.
      *
      * @param bool  $isMultiLine a bool indicating the response is multiline or not
@@ -36,22 +31,6 @@ abstract class Command implements CommandInterface
     public function __construct($isMultiLine = false)
     {
         $this->isMultiLine = $isMultiLine;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setResponse(ResponseInterface $response)
-    {
-        $this->response = $response;
     }
 
     /**

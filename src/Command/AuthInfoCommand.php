@@ -52,10 +52,12 @@ class AuthInfoCommand extends Command implements CommandInterface
 
     public function onAuthenticationAccepted(Response $response)
     {
+        return $response;
     }
 
     public function onPasswordRequired(Response $response)
     {
+        return $response;
     }
 
     public function onAuthenticationRejected(Response $response)
