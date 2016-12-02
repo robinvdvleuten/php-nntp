@@ -12,8 +12,10 @@
 namespace Rvdv\Nntp\Tests;
 
 use Rvdv\Nntp\Client;
-use Rvdv\Nntp\Command\AuthInfoCommand;
+use Rvdv\Nntp\Command;
+use Rvdv\Nntp\Connection\ConnectionInterface;
 use Rvdv\Nntp\Response\Response;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
@@ -22,18 +24,18 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 {
     public function testItReturnsConnectionInstance()
     {
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface');
+        $connection = $this->getMock(ConnectionInterface::class);
 
         $client = new Client($connection);
 
         $this->assertSame($client->getConnection(), $connection);
     }
 
-    public function testItConnectsWithANntpServer()
+    public function testItConnectsWithAServer()
     {
-        $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
+        $response = $this->getMock(ResponseInterface::class);
 
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
+        $connection = $this->getMock(ConnectionInterface::class, [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ]);
 
@@ -48,7 +50,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItDisconnectsFromAnEstablishedConnection()
     {
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
+        $connection = $this->getMock(ConnectionInterface::class, [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ]);
 
@@ -61,23 +63,21 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItAuthenticatesUsernameWithConnectedServer()
     {
-        $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
+        $response = $this->getMock(ResponseInterface::class);
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
             ->will($this->returnValue(Response::$codes['AuthenticationAccepted']));
 
-        $command = $this->getMock('Rvdv\Nntp\Command\CommandInterface');
-
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
+        $connection = $this->getMock(ConnectionInterface::class, [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ]);
 
         $connection->expects($this->once())
             ->method('sendCommand')
             ->with($this->logicalAnd(
-                $this->isInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand'),
-                $this->attributeEqualTo('type', AuthInfoCommand::AUTHINFO_USER),
+                $this->isInstanceOf(Command\AuthInfoCommand::class),
+                $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
                 $this->attributeEqualTo('value', 'username')
             ))
             ->will($this->returnValue($response));
@@ -88,15 +88,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItAuthenticatesUsernamePasswordWithConnectedServer()
     {
-        $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
+        $response = $this->getMock(ResponseInterface::class);
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
             ->will($this->onConsecutiveCalls(Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']));
 
-        $command = $this->getMock('Rvdv\Nntp\Command\CommandInterface');
-
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
+        $connection = $this->getMock(ConnectionInterface::class, [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ]);
 
@@ -104,13 +102,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('sendCommand')
             ->withConsecutive(
                 [$this->logicalAnd(
-                    $this->isInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand'),
-                    $this->attributeEqualTo('type', AuthInfoCommand::AUTHINFO_USER),
+                    $this->isInstanceOf(Command\AuthInfoCommand::class),
+                    $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
                     $this->attributeEqualTo('value', 'username')
                 )],
                 [$this->logicalAnd(
-                    $this->isInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand'),
-                    $this->attributeEqualTo('type', AuthInfoCommand::AUTHINFO_PASS),
+                    $this->isInstanceOf(Command\AuthInfoCommand::class),
+                    $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_PASS),
                     $this->attributeEqualTo('value', 'password')
                 )]
             )
@@ -120,39 +118,37 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->authenticate('username', 'password');
     }
 
+    /**
+     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
+     */
     public function testItErrorsWhenAuthenticateNeedsPassword()
     {
-        $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
+        $response = $this->getMock(ResponseInterface::class);
 
         $response->expects($this->once())
             ->method('getStatusCode')
             ->will($this->returnValue(Response::$codes['PasswordRequired']));
 
-        $command = $this->getMock('Rvdv\Nntp\Command\CommandInterface');
-
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
+        $connection = $this->getMock(ConnectionInterface::class, [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ]);
 
         $connection->expects($this->once())
             ->method('sendCommand')
             ->with($this->logicalAnd(
-                $this->isInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand'),
-                $this->attributeEqualTo('type', AuthInfoCommand::AUTHINFO_USER),
+                $this->isInstanceOf(Command\AuthInfoCommand::class),
+                $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
                 $this->attributeEqualTo('value', 'username')
             ))
             ->will($this->returnValue($response));
 
         $client = new Client($connection);
-
-        try {
-            $client->authenticate('username');
-            $this->fail('->authenticate() throws a Rvdv\Nntp\Exception\RuntimeException because a password is needed but none is given');
-        } catch (\Exception $e) {
-            $this->assertInstanceof('Rvdv\Nntp\Exception\RuntimeException', $e, '->authenticate() throws a Rvdv\Nntp\Exception\RuntimeException because a password is needed but none is given');
-        }
+        $client->authenticate('username');
     }
 
+    /**
+     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
+     */
     public function testItErrorsWhenAuthenticateFails()
     {
         $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
@@ -161,8 +157,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('getStatusCode')
             ->will($this->returnValue(Response::$codes['AuthenticationRejected']));
 
-        $command = $this->getMock('Rvdv\Nntp\Command\CommandInterface');
-
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
         ]);
@@ -171,22 +165,185 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('sendCommand')
             ->with($this->logicalAnd(
                 $this->isInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand'),
-                $this->attributeEqualTo('type', AuthInfoCommand::AUTHINFO_USER),
+                $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
                 $this->attributeEqualTo('value', 'unknown')
             ))
             ->will($this->returnValue($response));
 
         $client = new Client($connection);
-
-        try {
-            $client->authenticate('unknown');
-            $this->fail('->authenticate() throws a Rvdv\Nntp\Exception\RuntimeException because incorrect credentials are given');
-        } catch (\Exception $e) {
-            $this->assertInstanceof('Rvdv\Nntp\Exception\RuntimeException', $e, '->authenticate() throws a Rvdv\Nntp\Exception\RuntimeException because incorrect credentials are given');
-        }
+        $client->authenticate('unknown');
     }
 
-    public function testItReturnsCommandInstanceWhenCallingShortcut()
+    public function testItConnectsAndAuthenticatesUsernameWithConnectedServer()
+    {
+        $response = $this->getMock(ResponseInterface::class);
+
+        $response->expects($this->exactly(3))
+            ->method('getStatusCode')
+            ->will($this->onConsecutiveCalls(Response::$codes['PostingAllowed'], Response::$codes['AuthenticationAccepted'], Response::$codes['AuthenticationAccepted']));
+
+        $connection = $this->getMock(ConnectionInterface::class, [
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
+        ]);
+
+        $connection->expects($this->once())
+            ->method('connect')
+            ->willReturn($response);
+
+        $connection->expects($this->once())
+            ->method('sendCommand')
+            ->with($this->logicalAnd(
+                $this->isInstanceOf(Command\AuthInfoCommand::class),
+                $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
+                $this->attributeEqualTo('value', 'username')
+            ))
+            ->will($this->returnValue($response));
+
+        $client = new Client($connection);
+        $client->connectAndAuthenticate('username');
+    }
+
+    public function testItConnectsAndAuthenticatesUsernamePasswordWithConnectedServer()
+    {
+        $response = $this->getMock(ResponseInterface::class);
+
+        $response->expects($this->exactly(3))
+            ->method('getStatusCode')
+            ->will($this->onConsecutiveCalls(Response::$codes['PostingAllowed'], Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']));
+
+        $connection = $this->getMock(ConnectionInterface::class, [
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
+        ]);
+
+        $connection->expects($this->once())
+            ->method('connect')
+            ->willReturn($response);
+
+        $connection->expects($this->exactly(2))
+            ->method('sendCommand')
+            ->withConsecutive(
+                [$this->logicalAnd(
+                    $this->isInstanceOf(Command\AuthInfoCommand::class),
+                    $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
+                    $this->attributeEqualTo('value', 'username')
+                )],
+                [$this->logicalAnd(
+                    $this->isInstanceOf(Command\AuthInfoCommand::class),
+                    $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_PASS),
+                    $this->attributeEqualTo('value', 'password')
+                )]
+            )
+            ->will($this->returnValue($response));
+
+        $client = new Client($connection);
+        $client->connectAndAuthenticate('username', 'password');
+    }
+
+    /**
+     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
+     */
+    public function testItErrorsWhenConnectingFails()
+    {
+        $response = $this->getMock(ResponseInterface::class);
+
+        $response->expects($this->once())
+            ->method('getStatusCode')
+            ->will($this->returnValue(null));
+
+        $connection = $this->getMock(ConnectionInterface::class, [
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
+        ]);
+
+        $connection->expects($this->once())
+            ->method('connect')
+            ->willReturn($response);
+
+        $connection->expects($this->never())
+            ->method('sendCommand');
+
+        $client = new Client($connection);
+        $client->connectAndAuthenticate('username');
+    }
+
+    public function testItReturnResponseWhenPostingAnArticle()
+    {
+        $response = $this->getMock(ResponseInterface::class);
+
+        $response->expects($this->exactly(2))
+            ->method('getStatusCode')
+            ->will($this->onConsecutiveCalls(Response::$codes['SendArticle'], Response::$codes['ArticleReceived']));
+
+        $connection = $this->getMock(ConnectionInterface::class, [
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
+        ]);
+
+        $connection->expects($this->once())
+            ->method('sendCommand')
+            ->with($this->isInstanceOf(Command\PostCommand::class))
+            ->will($this->returnValue($response));
+
+        $connection->expects($this->once())
+            ->method('sendArticle')
+            ->with($this->isInstanceOf(Command\PostArticleCommand::class))
+            ->will($this->returnValue($response));
+
+        $client = new Client($connection);
+        $client->post('php.doc', 'A very important article', 'Read more in the body', 'johndoe@example.com');
+    }
+
+    /**
+     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
+     */
+    public function testItErrorsWhenPostingFails()
+    {
+        $response = $this->getMock(ResponseInterface::class);
+
+        $response->expects($this->exactly(2))
+            ->method('getStatusCode')
+            ->will($this->onConsecutiveCalls(Response::$codes['SendArticle'], null));
+
+        $connection = $this->getMock(ConnectionInterface::class, [
+            'connect', 'disconnect', 'sendCommand', 'sendArticle',
+        ]);
+
+        $connection->expects($this->once())
+            ->method('sendCommand')
+            ->with($this->isInstanceOf(Command\PostCommand::class))
+            ->will($this->returnValue($response));
+
+        $connection->expects($this->once())
+            ->method('sendArticle')
+            ->with($this->isInstanceOf(Command\PostArticleCommand::class))
+            ->will($this->returnValue($response));
+
+        $client = new Client($connection);
+        $client->post('php.doc', 'A very important article', 'Read more in the body', 'johndoe@example.com');
+    }
+
+    /**
+     * @return array
+     */
+    public function getClassesForCommandMethods()
+    {
+        return [
+            [Command\AuthInfoCommand::class, 'authInfo', ['USER', 'user']],
+            [Command\BodyCommand::class, 'body', ['1234']],
+            [Command\GroupCommand::class, 'group', ['php.doc']],
+            [Command\HelpCommand::class, 'help', []],
+            [Command\ListCommand::class, 'listGroups', ['php', []]],
+            [Command\OverviewFormatCommand::class, 'overviewFormat', []],
+            [Command\PostArticleCommand::class, 'postArticle', ['php.doc', 'A very important article', 'Read more in the body', 'johndoe@example.com', 'headers']],
+            [Command\QuitCommand::class, 'quit', []],
+            [Command\XFeatureCommand::class, 'xfeature', ['COMPRESS GZIP']],
+            [Command\XoverCommand::class, 'xover', [1, 1, []]],
+            [Command\XzverCommand::class, 'xzver', [1, 1, []]],
+        ];
+    }
+
+    /**
+     * @dataProvider getClassesForCommandMethods
+     */
+    public function testItReturnsResultOfCommandWhenCallingMethod($commandClass, $method, array $arguments)
     {
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
@@ -196,15 +353,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('sendCommand')
             ->will($this->returnArgument(0));
 
+        $connection->expects($this->any())
+            ->method('sendArticle')
+            ->will($this->returnArgument(0));
+
         $client = new Client($connection);
 
-        $this->assertInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand', $client->authInfo('USER', 'user'));
-        $this->assertInstanceOf('Rvdv\Nntp\Command\GroupCommand', $client->group('php.doc'));
-        $this->assertInstanceOf('Rvdv\Nntp\Command\HelpCommand', $client->help());
-        $this->assertInstanceOf('Rvdv\Nntp\Command\OverviewFormatCommand', $client->overviewFormat());
-        $this->assertInstanceOf('Rvdv\Nntp\Command\QuitCommand', $client->quit());
-        $this->assertInstanceOf('Rvdv\Nntp\Command\XfeatureCommand', $client->xfeature('COMPRESS GZIP'));
-        $this->assertInstanceOf('Rvdv\Nntp\Command\XoverCommand', $client->xover(1, 1, []));
-        $this->assertInstanceOf('Rvdv\Nntp\Command\XzverCommand', $client->xzver(1, 1, []));
+        $this->assertInstanceOf($commandClass, call_user_func_array([$client, $method], $arguments));
     }
 }

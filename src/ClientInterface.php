@@ -42,15 +42,15 @@ interface ClientInterface
     public function authenticate($username, $password = null);
 
     /**
-     * Connect and optionally authenticate with the NNTP server if
-     * a username and/or password are given.
+     * Connect and optionally authenticate with the server if
+     * a username and optional password are given.
      *
-     * @param string|null $username
+     * @param string      $username
      * @param string|null $password
      *
      * @return ResponseInterface
      */
-    public function connectAndAuthenticate($username = null, $password = null);
+    public function connectAndAuthenticate($username, $password = null);
 
     /**
      * Send the AUTHINFO command.

@@ -87,16 +87,12 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function connectAndAuthenticate($username = null, $password = null)
+    public function connectAndAuthenticate($username, $password = null)
     {
         $response = $this->connect();
 
-        if (!in_array($response->getStatusCode(), [Response::$codes['PostingAllowed'], Response::$code['PostingProhibited']])) {
+        if (!in_array($response->getStatusCode(), [Response::$codes['PostingAllowed'], Response::$codes['PostingProhibited']])) {
             throw new RuntimeException(sprintf('Unsuccessful response received: %s', (string) $response));
-        }
-
-        if ($username === null) {
-            return $response;
         }
 
         return $this->authenticate($username, $password);
@@ -155,8 +151,7 @@ class Client implements ClientInterface
      */
     public function post($groups, $subject, $body, $from, $headers = null)
     {
-        $command = $this->sendCommand(new Command\PostCommand());
-        $response = $command->getResponse();
+        $response = $this->sendCommand(new Command\PostCommand());
 
         if ($response->getStatusCode() === Response::$codes['SendArticle']) {
             $response = $this->postArticle($groups, $subject, $body, $from, $headers);

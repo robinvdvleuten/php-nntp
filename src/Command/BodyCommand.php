@@ -30,7 +30,7 @@ class BodyCommand extends Command implements CommandInterface
     /**
      * Constructor.
      *
-     * @param string $article the number or msg-id of the article
+     * @param string $article
      */
     public function __construct($article)
     {

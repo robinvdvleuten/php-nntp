@@ -11,20 +11,18 @@
 
 namespace Rvdv\Nntp\Tests\Connection;
 
+use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Connection\ConnectionInterface;
 use Rvdv\Nntp\Exception\SocketException;
+use Rvdv\Nntp\Response\Response;
+use Rvdv\Nntp\Socket\Socket;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
 class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var ConnectionInterface
-     */
-    private $connection;
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -35,16 +33,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function setup()
     {
-        $this->socket = $this->getMockBuilder('Rvdv\Nntp\Socket\Socket')
+        $this->socket = $this->getMockBuilder(Socket::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->socket->expects($this->once())
+        $this->socket->expects($this->any())
             ->method('connect')
             ->with('tcp://localhost:5000')
             ->willReturnSelf();
-
-        $this->connection = new Connection('localhost', 5000, false, $this->socket);
     }
 
     public function testConnectionCanBeEstablishedThroughSocket()
@@ -58,9 +54,35 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             ->with(1024)
             ->willReturn("200 server ready - posting allowed\r\n");
 
-        $response = $this->connection->connect();
+        $connection = new Connection('localhost', 5000, false, $this->socket);
 
-        $this->assertInstanceof('Rvdv\Nntp\Response\Response', $response);
+        $response = $connection->connect();
+
+        $this->assertInstanceof(Response::class, $response);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('server ready - posting allowed', $response->getMessage());
+    }
+
+    public function testConnectionCanBeEncrypted()
+    {
+        $this->socket->expects($this->atLeastOnce())
+            ->method('eof')
+            ->willReturn(false);
+
+        $this->socket->expects($this->once())
+            ->method('gets')
+            ->with(1024)
+            ->willReturn("200 server ready - posting allowed\r\n");
+
+        $this->socket->expects($this->once())
+            ->method('enableCrypto')
+            ->with(true);
+
+        $connection = new Connection('localhost', 5000, true, $this->socket);
+
+        $response = $connection->connect();
+
+        $this->assertInstanceof(Response::class, $response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('server ready - posting allowed', $response->getMessage());
     }
@@ -75,14 +97,90 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             ->with('tcp://localhost:5000')
             ->willThrowException(new SocketException());
 
-        $this->connection->connect();
+        $connection = new Connection('localhost', 5000, true, $this->socket);
+        $connection->connect();
+    }
+
+    public function testConnectionCanBeDisconnected()
+    {
+        $this->socket->expects($this->once())
+            ->method('disconnect');
+
+        $connection = new Connection('localhost', 5000, false, $this->socket);
+        $connection->disconnect();
+    }
+
+    public function testConnectionCallsCorrespondingHandlerWhenSendingCommand()
+    {
+        $result = 'result';
+
+        $command = $this->getMock(CommandInterface::class, [
+            '__invoke', 'isMultiLine', 'isCompressed', 'onPostingAllowed'
+        ]);
+
+        $command->expects($this->once())
+            ->method('__invoke')
+            ->willReturn('command');
+
+        $command->expects($this->once())
+            ->method('isMultiLine')
+            ->willReturn(false);
+
+        $command->expects($this->once())
+            ->method('onPostingAllowed')
+            ->willReturn($result);
+
+        $this->socket->expects($this->atLeastOnce())
+            ->method('eof')
+            ->willReturn(false);
+
+        $this->socket->expects($this->once())
+            ->method('gets')
+            ->with(1024)
+            ->willReturn("200 command received - go ahead\r\n");
+
+        $this->socket->expects($this->once())
+            ->method('write')
+            ->with("command\r\n")
+            ->willReturn(9);
+
+        $connection = new Connection('localhost', 5000, false, $this->socket);
+
+        $this->assertSame($result, $connection->sendCommand($command));
     }
 
     /**
-     * {@inheritdoc}
+     * @expectedException \Rvdv\Nntp\Exception\InvalidArgumentException
      */
-    public function teardown()
+    public function testSendingCommandFailsWhenCommandStringExceedsMaximumCharacters()
     {
-        unset($this->socket);
+        $command = $this->getMock(CommandInterface::class);
+
+        $command->expects($this->once())
+            ->method('__invoke')
+            ->willReturn(str_pad('', 512));
+
+        $connection = new Connection('localhost', 5000, false, $this->socket);
+        $connection->sendCommand($command);
+    }
+
+    /**
+     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
+     */
+    public function testSendingCommandFailsWhenCommandStringIsNotSameAsSocketOutput()
+    {
+        $command = $this->getMock(CommandInterface::class);
+
+        $command->expects($this->once())
+            ->method('__invoke')
+            ->willReturn('command');
+
+        $this->socket->expects($this->once())
+            ->method('write')
+            ->with("command\r\n")
+            ->willReturn(0);
+
+        $connection = new Connection('localhost', 5000, false, $this->socket);
+        $connection->sendCommand($command);
     }
 }

@@ -94,7 +94,7 @@ class Connection implements ConnectionInterface
         $commandString = $command();
 
         // NNTP/RFC977 only allows command up to 512 (-2 \r\n) chars.
-        if (!strlen($commandString) > 510) {
+        if (strlen($commandString) > 510) {
             throw new InvalidArgumentException('Failed to write to socket: command exceeded 510 characters');
         }
 
