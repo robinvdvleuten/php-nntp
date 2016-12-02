@@ -113,7 +113,7 @@ class Connection implements ConnectionInterface
 
     public function sendArticle(CommandInterface $command)
     {
-        $commandString = $command->execute();
+        $commandString = $command();
 
         if (strlen($commandString."\r\n.\r\n") !== $this->socket->write($commandString."\r\n.\r\n")) {
             throw new RuntimeException('Failed to write to socket');
@@ -208,10 +208,7 @@ class Connection implements ConnectionInterface
             array_pop($lines);
         }
 
-        $lines = array_filter($lines);
-        $lines = \SplFixedArray::fromArray($lines);
-
-        return new MultiLineResponse($response, $lines);
+        return new MultiLineResponse($response, array_filter($lines));
     }
 
     private function callCommandHandlerForResponse(CommandInterface $command, ResponseInterface $response)

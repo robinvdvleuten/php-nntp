@@ -52,7 +52,7 @@ class ArticleCommand extends Command
      */
     public function onArticleFollows(MultiLineResponse $response)
     {
-        return implode("\r\n", $response->getLines()->toArray());
+        return implode("\r\n", $response->getLines());
     }
 
     public function onNoNewsGroupCurrentSelected(Response $response)

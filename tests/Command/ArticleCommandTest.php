@@ -46,13 +46,13 @@ class ArticleCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $lines = \SplFixedArray::fromArray(['Lorem ipsum dolor sit amet, ', 'consectetur adipiscing elit. ', 'Sed volutpat sit amet leo sit amet sagittis.']);
+        $lines = ['Lorem ipsum dolor sit amet, ', 'consectetur adipiscing elit. ', 'Sed volutpat sit amet leo sit amet sagittis.'];
 
         $response->expects($this->once())
             ->method('getLines')
             ->will($this->returnValue($lines));
 
-        $this->assertEquals(implode("\r\n", $lines->toArray()), $command->onArticleFollows($response));
+        $this->assertEquals(implode("\r\n", $lines), $command->onArticleFollows($response));
     }
 
     public function testItErrorsWhenGroupNotSelectedResponse()
