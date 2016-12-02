@@ -46,17 +46,6 @@ class GroupCommand extends Command implements CommandInterface
         return sprintf('GROUP %s', $this->group);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::GROUP_SELECTED => 'onGroupSelected',
-            Response::NO_SUCH_GROUP => 'onNoSuchGroup',
-        ];
-    }
-
     public function onGroupSelected(Response $response)
     {
         $message = $response->getMessage();

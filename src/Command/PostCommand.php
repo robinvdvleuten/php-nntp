@@ -37,17 +37,6 @@ class PostCommand extends Command implements CommandInterface
         return 'POST';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::SEND_ARTICLE => 'onSendArticle',
-            Response::POSTING_NOT_PERMITTED => 'onPostingNotPermitted',
-        ];
-    }
-
     public function onSendArticle(Response $response)
     {
     }

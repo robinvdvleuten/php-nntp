@@ -48,18 +48,6 @@ class ListCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::INFORMATION_FOLLOWS => 'onListFollows',
-            Response::INVALID_KEYWORD => 'onInvalidKeyword',
-            Response::PROGRAM_ERROR => 'onError',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function execute()
     {
         return trim(sprintf('LIST %s %s', $this->keyword, $this->arguments));

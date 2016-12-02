@@ -13,7 +13,7 @@ namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\XpathCommand;
 
-class XpathCommandTest extends CommandTest
+class XpathCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItReturnsStringWhenExecuting()
     {
@@ -59,16 +59,5 @@ class XpathCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new XpathCommand('<CAFp73XuG9PfYv448muxijyk7MS5xG7J5zxz021YQPtAReYvkyQ@mail.gmail.com>');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            XpathCommand::FOUND_PATH,
-            XpathCommand::INVALID_REFERENCE,
-        ];
     }
 }

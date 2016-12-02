@@ -17,7 +17,7 @@ use Rvdv\Nntp\Response\Response;
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class HelpCommandTest extends CommandTest
+class HelpCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -69,15 +69,5 @@ class HelpCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new HelpCommand();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::HELP_TEXT_FOLLOWS,
-        ];
     }
 }

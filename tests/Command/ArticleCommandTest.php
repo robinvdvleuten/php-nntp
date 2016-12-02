@@ -19,7 +19,7 @@ use Rvdv\Nntp\Response\Response;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class ArticleCommandTest extends CommandTest
+class ArticleCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -120,18 +120,5 @@ class ArticleCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new ArticleCommand('12345');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::ARTICLE_FOLLOWS,
-            Response::NO_NEWSGROUP_CURRENT_SELECTED,
-            Response::NO_SUCH_ARTICLE_NUMBER,
-            Response::NO_SUCH_ARTICLE_ID,
-        ];
     }
 }

@@ -78,17 +78,6 @@ class PostArticleCommand extends Command implements CommandInterface
         return $article;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::ARTICLE_RECEIVED => 'onArticleReceived',
-            Response::POSTING_FAILED => 'onPostingFailed',
-        ];
-    }
-
     public function onArticleReceived(Response $response)
     {
         return true;

@@ -51,18 +51,6 @@ abstract class OverviewCommand extends Command implements CommandInterface
         parent::__construct(new \SplFixedArray($this->to - $this->from + 1), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::OVERVIEW_INFORMATION_FOLLOWS => 'onOverviewInformationFollows',
-            Response::NO_NEWSGROUP_CURRENT_SELECTED => 'onNoNewsGroupCurrentSelected',
-            Response::NO_ARTICLES_SELECTED => 'onNoArticlesSelected',
-        ];
-    }
-
     public function onOverviewInformationFollows(MultiLineResponse $response)
     {
         $lines = $response->getLines();

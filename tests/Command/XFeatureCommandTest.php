@@ -19,7 +19,7 @@ use Rvdv\Nntp\Response\Response;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class XFeatureCommandTest extends CommandTest
+class XFeatureCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -64,15 +64,5 @@ class XFeatureCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new XFeatureCommand(XFeatureCommand::COMPRESS_GZIP);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::XFEATURE_ENABLED,
-        ];
     }
 }

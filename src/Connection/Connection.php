@@ -14,6 +14,7 @@ namespace Rvdv\Nntp\Connection;
 use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Exception\RuntimeException;
+use Rvdv\Nntp\Exception\UnknownHandlerException;
 use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
 use Rvdv\Nntp\Socket\Socket;
@@ -106,14 +107,12 @@ class Connection implements ConnectionInterface
             $response = $command->isCompressed() ? $this->getCompressedResponse($response) : $this->getMultiLineResponse($response);
         }
 
-        if (in_array($response->getStatusCode(), [Response::COMMAND_UNKNOWN, Response::COMMAND_UNAVAILABLE])) {
+        if (in_array($response->getStatusCode(), [Response::$codes['CommandUnknown'], Response::$codes['CommandUnavailable']])) {
             throw new RuntimeException('Sent command is either unknown or unavailable on server');
         }
 
-        $expectedResponseCodes = $command->getExpectedResponseCodes();
-
-        // Check if we received a response expected by the command.
-        if (!isset($expectedResponseCodes[$response->getStatusCode()])) {
+        // Check if we received a response code that we're aware of.
+        if (($responseName = array_search($response->getStatusCode(), Response::$codes, true)) === false) {
             throw new RuntimeException(sprintf(
                 'Unexpected response received: [%d] %s',
                 $response->getStatusCode(),
@@ -121,13 +120,14 @@ class Connection implements ConnectionInterface
             ));
         }
 
-        $expectedResponseHandler = $expectedResponseCodes[$response->getStatusCode()];
-        if (!is_callable([$command, $expectedResponseHandler])) {
-            throw new RuntimeException(sprintf('Response handler (%s) is not callable method on given command object', $expectedResponseHandler));
+        $responseHandlerMethod = 'on'.$responseName;
+
+        if (!is_callable([$command, $responseHandlerMethod])) {
+            throw new UnknownHandlerException(sprintf('Response handler (%s) is not a callable method on given command object', $responseHandlerMethod));
         }
 
         $command->setResponse($response);
-        $command->$expectedResponseHandler($response);
+        $command->$responseHandlerMethod($response);
 
         return $command;
     }

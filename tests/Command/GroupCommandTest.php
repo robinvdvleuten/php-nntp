@@ -19,7 +19,7 @@ use Rvdv\Nntp\Response\Response;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class GroupCommandTest extends CommandTest
+class GroupCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -88,16 +88,5 @@ class GroupCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new GroupCommand('php.doc');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::GROUP_SELECTED,
-            Response::NO_SUCH_GROUP,
-        ];
     }
 }

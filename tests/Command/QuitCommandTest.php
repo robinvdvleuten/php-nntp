@@ -19,7 +19,7 @@ use Rvdv\Nntp\Response\Response;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class QuitCommandTest extends CommandTest
+class QuitCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -64,15 +64,5 @@ class QuitCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new QuitCommand();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::CONNECTION_CLOSING,
-        ];
     }
 }

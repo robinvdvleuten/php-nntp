@@ -47,19 +47,6 @@ class BodyCommand extends Command implements CommandInterface
         return sprintf('BODY %s', $this->article);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::BODY_FOLLOWS => 'onBodyFollows',
-            Response::NO_NEWSGROUP_CURRENT_SELECTED => 'onNoNewsGroupCurrentSelected',
-            Response::NO_SUCH_ARTICLE_NUMBER => 'onNoSuchArticleNumber',
-            Response::NO_SUCH_ARTICLE_ID => 'onNoSuchArticleId',
-        ];
-    }
-
     public function onBodyFollows(MultiLineResponse $response)
     {
         $lines = $response->getLines();

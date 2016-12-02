@@ -34,16 +34,6 @@ class OverviewFormatCommand extends Command implements CommandInterface
         return 'LIST OVERVIEW.FMT';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::INFORMATION_FOLLOWS => 'onInformationFollows',
-        ];
-    }
-
     public function onInformationFollows(MultiLineResponse $response)
     {
         $this->result = [];

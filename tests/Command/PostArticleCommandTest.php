@@ -19,7 +19,7 @@ use Rvdv\Nntp\Response\Response;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class PostArticleCommandTest extends CommandTest
+class PostArticleCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -80,16 +80,5 @@ class PostArticleCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new PostArticleCommand('php.doc', 'subject', 'body', 'from <user@example.com>', null);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::ARTICLE_RECEIVED,
-            Response::POSTING_FAILED,
-        ];
     }
 }

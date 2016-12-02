@@ -51,17 +51,6 @@ class XpathCommand extends Command implements CommandInterface
     }
 
     /**
-     * @return array
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            self::FOUND_PATH => 'onFoundPath',
-            self::INVALID_REFERENCE => 'onInvalidMessage',
-        ];
-    }
-
-    /**
      * Return the message's reference.
      *
      * @param Response $response

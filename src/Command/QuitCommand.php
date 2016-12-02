@@ -28,16 +28,6 @@ class QuitCommand extends Command implements CommandInterface
         return 'QUIT';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::CONNECTION_CLOSING => 'onConnectionClosing',
-        ];
-    }
-
     public function onConnectionClosing(Response $response)
     {
     }

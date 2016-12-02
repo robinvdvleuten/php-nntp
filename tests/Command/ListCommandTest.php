@@ -19,7 +19,7 @@ use Rvdv\Nntp\Response\Response;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class ListCommandTest extends CommandTest
+class ListCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -126,17 +126,5 @@ class ListCommandTest extends CommandTest
     protected function createCommandInstance($keyword = null, $arguments = null)
     {
         return new ListCommand($keyword, $arguments);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::INFORMATION_FOLLOWS,
-            Response::INVALID_KEYWORD,
-            Response::PROGRAM_ERROR,
-        ];
     }
 }

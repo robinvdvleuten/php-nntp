@@ -19,7 +19,7 @@ use Rvdv\Nntp\Response\Response;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class OverviewFormatCommandTest extends CommandTest
+class OverviewFormatCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -82,15 +82,5 @@ class OverviewFormatCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new OverviewFormatCommand();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::INFORMATION_FOLLOWS,
-        ];
     }
 }

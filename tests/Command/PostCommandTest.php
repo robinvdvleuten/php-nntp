@@ -19,7 +19,7 @@ use Rvdv\Nntp\Response\Response;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class PostCommandTest extends CommandTest
+class PostCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -80,16 +80,5 @@ class PostCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new PostCommand();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::SEND_ARTICLE,
-            Response::POSTING_NOT_PERMITTED,
-        ];
     }
 }

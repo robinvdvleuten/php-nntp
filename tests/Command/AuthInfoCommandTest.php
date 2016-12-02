@@ -19,7 +19,7 @@ use Rvdv\Nntp\Response\Response;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class AuthInfoCommandTest extends CommandTest
+class AuthInfoCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -117,18 +117,5 @@ class AuthInfoCommandTest extends CommandTest
         }
 
         return new AuthInfoCommand($args[0], $args[1]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::AUTHENTICATION_ACCEPTED,
-            Response::PASSWORD_REQUIRED,
-            Response::AUTHENTICATION_REJECTED,
-            Response::AUTHENTICATION_OUTOFSEQUENCE,
-        ];
     }
 }

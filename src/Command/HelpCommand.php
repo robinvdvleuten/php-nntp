@@ -36,16 +36,6 @@ class HelpCommand extends Command implements CommandInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::HELP_TEXT_FOLLOWS => 'onHelpTextFollow',
-        ];
-    }
-
-    /**
      * Called when help text is received from server.
      *
      * @param MultiLineResponse $response

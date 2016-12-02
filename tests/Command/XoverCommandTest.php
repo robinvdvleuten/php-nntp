@@ -17,7 +17,7 @@ use Rvdv\Nntp\Response\Response;
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class XoverCommandTest extends CommandTest
+class XoverCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -125,17 +125,5 @@ class XoverCommandTest extends CommandTest
             'lines' => false,
             'xref' => true,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::OVERVIEW_INFORMATION_FOLLOWS,
-            Response::NO_NEWSGROUP_CURRENT_SELECTED,
-            Response::NO_ARTICLES_SELECTED,
-        ];
     }
 }

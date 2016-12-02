@@ -70,7 +70,7 @@ class Client implements ClientInterface
         $command = $this->authInfo(Command\AuthInfoCommand::AUTHINFO_USER, (string) $username);
         $response = $command->getResponse();
 
-        if ($response->getStatusCode() === Response::PASSWORD_REQUIRED) {
+        if ($response->getStatusCode() === Response::$codes['PasswordRequired']) {
             if (null === $password) {
                 throw new RuntimeException('NNTP server asks for further authentication but no password is given');
             }
@@ -79,7 +79,7 @@ class Client implements ClientInterface
             $response = $command->getResponse();
         }
 
-        if ($response->getStatusCode() !== Response::AUTHENTICATION_ACCEPTED) {
+        if ($response->getStatusCode() !== Response::$codes['AuthenticationAccepted']) {
             throw new RuntimeException(sprintf('Could not authenticate with given username/password: %s', (string) $response));
         }
 
@@ -93,7 +93,7 @@ class Client implements ClientInterface
     {
         $response = $this->connect();
 
-        if (!in_array($response->getStatusCode(), [Response::POSTING_ALLOWED, RESPONSE::POSTING_PROHIBITED])) {
+        if (!in_array($response->getStatusCode(), [Response::$codes['PostingAllowed'], Response::$code['PostingProhibited']])) {
             throw new RuntimeException(sprintf('Unsuccessful response received: %s', (string) $response));
         }
 
@@ -160,12 +160,12 @@ class Client implements ClientInterface
         $command = $this->sendCommand(new Command\PostCommand());
         $response = $command->getResponse();
 
-        if ($response->getStatusCode() === Response::SEND_ARTICLE) {
+        if ($response->getStatusCode() === Response::$codes['SendArticle']) {
             $command = $this->postArticle($groups, $subject, $body, $from, $headers);
             $response = $command->getResponse();
         }
 
-        if ($response->getStatusCode() !== Response::ARTICLE_RECEIVED) {
+        if ($response->getStatusCode() !== Response::$codes['ArticleReceived']) {
             throw new RuntimeException(sprintf('Posting failed: %s', (string) $response));
         }
 

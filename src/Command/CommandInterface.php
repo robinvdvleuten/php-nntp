@@ -40,8 +40,9 @@ interface CommandInterface
      */
     public function setResponse(ResponseInterface $response);
 
-    public function getExpectedResponseCodes();
-
+    /**
+     * @return mixed
+     */
     public function getResult();
 
     /**

@@ -47,16 +47,6 @@ class XFeatureCommand extends Command implements CommandInterface
         return sprintf('XFEATURE %s', $this->feature);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::XFEATURE_ENABLED => 'onXFeatureEnabled',
-        ];
-    }
-
     public function onXFeatureEnabled(Response $response)
     {
         $this->result = true;
