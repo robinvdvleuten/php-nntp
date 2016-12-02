@@ -83,6 +83,7 @@ class PostArticleCommand extends Command implements CommandInterface
 
     public function onArticleReceived(Response $response)
     {
+        return $response;
     }
 
     public function onPostingFailed(Response $response)

@@ -159,8 +159,7 @@ class Client implements ClientInterface
         $response = $command->getResponse();
 
         if ($response->getStatusCode() === Response::$codes['SendArticle']) {
-            $command = $this->postArticle($groups, $subject, $body, $from, $headers);
-            $response = $command->getResponse();
+            $response = $this->postArticle($groups, $subject, $body, $from, $headers);
         }
 
         if ($response->getStatusCode() !== Response::$codes['ArticleReceived']) {

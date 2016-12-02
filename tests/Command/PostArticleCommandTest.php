@@ -54,7 +54,7 @@ class PostArticleCommandTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testItNotReceivesAResultWhenArticleReceivedResponse()
+    public function testItReceivesResponseAsResultWhenArticleReceivedResponse()
     {
         $command = $this->createCommandInstance();
 
@@ -62,7 +62,7 @@ class PostArticleCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->assertEmpty($command->onArticleReceived($response));
+        $this->assertSame($response, $command->onArticleReceived($response));
     }
 
     /**
