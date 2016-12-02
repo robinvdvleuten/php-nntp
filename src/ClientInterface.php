@@ -55,10 +55,10 @@ interface ClientInterface
     /**
      * Send the AUTHINFO command.
      *
-     * @param $type
-     * @param $value
+     * @param string $type
+     * @param string $value
      *
-     * @return \Rvdv\Nntp\Command\AuthInfoCommand
+     * @return ResponseInterface
      */
     public function authInfo($type, $value);
 
