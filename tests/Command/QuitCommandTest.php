@@ -33,12 +33,6 @@ class QuitCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItNotHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertNull($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
@@ -53,9 +47,7 @@ class QuitCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onConnectionClosing($response);
-
-        $this->assertNull($command->getResult());
+        $this->assertNull($command->onConnectionClosing($response));
     }
 
     /**

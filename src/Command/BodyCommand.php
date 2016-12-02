@@ -36,7 +36,7 @@ class BodyCommand extends Command implements CommandInterface
     {
         $this->article = $article;
 
-        parent::__construct([], true);
+        parent::__construct(true);
     }
 
     /**

@@ -57,7 +57,7 @@ class PostArticleCommand extends Command implements CommandInterface
        $this->from = $from;
        $this->headers = $headers;
 
-       parent::__construct([]);
+       parent::__construct();
    }
 
     /**
@@ -80,7 +80,6 @@ class PostArticleCommand extends Command implements CommandInterface
 
     public function onArticleReceived(Response $response)
     {
-        return true;
     }
 
     public function onPostingFailed(Response $response)

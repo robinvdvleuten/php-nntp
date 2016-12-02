@@ -21,9 +21,12 @@ use Rvdv\Nntp\Response\Response;
  */
 class OverviewFormatCommand extends Command implements CommandInterface
 {
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
-        parent::__construct([], true);
+        parent::__construct(true);
     }
 
     /**

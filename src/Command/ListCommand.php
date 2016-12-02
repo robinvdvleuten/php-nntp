@@ -35,6 +35,8 @@ class ListCommand extends Command
     protected $arguments;
 
     /**
+     * Constructor.
+     *
      * @param string $keyword
      * @param string $arguments
      */
@@ -42,7 +44,8 @@ class ListCommand extends Command
     {
         $this->keyword = $keyword;
         $this->arguments = $arguments;
-        parent::__construct([], true);
+
+        parent::__construct(true);
     }
 
     /**

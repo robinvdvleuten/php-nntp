@@ -39,7 +39,7 @@ class XpathCommand extends Command implements CommandInterface
     {
         $this->reference = $reference;
 
-        parent::__construct([]);
+        parent::__construct();
     }
 
     /**

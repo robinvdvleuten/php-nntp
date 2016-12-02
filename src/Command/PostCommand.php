@@ -26,7 +26,7 @@ class PostCommand extends Command implements CommandInterface
     */
    public function __construct()
    {
-       parent::__construct([]);
+       parent::__construct();
    }
 
     /**

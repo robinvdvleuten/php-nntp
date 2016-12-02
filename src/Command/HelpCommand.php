@@ -24,7 +24,7 @@ class HelpCommand extends Command implements CommandInterface
      */
     public function __construct()
     {
-        parent::__construct([], true);
+        parent::__construct(true);
     }
 
     /**

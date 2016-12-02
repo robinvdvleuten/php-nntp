@@ -33,12 +33,6 @@ class PostArticleCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertEmpty($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
@@ -69,9 +63,7 @@ class PostArticleCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onArticleReceived($response);
-
-        $this->assertEmpty($command->getResult());
+        $this->assertEmpty($command->onArticleReceived($response));
     }
 
     /**

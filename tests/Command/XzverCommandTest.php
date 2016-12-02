@@ -31,12 +31,6 @@ class XzverCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertCount(11, $command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();

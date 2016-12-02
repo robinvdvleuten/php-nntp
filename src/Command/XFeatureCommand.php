@@ -36,7 +36,7 @@ class XFeatureCommand extends Command implements CommandInterface
     {
         $this->feature = $feature;
 
-        parent::__construct(false);
+        parent::__construct();
     }
 
     /**

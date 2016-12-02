@@ -36,7 +36,7 @@ class ArticleCommand extends Command
     {
         $this->article = $article;
 
-        parent::__construct([], true);
+        parent::__construct(true);
     }
 
     /**

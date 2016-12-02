@@ -41,11 +41,6 @@ interface CommandInterface
     public function setResponse(ResponseInterface $response);
 
     /**
-     * @return mixed
-     */
-    public function getResult();
-
-    /**
      * @return string
      */
     public function __invoke();

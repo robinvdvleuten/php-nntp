@@ -48,7 +48,7 @@ abstract class OverviewCommand extends Command implements CommandInterface
         $this->to = $to;
         $this->format = array_merge(['number' => false], $format);
 
-        parent::__construct(new \SplFixedArray($this->to - $this->from + 1), true);
+        parent::__construct(true);
     }
 
     public function onOverviewInformationFollows(MultiLineResponse $response)

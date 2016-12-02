@@ -35,7 +35,7 @@ class GroupCommand extends Command implements CommandInterface
     {
         $this->group = $group;
 
-        parent::__construct([]);
+        parent::__construct();
     }
 
     /**

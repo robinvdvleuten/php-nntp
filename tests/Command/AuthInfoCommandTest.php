@@ -33,12 +33,6 @@ class AuthInfoCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItNotHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertNull($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance(AuthInfoCommand::AUTHINFO_USER, 'user');
@@ -56,9 +50,7 @@ class AuthInfoCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onAuthenticationAccepted($response);
-
-        $this->assertNull($command->getResult());
+        $this->assertNull($command->onAuthenticationAccepted($response));
     }
 
     public function testItNotReceivesAResultWhenPasswordRequiredResponse()
@@ -69,9 +61,7 @@ class AuthInfoCommandTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onPasswordRequired($response);
-
-        $this->assertNull($command->getResult());
+        $this->assertNull($command->onPasswordRequired($response));
     }
 
     public function testItErrorsWhenAuthenticationRejectedResponse()
