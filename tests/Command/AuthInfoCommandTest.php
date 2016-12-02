@@ -12,7 +12,6 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\AuthInfoCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * AuthInfoCommandTest.

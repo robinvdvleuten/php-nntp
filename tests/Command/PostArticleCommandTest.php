@@ -12,7 +12,6 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\PostArticleCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * PostArticleCommandTest.

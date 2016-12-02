@@ -12,7 +12,6 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\BodyCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * BodyCommandTest.

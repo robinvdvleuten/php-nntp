@@ -12,7 +12,6 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\XoverCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>

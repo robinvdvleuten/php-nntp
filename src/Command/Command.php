@@ -11,8 +11,6 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Response\ResponseInterface;
-
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
@@ -26,7 +24,7 @@ abstract class Command implements CommandInterface
     /**
      * Constructor.
      *
-     * @param bool  $isMultiLine a bool indicating the response is multiline or not
+     * @param bool $isMultiLine a bool indicating the response is multiline or not
      */
     public function __construct($isMultiLine = false)
     {

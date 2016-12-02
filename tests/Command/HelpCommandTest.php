@@ -12,7 +12,6 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\HelpCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>

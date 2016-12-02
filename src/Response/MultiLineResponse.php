@@ -11,8 +11,6 @@
 
 namespace Rvdv\Nntp\Response;
 
-use Rvdv\Nntp\Response\ResponseInterface;
-
 /**
  * MultiLineResponse.
  *

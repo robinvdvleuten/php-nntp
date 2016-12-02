@@ -12,7 +12,6 @@
 namespace Rvdv\Nntp\Command;
 
 use Rvdv\Nntp\Response\MultiLineResponse;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * OverviewFormatCommand.
