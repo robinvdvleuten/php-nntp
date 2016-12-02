@@ -49,10 +49,10 @@ class Connection implements ConnectionInterface
     /**
      * Constructor.
      *
-     * @param string          $host   The host of the NNTP server.
-     * @param int             $port   The port of the NNTP server.
-     * @param bool            $secure A bool indicating if a secure connection should be established.
-     * @param SocketInterface $socket An optional socket wrapper instance.
+     * @param string          $host   the host of the NNTP server
+     * @param int             $port   the port of the NNTP server
+     * @param bool            $secure a bool indicating if a secure connection should be established
+     * @param SocketInterface $socket an optional socket wrapper instance
      */
     public function __construct($host, $port, $secure = false, SocketInterface $socket = null)
     {
@@ -202,6 +202,7 @@ class Connection implements ConnectionInterface
                 // Return all previous lines.
                 $lines = array_filter($lines);
                 $lines = \SplFixedArray::fromArray($lines);
+
                 return new MultiLineResponse($response, $lines);
             }
 

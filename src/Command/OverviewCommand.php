@@ -38,9 +38,9 @@ abstract class OverviewCommand extends Command implements CommandInterface
     /**
      * Constructor.
      *
-     * @param int   $from   The article number where the range begins.
-     * @param int   $to     The article number where the range ends.
-     * @param array $format The format of the articles in response.
+     * @param int   $from   the article number where the range begins
+     * @param int   $to     the article number where the range ends
+     * @param array $format the format of the articles in response
      */
     public function __construct($from, $to, array $format)
     {
@@ -57,9 +57,9 @@ abstract class OverviewCommand extends Command implements CommandInterface
     public function getExpectedResponseCodes()
     {
         return [
-            Response::OVERVIEW_INFORMATION_FOLLOWS  => 'onOverviewInformationFollows',
+            Response::OVERVIEW_INFORMATION_FOLLOWS => 'onOverviewInformationFollows',
             Response::NO_NEWSGROUP_CURRENT_SELECTED => 'onNoNewsGroupCurrentSelected',
-            Response::NO_ARTICLES_SELECTED          => 'onNoArticlesSelected',
+            Response::NO_ARTICLES_SELECTED => 'onNoArticlesSelected',
         ];
     }
 

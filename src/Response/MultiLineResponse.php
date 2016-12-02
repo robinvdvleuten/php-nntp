@@ -31,8 +31,8 @@ class MultiLineResponse implements MultiLineResponseInterface
     /**
      * Constructor.
      *
-     * @param ResponseInterface $response A ResponseInterface instance.
-     * @param \ArrayAccess      $lines    An ArrayAccess instance.
+     * @param ResponseInterface $response a ResponseInterface instance
+     * @param \ArrayAccess      $lines    an ArrayAccess instance
      */
     public function __construct(ResponseInterface $response, \ArrayAccess $lines)
     {

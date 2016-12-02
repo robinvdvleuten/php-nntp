@@ -65,14 +65,14 @@ class OverviewFormatCommandTest extends CommandTest
         $this->assertCount(8, $result);
 
         $this->assertEmpty(array_diff_assoc($result, [
-            'subject'    => false,
-            'from'       => false,
-            'date'       => false,
+            'subject' => false,
+            'from' => false,
+            'date' => false,
             'message_id' => false,
             'references' => false,
-            'bytes'      => false,
-            'lines'      => false,
-            'xref'       => true,
+            'bytes' => false,
+            'lines' => false,
+            'xref' => true,
         ]));
     }
 

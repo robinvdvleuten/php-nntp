@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the NNTP library.
+ *
+ * (c) Robin van der Vleuten <robin@webstronauts.co>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rvdv\Nntp\Command;
 
 use Rvdv\Nntp\Exception\RuntimeException;
@@ -43,8 +52,8 @@ class ListCommand extends Command
     {
         return [
             Response::INFORMATION_FOLLOWS => 'onListFollows',
-            Response::INVALID_KEYWORD     => 'onInvalidKeyword',
-            Response::PROGRAM_ERROR       => 'onError',
+            Response::INVALID_KEYWORD => 'onInvalidKeyword',
+            Response::PROGRAM_ERROR => 'onError',
         ];
     }
 
@@ -70,9 +79,9 @@ class ListCommand extends Command
             list($name, $high, $low, $status) = explode(' ', $lines[$i]);
 
             $this->result[$i] = [
-                'name'   => $name,
-                'high'   => $high,
-                'low'    => $low,
+                'name' => $name,
+                'high' => $high,
+                'low' => $low,
                 'status' => $status,
             ];
         }

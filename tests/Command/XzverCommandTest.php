@@ -116,14 +116,14 @@ class XzverCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new XzverCommand(1, 11, [
-            'subject'    => false,
-            'from'       => false,
-            'date'       => false,
+            'subject' => false,
+            'from' => false,
+            'date' => false,
             'message_id' => false,
             'references' => false,
-            'bytes'      => false,
-            'lines'      => false,
-            'xref'       => true,
+            'bytes' => false,
+            'lines' => false,
+            'xref' => true,
         ]);
     }
 

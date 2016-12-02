@@ -56,7 +56,7 @@ class XpathCommand extends Command implements CommandInterface
     public function getExpectedResponseCodes()
     {
         return [
-            self::FOUND_PATH        => 'onFoundPath',
+            self::FOUND_PATH => 'onFoundPath',
             self::INVALID_REFERENCE => 'onInvalidMessage',
         ];
     }

@@ -85,7 +85,7 @@ class PostArticleCommand extends Command implements CommandInterface
     {
         return [
             Response::ARTICLE_RECEIVED => 'onArticleReceived',
-            Response::POSTING_FAILED   => 'onPostingFailed',
+            Response::POSTING_FAILED => 'onPostingFailed',
         ];
     }
 

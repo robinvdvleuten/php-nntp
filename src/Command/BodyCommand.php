@@ -30,7 +30,7 @@ class BodyCommand extends Command implements CommandInterface
     /**
      * Constructor.
      *
-     * @param string $article The number or msg-id of the article.
+     * @param string $article the number or msg-id of the article
      */
     public function __construct($article)
     {
@@ -53,10 +53,10 @@ class BodyCommand extends Command implements CommandInterface
     public function getExpectedResponseCodes()
     {
         return [
-            Response::BODY_FOLLOWS                  => 'onBodyFollows',
+            Response::BODY_FOLLOWS => 'onBodyFollows',
             Response::NO_NEWSGROUP_CURRENT_SELECTED => 'onNoNewsGroupCurrentSelected',
-            Response::NO_SUCH_ARTICLE_NUMBER        => 'onNoSuchArticleNumber',
-            Response::NO_SUCH_ARTICLE_ID            => 'onNoSuchArticleId',
+            Response::NO_SUCH_ARTICLE_NUMBER => 'onNoSuchArticleNumber',
+            Response::NO_SUCH_ARTICLE_ID => 'onNoSuchArticleId',
         ];
     }
 

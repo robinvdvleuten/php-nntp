@@ -56,9 +56,9 @@ class AuthInfoCommand extends Command implements CommandInterface
     public function getExpectedResponseCodes()
     {
         return [
-            Response::AUTHENTICATION_ACCEPTED      => 'onAuthenticationAccepted',
-            Response::PASSWORD_REQUIRED            => 'onPasswordRequired',
-            Response::AUTHENTICATION_REJECTED      => 'onAuthenticationRejected',
+            Response::AUTHENTICATION_ACCEPTED => 'onAuthenticationAccepted',
+            Response::PASSWORD_REQUIRED => 'onPasswordRequired',
+            Response::AUTHENTICATION_REJECTED => 'onAuthenticationRejected',
             Response::AUTHENTICATION_OUTOFSEQUENCE => 'onAuthenticationOutOfSequence',
         ];
     }

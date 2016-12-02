@@ -30,7 +30,7 @@ class ArticleCommand extends Command
     /**
      * Constructor.
      *
-     * @param string $article The number or msg-id of the article.
+     * @param string $article the number or msg-id of the article
      */
     public function __construct($article)
     {
@@ -53,10 +53,10 @@ class ArticleCommand extends Command
     public function getExpectedResponseCodes()
     {
         return [
-            Response::ARTICLE_FOLLOWS               => 'onArticleFollows',
+            Response::ARTICLE_FOLLOWS => 'onArticleFollows',
             Response::NO_NEWSGROUP_CURRENT_SELECTED => 'onNoNewsGroupCurrentSelected',
-            Response::NO_SUCH_ARTICLE_NUMBER        => 'onNoSuchArticleNumber',
-            Response::NO_SUCH_ARTICLE_ID            => 'onNoSuchArticleId',
+            Response::NO_SUCH_ARTICLE_NUMBER => 'onNoSuchArticleNumber',
+            Response::NO_SUCH_ARTICLE_ID => 'onNoSuchArticleId',
         ];
     }
 

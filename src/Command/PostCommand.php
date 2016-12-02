@@ -43,7 +43,7 @@ class PostCommand extends Command implements CommandInterface
     public function getExpectedResponseCodes()
     {
         return [
-            Response::SEND_ARTICLE          => 'onSendArticle',
+            Response::SEND_ARTICLE => 'onSendArticle',
             Response::POSTING_NOT_PERMITTED => 'onPostingNotPermitted',
         ];
     }

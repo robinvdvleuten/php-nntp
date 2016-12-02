@@ -13,7 +13,6 @@ namespace Rvdv\Nntp\Tests\Connection;
 
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Connection\ConnectionInterface;
-use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Exception\SocketException;
 
 /**
@@ -67,7 +66,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
      */
     public function testErrorIsThrownWhenConnectionCannotBeEstablished()
     {

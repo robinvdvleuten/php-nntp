@@ -29,7 +29,7 @@ class GroupCommand extends Command implements CommandInterface
     /**
      * Constructor.
      *
-     * @param string $group The name of the group.
+     * @param string $group the name of the group
      */
     public function __construct($group)
     {
@@ -53,7 +53,7 @@ class GroupCommand extends Command implements CommandInterface
     {
         return [
             Response::GROUP_SELECTED => 'onGroupSelected',
-            Response::NO_SUCH_GROUP  => 'onNoSuchGroup',
+            Response::NO_SUCH_GROUP => 'onNoSuchGroup',
         ];
     }
 

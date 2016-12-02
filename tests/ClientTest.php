@@ -13,7 +13,6 @@ namespace Rvdv\Nntp\Tests;
 
 use Rvdv\Nntp\Client;
 use Rvdv\Nntp\Command\AuthInfoCommand;
-use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 
 /**
@@ -55,23 +54,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $connection->expects($this->once())
             ->method('disconnect');
-
-        $client = new Client($connection);
-        $client->disconnect();
-    }
-
-    /**
-     * @expectedException RuntimeException
-     */
-    public function testItErrorsWhenDisconnectFails()
-    {
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
-
-        $connection->expects($this->once())
-            ->method('disconnect')
-            ->willThrowException(new RuntimeException());
 
         $client = new Client($connection);
         $client->disconnect();

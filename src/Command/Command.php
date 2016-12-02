@@ -36,8 +36,8 @@ abstract class Command implements CommandInterface
     /**
      * Constructor.
      *
-     * @param mixed $result      The default result for this command.
-     * @param bool  $isMultiLine A bool indicating the response is multiline or not.
+     * @param mixed $result      the default result for this command
+     * @param bool  $isMultiLine a bool indicating the response is multiline or not
      */
     public function __construct($result = null, $isMultiLine = false)
     {
