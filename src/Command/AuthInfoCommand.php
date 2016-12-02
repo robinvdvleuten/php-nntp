@@ -45,7 +45,7 @@ class AuthInfoCommand extends Command implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return sprintf('AUTHINFO %s %s', $this->type, $this->value);
     }

@@ -48,7 +48,7 @@ class ListCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return trim(sprintf('LIST %s %s', $this->keyword, $this->arguments));
     }

@@ -42,7 +42,7 @@ class BodyCommand extends Command implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return sprintf('BODY %s', $this->article);
     }

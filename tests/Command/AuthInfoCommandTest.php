@@ -42,10 +42,10 @@ class AuthInfoCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance(AuthInfoCommand::AUTHINFO_USER, 'user');
-        $this->assertEquals('AUTHINFO USER user', $command->execute());
+        $this->assertEquals('AUTHINFO USER user', $command());
 
         $command = $this->createCommandInstance(AuthInfoCommand::AUTHINFO_PASS, 'pass');
-        $this->assertEquals('AUTHINFO PASS pass', $command->execute());
+        $this->assertEquals('AUTHINFO PASS pass', $command());
     }
 
     public function testItNotReceivesAResultWhenAuthenticatedAcceptedResponse()

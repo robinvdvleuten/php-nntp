@@ -42,7 +42,7 @@ class GroupCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('GROUP php.doc', $command->execute());
+        $this->assertEquals('GROUP php.doc', $command());
     }
 
     public function testItReceivesAResultWhenGroupSelectedResponse()

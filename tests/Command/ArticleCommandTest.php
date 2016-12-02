@@ -42,7 +42,7 @@ class ArticleCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('ARTICLE 12345', $command->execute());
+        $this->assertEquals('ARTICLE 12345', $command());
     }
 
     public function testItReceivesAResultWhenArticleFollowsResponse()

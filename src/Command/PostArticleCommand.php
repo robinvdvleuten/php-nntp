@@ -63,7 +63,7 @@ class PostArticleCommand extends Command implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         $article = 'From: '.$this->from."\r\n";
         $article .= 'Newsgroups: '.$this->groups."\r\n";

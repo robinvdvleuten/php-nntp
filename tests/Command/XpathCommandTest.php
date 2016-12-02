@@ -18,7 +18,7 @@ class XpathCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('XPATH <CAFp73XuG9PfYv448muxijyk7MS5xG7J5zxz021YQPtAReYvkyQ@mail.gmail.com>', $command->execute());
+        $this->assertEquals('XPATH <CAFp73XuG9PfYv448muxijyk7MS5xG7J5zxz021YQPtAReYvkyQ@mail.gmail.com>', $command());
     }
 
     public function testItCanReturnResults()

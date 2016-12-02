@@ -90,7 +90,7 @@ class Connection implements ConnectionInterface
      */
     public function sendCommand(CommandInterface $command)
     {
-        $commandString = $command->execute();
+        $commandString = $command();
 
         // NNTP/RFC977 only allows command up to 512 (-2 \r\n) chars.
         if (!strlen($commandString) > 510) {

@@ -42,13 +42,13 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('LIST', $command->execute());
+        $this->assertEquals('LIST', $command());
 
         $command = $this->createCommandInstance(ListCommand::KEYWORD_ACTIVE);
-        $this->assertEquals('LIST ACTIVE', $command->execute());
+        $this->assertEquals('LIST ACTIVE', $command());
 
         $command = $this->createCommandInstance(ListCommand::KEYWORD_ACTIVE, 'filter');
-        $this->assertEquals('LIST ACTIVE filter', $command->execute());
+        $this->assertEquals('LIST ACTIVE filter', $command());
     }
 
     public function testItReceivesAResultWhenGroupSelectedResponse()

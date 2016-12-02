@@ -40,7 +40,7 @@ class XzverCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('XZVER 1-11', $command->execute());
+        $this->assertEquals('XZVER 1-11', $command());
     }
 
     public function testItReceivesAResultWhenOverviewInformationFollowsResponse()

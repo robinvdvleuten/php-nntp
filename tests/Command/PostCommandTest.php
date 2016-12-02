@@ -42,7 +42,7 @@ class PostCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('POST', $command->execute());
+        $this->assertEquals('POST', $command());
     }
 
     public function testItErrorsWhenPostingNotPermittedResponse()

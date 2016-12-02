@@ -45,7 +45,7 @@ class XpathCommand extends Command implements CommandInterface
     /**
      * @return string
      */
-    public function execute()
+    public function __invoke()
     {
         return sprintf('XPATH %s', $this->reference);
     }

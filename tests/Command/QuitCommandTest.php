@@ -42,7 +42,7 @@ class QuitCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('QUIT', $command->execute());
+        $this->assertEquals('QUIT', $command());
     }
 
     public function testItNotReceivesAResultWhenConnectionClosingResponse()

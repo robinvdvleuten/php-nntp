@@ -42,7 +42,7 @@ class OverviewFormatCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('LIST OVERVIEW.FMT', $command->execute());
+        $this->assertEquals('LIST OVERVIEW.FMT', $command());
     }
 
     public function testItReceivesAResultWhenInformationFollowsResponse()

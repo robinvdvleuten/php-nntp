@@ -42,7 +42,7 @@ class BodyCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('BODY 12345', $command->execute());
+        $this->assertEquals('BODY 12345', $command());
     }
 
     public function testItReceivesAResultWhenBodyFollowsResponse()

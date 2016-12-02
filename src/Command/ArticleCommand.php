@@ -42,7 +42,7 @@ class ArticleCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return sprintf('ARTICLE %s', $this->article);
     }

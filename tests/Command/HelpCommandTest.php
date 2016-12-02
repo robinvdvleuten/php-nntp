@@ -40,7 +40,7 @@ class HelpCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('HELP', $command->execute());
+        $this->assertEquals('HELP', $command());
     }
 
     public function testItReceivesAResultWhenInformationFollowsResponse()

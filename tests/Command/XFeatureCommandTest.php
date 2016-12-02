@@ -42,7 +42,7 @@ class XFeatureCommandTest extends \PHPUnit_Framework_TestCase
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('XFEATURE COMPRESS GZIP', $command->execute());
+        $this->assertEquals('XFEATURE COMPRESS GZIP', $command());
     }
 
     public function testItReceivesAResultWhenXFeatureEnabledResponse()

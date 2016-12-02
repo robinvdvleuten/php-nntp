@@ -32,7 +32,7 @@ class PostCommand extends Command implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return 'POST';
     }

@@ -48,5 +48,5 @@ interface CommandInterface
     /**
      * @return string
      */
-    public function execute();
+    public function __invoke();
 }

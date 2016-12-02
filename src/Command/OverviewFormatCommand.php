@@ -29,7 +29,7 @@ class OverviewFormatCommand extends Command implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return 'LIST OVERVIEW.FMT';
     }
