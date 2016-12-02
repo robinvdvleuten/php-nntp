@@ -1,5 +1,11 @@
 <?php
 
+use SLLH\StyleCIBridge\ConfigBridge;
+
+require_once __DIR__.'/vendor/sllh/php-cs-fixer-styleci-bridge/autoload.php';
+
+$config = ConfigBridge::create();
+
 $header = <<<EOF
 This file is part of the NNTP library.
 
@@ -9,13 +15,7 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 EOF;
 
-$finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__.'/src')
-    ->in(__DIR__.'/tests');
-
-return PhpCsFixer\Config::create()
-    ->setRules([
-        '@Symfony' => true,
-        'header_comment' => ['header' => $header],
-    ])
-    ->setFinder($finder);
+return $config
+    ->setRules(array_merge($config->getRules(), [
+        'header_comment' => ['header' => $header]
+    ]));

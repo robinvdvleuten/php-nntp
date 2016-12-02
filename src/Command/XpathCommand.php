@@ -67,6 +67,6 @@ class XpathCommand extends Command implements CommandInterface
      */
     public function onInvalidMessage(Response $response)
     {
-        return null;
+        return;
     }
 }
