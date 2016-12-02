@@ -173,7 +173,7 @@ interface ClientInterface
      *
      * @param CommandInterface $command
      *
-     * @return CommandInterface
+     * @return mixed
      */
     public function sendCommand(CommandInterface $command);
 }
