@@ -13,7 +13,6 @@ namespace Rvdv\Nntp\Tests\Connection;
 
 use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\Connection;
-use Rvdv\Nntp\Connection\ConnectionInterface;
 use Rvdv\Nntp\Exception\SocketException;
 use Rvdv\Nntp\Response\Response;
 use Rvdv\Nntp\Socket\Socket;
@@ -115,7 +114,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $result = 'result';
 
         $command = $this->getMock(CommandInterface::class, [
-            '__invoke', 'isMultiLine', 'isCompressed', 'onPostingAllowed'
+            '__invoke', 'isMultiLine', 'isCompressed', 'onPostingAllowed',
         ]);
 
         $command->expects($this->once())
