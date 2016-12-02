@@ -65,17 +65,20 @@ class PostArticleCommand extends Command implements CommandInterface
      */
     public function __invoke()
     {
-        $article = 'From: '.$this->from."\r\n";
-        $article .= 'Newsgroups: '.$this->groups."\r\n";
-        $article .= 'Subject: '.$this->subject."\r\n";
-        $article .= "X-poster: php-nntp\r\n";
-        if ($this->headers !== null) {
-            $article .= $this->headers."\r\n";
-        }
-        $article .= "\r\n";
-        $article .= $this->body;
+        $article = [
+            'From: '.$this->from,
+            'Newsgroups: '.$this->groups,
+            'Subject: '.$this->subject,
+            'X-poster: php-nntp',
+        ];
 
-        return $article;
+        if ($this->headers !== null) {
+            $article[] = $this->headers;
+        }
+
+        $article[] = "\r\n".$this->body;
+
+        return implode("\r\n", $article);
     }
 
     public function onArticleReceived(Response $response)
