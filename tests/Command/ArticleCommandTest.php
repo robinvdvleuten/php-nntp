@@ -12,14 +12,13 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\ArticleCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * BodyCommandTest.
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class ArticleCommandTest extends CommandTest
+class ArticleCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -33,16 +32,10 @@ class ArticleCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertEmpty($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('ARTICLE 12345', $command->execute());
+        $this->assertEquals('ARTICLE 12345', $command());
     }
 
     public function testItReceivesAResultWhenArticleFollowsResponse()
@@ -59,11 +52,7 @@ class ArticleCommandTest extends CommandTest
             ->method('getLines')
             ->will($this->returnValue($lines));
 
-        $command->onArticleFollows($response);
-
-        $result = $command->getResult();
-
-        $this->assertEquals(implode("\r\n", $lines->toArray()), $result);
+        $this->assertEquals(implode("\r\n", $lines->toArray()), $command->onArticleFollows($response));
     }
 
     public function testItErrorsWhenGroupNotSelectedResponse()
@@ -120,18 +109,5 @@ class ArticleCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new ArticleCommand('12345');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::ARTICLE_FOLLOWS,
-            Response::NO_NEWSGROUP_CURRENT_SELECTED,
-            Response::NO_SUCH_ARTICLE_NUMBER,
-            Response::NO_SUCH_ARTICLE_ID,
-        ];
     }
 }

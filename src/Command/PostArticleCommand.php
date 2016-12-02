@@ -57,13 +57,13 @@ class PostArticleCommand extends Command implements CommandInterface
        $this->from = $from;
        $this->headers = $headers;
 
-       parent::__construct([]);
+       parent::__construct();
    }
 
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         $article = 'From: '.$this->from."\r\n";
         $article .= 'Newsgroups: '.$this->groups."\r\n";
@@ -78,20 +78,8 @@ class PostArticleCommand extends Command implements CommandInterface
         return $article;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::ARTICLE_RECEIVED => 'onArticleReceived',
-            Response::POSTING_FAILED => 'onPostingFailed',
-        ];
-    }
-
     public function onArticleReceived(Response $response)
     {
-        return true;
     }
 
     public function onPostingFailed(Response $response)

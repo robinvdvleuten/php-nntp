@@ -12,14 +12,13 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\PostCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * PostCommandTest.
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class PostCommandTest extends CommandTest
+class PostCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -33,16 +32,10 @@ class PostCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertEmpty($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('POST', $command->execute());
+        $this->assertEquals('POST', $command());
     }
 
     public function testItErrorsWhenPostingNotPermittedResponse()
@@ -69,9 +62,7 @@ class PostCommandTest extends CommandTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onSendArticle($response);
-
-        $this->assertEmpty($command->getResult());
+        $this->assertEmpty($command->onSendArticle($response));
     }
 
     /**
@@ -80,16 +71,5 @@ class PostCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new PostCommand();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::SEND_ARTICLE,
-            Response::POSTING_NOT_PERMITTED,
-        ];
     }
 }

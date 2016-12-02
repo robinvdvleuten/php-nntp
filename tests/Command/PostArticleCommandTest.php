@@ -12,14 +12,13 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\PostArticleCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * PostArticleCommandTest.
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class PostArticleCommandTest extends CommandTest
+class PostArticleCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -33,16 +32,10 @@ class PostArticleCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertEmpty($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals("From: from <user@example.com>\r\nNewsgroups: php.doc\r\nSubject: subject\r\nX-poster: php-nntp\r\n\r\nbody", $command->execute());
+        $this->assertEquals("From: from <user@example.com>\r\nNewsgroups: php.doc\r\nSubject: subject\r\nX-poster: php-nntp\r\n\r\nbody", $command());
     }
 
     public function testItErrorsWhenPostingFailedResponse()
@@ -69,9 +62,7 @@ class PostArticleCommandTest extends CommandTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onArticleReceived($response);
-
-        $this->assertEmpty($command->getResult());
+        $this->assertEmpty($command->onArticleReceived($response));
     }
 
     /**
@@ -80,16 +71,5 @@ class PostArticleCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new PostArticleCommand('php.doc', 'subject', 'body', 'from <user@example.com>', null);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::ARTICLE_RECEIVED,
-            Response::POSTING_FAILED,
-        ];
     }
 }

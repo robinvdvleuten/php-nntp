@@ -19,22 +19,22 @@ namespace Rvdv\Nntp\Response;
 class MultiLineResponse implements MultiLineResponseInterface
 {
     /**
-     * @var \ArrayAccess
+     * @var array
      */
     private $lines;
 
     /**
-     * @var \Rvdv\Nntp\Response\ResponseInterface
+     * @var ResponseInterface
      */
     private $response;
 
     /**
      * Constructor.
      *
-     * @param ResponseInterface $response a ResponseInterface instance
-     * @param \ArrayAccess      $lines    an ArrayAccess instance
+     * @param ResponseInterface $response
+     * @param array             $lines
      */
-    public function __construct(ResponseInterface $response, \ArrayAccess $lines)
+    public function __construct(ResponseInterface $response, array $lines)
     {
         $this->response = $response;
         $this->lines = $lines;

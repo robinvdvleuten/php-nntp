@@ -12,14 +12,13 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\ListCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * GroupCommandTest.
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class ListCommandTest extends CommandTest
+class ListCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -33,22 +32,16 @@ class ListCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertEmpty($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('LIST', $command->execute());
+        $this->assertEquals('LIST', $command());
 
         $command = $this->createCommandInstance(ListCommand::KEYWORD_ACTIVE);
-        $this->assertEquals('LIST ACTIVE', $command->execute());
+        $this->assertEquals('LIST ACTIVE', $command());
 
         $command = $this->createCommandInstance(ListCommand::KEYWORD_ACTIVE, 'filter');
-        $this->assertEquals('LIST ACTIVE filter', $command->execute());
+        $this->assertEquals('LIST ACTIVE filter', $command());
     }
 
     public function testItReceivesAResultWhenGroupSelectedResponse()
@@ -67,8 +60,7 @@ class ListCommandTest extends CommandTest
                 'php.beta 0000000161 0000000001 n',
             ]));
 
-        $command->onListFollows($response);
-        $result = $command->getResult();
+        $result = $command->onListFollows($response);
 
         $this->assertCount(3, $result);
 
@@ -126,17 +118,5 @@ class ListCommandTest extends CommandTest
     protected function createCommandInstance($keyword = null, $arguments = null)
     {
         return new ListCommand($keyword, $arguments);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::INFORMATION_FOLLOWS,
-            Response::INVALID_KEYWORD,
-            Response::PROGRAM_ERROR,
-        ];
     }
 }

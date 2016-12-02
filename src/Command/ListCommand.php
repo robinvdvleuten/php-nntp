@@ -35,6 +35,8 @@ class ListCommand extends Command
     protected $arguments;
 
     /**
+     * Constructor.
+     *
      * @param string $keyword
      * @param string $arguments
      */
@@ -42,49 +44,42 @@ class ListCommand extends Command
     {
         $this->keyword = $keyword;
         $this->arguments = $arguments;
-        parent::__construct([], true);
+
+        parent::__construct(true);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::INFORMATION_FOLLOWS => 'onListFollows',
-            Response::INVALID_KEYWORD => 'onInvalidKeyword',
-            Response::PROGRAM_ERROR => 'onError',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function execute()
+    public function __invoke()
     {
         return trim(sprintf('LIST %s %s', $this->keyword, $this->arguments));
     }
 
     /**
-     * Called when the list is received from the server.
-     *
      * @param MultiLineResponse $response
+     *
+     * @return array
      */
     public function onListFollows(MultiLineResponse $response)
     {
         $lines = $response->getLines();
         $totalLines = count($lines);
 
+        $result = [];
+
         for ($i = 0; $i < $totalLines; ++$i) {
             list($name, $high, $low, $status) = explode(' ', $lines[$i]);
 
-            $this->result[$i] = [
+            $result[$i] = [
                 'name' => $name,
                 'high' => $high,
                 'low' => $low,
                 'status' => $status,
             ];
         }
+
+        return $result;
     }
 
     public function onInvalidKeyword(Response $response)

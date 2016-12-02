@@ -65,13 +65,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
-            ->will($this->returnValue(Response::AUTHENTICATION_ACCEPTED));
+            ->will($this->returnValue(Response::$codes['AuthenticationAccepted']));
 
         $command = $this->getMock('Rvdv\Nntp\Command\CommandInterface');
-
-        $command->expects($this->once())
-            ->method('getResponse')
-            ->will($this->returnvalue($response));
 
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
@@ -84,7 +80,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 $this->attributeEqualTo('type', AuthInfoCommand::AUTHINFO_USER),
                 $this->attributeEqualTo('value', 'username')
             ))
-            ->will($this->returnValue($command));
+            ->will($this->returnValue($response));
 
         $client = new Client($connection);
         $client->authenticate('username');
@@ -96,13 +92,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
-            ->will($this->onConsecutiveCalls(Response::PASSWORD_REQUIRED, Response::AUTHENTICATION_ACCEPTED));
+            ->will($this->onConsecutiveCalls(Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']));
 
         $command = $this->getMock('Rvdv\Nntp\Command\CommandInterface');
-
-        $command->expects($this->exactly(2))
-            ->method('getResponse')
-            ->will($this->returnvalue($response));
 
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
@@ -122,7 +114,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                     $this->attributeEqualTo('value', 'password')
                 )]
             )
-            ->will($this->returnValue($command));
+            ->will($this->returnValue($response));
 
         $client = new Client($connection);
         $client->authenticate('username', 'password');
@@ -134,13 +126,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $response->expects($this->once())
             ->method('getStatusCode')
-            ->will($this->returnValue(Response::PASSWORD_REQUIRED));
+            ->will($this->returnValue(Response::$codes['PasswordRequired']));
 
         $command = $this->getMock('Rvdv\Nntp\Command\CommandInterface');
-
-        $command->expects($this->once())
-            ->method('getResponse')
-            ->will($this->returnvalue($response));
 
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
@@ -153,7 +141,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 $this->attributeEqualTo('type', AuthInfoCommand::AUTHINFO_USER),
                 $this->attributeEqualTo('value', 'username')
             ))
-            ->will($this->returnValue($command));
+            ->will($this->returnValue($response));
 
         $client = new Client($connection);
 
@@ -171,13 +159,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
-            ->will($this->returnValue(Response::AUTHENTICATION_REJECTED));
+            ->will($this->returnValue(Response::$codes['AuthenticationRejected']));
 
         $command = $this->getMock('Rvdv\Nntp\Command\CommandInterface');
-
-        $command->expects($this->once())
-            ->method('getResponse')
-            ->will($this->returnvalue($response));
 
         $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
             'connect', 'disconnect', 'sendCommand', 'sendArticle',
@@ -190,7 +174,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 $this->attributeEqualTo('type', AuthInfoCommand::AUTHINFO_USER),
                 $this->attributeEqualTo('value', 'unknown')
             ))
-            ->will($this->returnValue($command));
+            ->will($this->returnValue($response));
 
         $client = new Client($connection);
 

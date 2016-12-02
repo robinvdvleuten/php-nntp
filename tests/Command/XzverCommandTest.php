@@ -12,12 +12,11 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\XzverCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class XzverCommandTest extends CommandTest
+class XzverCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -31,16 +30,10 @@ class XzverCommandTest extends CommandTest
         $this->assertTrue($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertCount(11, $command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('XZVER 1-11', $command->execute());
+        $this->assertEquals('XZVER 1-11', $command());
     }
 
     public function testItReceivesAResultWhenOverviewInformationFollowsResponse()
@@ -59,23 +52,18 @@ class XzverCommandTest extends CommandTest
             ->method('getLines')
             ->will($this->returnValue($lines));
 
-        $command->onOverviewInformationFollows($response);
+        $result = $command->onOverviewInformationFollows($response);
 
-        $result = $command->getResult();
-        $this->assertCount(11, $result);
-
-        $result->rewind();
-        $article = $result->current();
-
-        $this->assertEquals('123456789', $article['number']);
-        $this->assertEquals('Re: Are you checking out NNTP?', $article['subject']);
-        $this->assertEquals('robinvdvleuten@example.com ("Robin van der Vleuten")', $article['from']);
-        $this->assertEquals('Sat,3 Aug 2013 13:19:22 -0000', $article['date']);
-        $this->assertEquals('<nntp123456789@nntp>', $article['message_id']);
-        $this->assertEquals('<nntp987654321@nntp>', $article['references']);
-        $this->assertEquals('321', $article['bytes']);
-        $this->assertEquals('123', $article['lines']);
-        $this->assertEquals('nntp:123456789', $article['xref']);
+        $this->assertCount(1, $result);
+        $this->assertEquals('123456789', $result[0]['number']);
+        $this->assertEquals('Re: Are you checking out NNTP?', $result[0]['subject']);
+        $this->assertEquals('robinvdvleuten@example.com ("Robin van der Vleuten")', $result[0]['from']);
+        $this->assertEquals('Sat,3 Aug 2013 13:19:22 -0000', $result[0]['date']);
+        $this->assertEquals('<nntp123456789@nntp>', $result[0]['message_id']);
+        $this->assertEquals('<nntp987654321@nntp>', $result[0]['references']);
+        $this->assertEquals('321', $result[0]['bytes']);
+        $this->assertEquals('123', $result[0]['lines']);
+        $this->assertEquals('nntp:123456789', $result[0]['xref']);
     }
 
     public function testItErrorsWhenNoNewsGroupCurrentSelectedResponse()
@@ -125,17 +113,5 @@ class XzverCommandTest extends CommandTest
             'lines' => false,
             'xref' => true,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::OVERVIEW_INFORMATION_FOLLOWS,
-            Response::NO_NEWSGROUP_CURRENT_SELECTED,
-            Response::NO_ARTICLES_SELECTED,
-        ];
     }
 }

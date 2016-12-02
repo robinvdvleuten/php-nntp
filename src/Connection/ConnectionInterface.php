@@ -24,12 +24,16 @@ interface ConnectionInterface
     public function disconnect();
 
     /**
-     * @return CommandInterface
+     * @param CommandInterface $command
+     *
+     * @return mixed
      */
     public function sendCommand(CommandInterface $command);
 
     /**
-     * @return CommandInterface
+     * @param CommandInterface $command
+     *
+     * @return mixed
      */
     public function sendArticle(CommandInterface $command);
 }

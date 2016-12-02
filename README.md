@@ -46,14 +46,9 @@ $client = new Client($connection);
 
 $client->connect();
 
-$command = $client->overviewFormat();
-$overviewFormat = $command->getResult();
-
-$command = $client->group('php.doc');
-$group = $command->getResult();
-
-$command = $client->xover($group['first'], $group['first'] + 100, $overviewFormat);
-$articles = $command->getResult();
+$overviewFormat = $client->overviewFormat();
+$group = $client->group('php.doc');
+$articles = $client->xover($group['first'], $group['first'] + 100, $overviewFormat);
 
 // Process the articles further...
 

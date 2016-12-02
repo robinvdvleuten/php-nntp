@@ -12,14 +12,13 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\QuitCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * QuitCommandTest.
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class QuitCommandTest extends CommandTest
+class QuitCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -33,16 +32,10 @@ class QuitCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItNotHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertNull($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('QUIT', $command->execute());
+        $this->assertEquals('QUIT', $command());
     }
 
     public function testItNotReceivesAResultWhenConnectionClosingResponse()
@@ -53,9 +46,7 @@ class QuitCommandTest extends CommandTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onConnectionClosing($response);
-
-        $this->assertNull($command->getResult());
+        $this->assertNull($command->onConnectionClosing($response));
     }
 
     /**
@@ -64,15 +55,5 @@ class QuitCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new QuitCommand();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::CONNECTION_CLOSING,
-        ];
     }
 }

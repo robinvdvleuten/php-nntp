@@ -19,7 +19,7 @@ class XzverCommand extends OverviewCommand
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return sprintf('XZVER %d-%d', $this->from, $this->to);
     }

@@ -12,7 +12,6 @@
 namespace Rvdv\Nntp\Command;
 
 use Rvdv\Nntp\Response\MultiLineResponse;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
@@ -24,34 +23,24 @@ class HelpCommand extends Command implements CommandInterface
      */
     public function __construct()
     {
-        parent::__construct([], true);
+        parent::__construct(true);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return 'HELP';
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::HELP_TEXT_FOLLOWS => 'onHelpTextFollow',
-        ];
-    }
-
-    /**
-     * Called when help text is received from server.
-     *
      * @param MultiLineResponse $response
+     *
+     * @return string
      */
     public function onHelpTextFollow(MultiLineResponse $response)
     {
-        $this->result = implode("\n", (array) $response->getLines());
+        return implode("\n", (array) $response->getLines());
     }
 }

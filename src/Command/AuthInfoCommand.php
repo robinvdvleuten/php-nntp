@@ -45,30 +45,19 @@ class AuthInfoCommand extends Command implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return sprintf('AUTHINFO %s %s', $this->type, $this->value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::AUTHENTICATION_ACCEPTED => 'onAuthenticationAccepted',
-            Response::PASSWORD_REQUIRED => 'onPasswordRequired',
-            Response::AUTHENTICATION_REJECTED => 'onAuthenticationRejected',
-            Response::AUTHENTICATION_OUTOFSEQUENCE => 'onAuthenticationOutOfSequence',
-        ];
-    }
-
     public function onAuthenticationAccepted(Response $response)
     {
+        return $response;
     }
 
     public function onPasswordRequired(Response $response)
     {
+        return $response;
     }
 
     public function onAuthenticationRejected(Response $response)

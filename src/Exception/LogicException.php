@@ -9,12 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Rvdv\Nntp\Response;
+namespace Rvdv\Nntp\Exception;
 
-interface MultiLineResponseInterface extends ResponseInterface
+class LogicException extends \LogicException
 {
-    /**
-     * @return array
-     */
-    public function getLines();
 }

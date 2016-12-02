@@ -12,14 +12,13 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\AuthInfoCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * AuthInfoCommandTest.
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class AuthInfoCommandTest extends CommandTest
+class AuthInfoCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -33,22 +32,16 @@ class AuthInfoCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItNotHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertNull($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance(AuthInfoCommand::AUTHINFO_USER, 'user');
-        $this->assertEquals('AUTHINFO USER user', $command->execute());
+        $this->assertEquals('AUTHINFO USER user', $command());
 
         $command = $this->createCommandInstance(AuthInfoCommand::AUTHINFO_PASS, 'pass');
-        $this->assertEquals('AUTHINFO PASS pass', $command->execute());
+        $this->assertEquals('AUTHINFO PASS pass', $command());
     }
 
-    public function testItNotReceivesAResultWhenAuthenticatedAcceptedResponse()
+    public function testItReceivesResponseAsResultWhenAuthenticatedAcceptedResponse()
     {
         $command = $this->createCommandInstance();
 
@@ -56,12 +49,10 @@ class AuthInfoCommandTest extends CommandTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onAuthenticationAccepted($response);
-
-        $this->assertNull($command->getResult());
+        $this->assertSame($response, $command->onAuthenticationAccepted($response));
     }
 
-    public function testItNotReceivesAResultWhenPasswordRequiredResponse()
+    public function testItReceivesResponseAsResultWhenPasswordRequiredResponse()
     {
         $command = $this->createCommandInstance();
 
@@ -69,9 +60,7 @@ class AuthInfoCommandTest extends CommandTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onPasswordRequired($response);
-
-        $this->assertNull($command->getResult());
+        $this->assertSame($response, $command->onPasswordRequired($response));
     }
 
     public function testItErrorsWhenAuthenticationRejectedResponse()
@@ -117,18 +106,5 @@ class AuthInfoCommandTest extends CommandTest
         }
 
         return new AuthInfoCommand($args[0], $args[1]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::AUTHENTICATION_ACCEPTED,
-            Response::PASSWORD_REQUIRED,
-            Response::AUTHENTICATION_REJECTED,
-            Response::AUTHENTICATION_OUTOFSEQUENCE,
-        ];
     }
 }

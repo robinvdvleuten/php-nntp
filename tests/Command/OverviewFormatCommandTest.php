@@ -12,14 +12,13 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\OverviewFormatCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * OverviewFormatCommandTest.
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class OverviewFormatCommandTest extends CommandTest
+class OverviewFormatCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -33,16 +32,10 @@ class OverviewFormatCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertEmpty($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('LIST OVERVIEW.FMT', $command->execute());
+        $this->assertEquals('LIST OVERVIEW.FMT', $command());
     }
 
     public function testItReceivesAResultWhenInformationFollowsResponse()
@@ -59,9 +52,8 @@ class OverviewFormatCommandTest extends CommandTest
             ->method('getLines')
             ->will($this->returnValue($lines));
 
-        $command->onInformationFollows($response);
+        $result = $command->onInformationFollows($response);
 
-        $result = $command->getResult();
         $this->assertCount(8, $result);
 
         $this->assertEmpty(array_diff_assoc($result, [
@@ -82,15 +74,5 @@ class OverviewFormatCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new OverviewFormatCommand();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::INFORMATION_FOLLOWS,
-        ];
     }
 }

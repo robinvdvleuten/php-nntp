@@ -12,14 +12,13 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\XFeatureCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * XFeatureCommandTest.
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class XFeatureCommandTest extends CommandTest
+class XFeatureCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -33,16 +32,10 @@ class XFeatureCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertFalse($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('XFEATURE COMPRESS GZIP', $command->execute());
+        $this->assertEquals('XFEATURE COMPRESS GZIP', $command());
     }
 
     public function testItReceivesAResultWhenXFeatureEnabledResponse()
@@ -53,9 +46,7 @@ class XFeatureCommandTest extends CommandTest
             ->disableOriginalConstructor()
             ->getMock();
 
-        $command->onXFeatureEnabled($response);
-
-        $this->assertTrue($command->getResult());
+        $this->assertTrue($command->onXFeatureEnabled($response));
     }
 
     /**
@@ -64,15 +55,5 @@ class XFeatureCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new XFeatureCommand(XFeatureCommand::COMPRESS_GZIP);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::XFEATURE_ENABLED,
-        ];
     }
 }

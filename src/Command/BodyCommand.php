@@ -36,34 +36,23 @@ class BodyCommand extends Command implements CommandInterface
     {
         $this->article = $article;
 
-        parent::__construct([], true);
+        parent::__construct(true);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return sprintf('BODY %s', $this->article);
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::BODY_FOLLOWS => 'onBodyFollows',
-            Response::NO_NEWSGROUP_CURRENT_SELECTED => 'onNoNewsGroupCurrentSelected',
-            Response::NO_SUCH_ARTICLE_NUMBER => 'onNoSuchArticleNumber',
-            Response::NO_SUCH_ARTICLE_ID => 'onNoSuchArticleId',
-        ];
-    }
-
     public function onBodyFollows(MultiLineResponse $response)
     {
-        $lines = $response->getLines();
-        $this->result = implode("\r\n", $lines->toArray());
+        return implode("\r\n", $response->getLines()->toArray());
     }
 
     public function onNoNewsGroupCurrentSelected(Response $response)

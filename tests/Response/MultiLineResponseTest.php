@@ -31,7 +31,7 @@ class MultiLineResponseTest extends \PHPUnit_Framework_TestCase
             ->method('getStatusCode')
             ->will($this->returnValue(200));
 
-        $multiLineResponse = new MultiLineResponse($response, new \SplFixedArray());
+        $multiLineResponse = new MultiLineResponse($response, []);
 
         $this->assertEquals('server ready - posting allowed', $multiLineResponse->getMessage());
         $this->assertEquals(200, $multiLineResponse->getStatusCode());
@@ -41,19 +41,8 @@ class MultiLineResponseTest extends \PHPUnit_Framework_TestCase
     {
         $response = Response::createFromString("200 server ready - posting allowed\r\n");
 
-        $multiLineResponse = new MultiLineResponse($response, new \SplFixedArray());
+        $multiLineResponse = new MultiLineResponse($response, []);
 
         $this->assertEquals('server ready - posting allowed [200]', (string) $multiLineResponse);
-    }
-
-    public function testItReturnsLinesFromInjectedArrayAccessInstance()
-    {
-        $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
-
-        $lines = new \SplFixedArray();
-
-        $multiLineResponse = new MultiLineResponse($response, $lines);
-
-        $this->assertSame($lines, $multiLineResponse->getLines());
     }
 }

@@ -12,12 +12,11 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\HelpCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class HelpCommandTest extends CommandTest
+class HelpCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -31,16 +30,10 @@ class HelpCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertEmpty($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('HELP', $command->execute());
+        $this->assertEquals('HELP', $command());
     }
 
     public function testItReceivesAResultWhenInformationFollowsResponse()
@@ -57,10 +50,7 @@ class HelpCommandTest extends CommandTest
             ->method('getLines')
             ->will($this->returnValue($lines));
 
-        $command->onHelpTextFollow($response);
-
-        $result = $command->getResult();
-        $this->assertEquals(implode("\n", $lines), $result);
+        $this->assertEquals(implode("\n", $lines), $command->onHelpTextFollow($response));
     }
 
     /**
@@ -69,15 +59,5 @@ class HelpCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new HelpCommand();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::HELP_TEXT_FOLLOWS,
-        ];
     }
 }

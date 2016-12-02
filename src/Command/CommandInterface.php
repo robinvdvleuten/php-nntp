@@ -11,11 +11,7 @@
 
 namespace Rvdv\Nntp\Command;
 
-use Rvdv\Nntp\Response\ResponseInterface;
-
 /**
- * CommandInterface.
- *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
 interface CommandInterface
@@ -31,21 +27,7 @@ interface CommandInterface
     public function isCompressed();
 
     /**
-     * @return ResponseInterface
-     */
-    public function getResponse();
-
-    /**
-     * @param ResponseInterface $response
-     */
-    public function setResponse(ResponseInterface $response);
-
-    public function getExpectedResponseCodes();
-
-    public function getResult();
-
-    /**
      * @return string
      */
-    public function execute();
+    public function __invoke();
 }

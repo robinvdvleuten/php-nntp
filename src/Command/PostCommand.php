@@ -26,26 +26,15 @@ class PostCommand extends Command implements CommandInterface
     */
    public function __construct()
    {
-       parent::__construct([]);
+       parent::__construct();
    }
 
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return 'POST';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::SEND_ARTICLE => 'onSendArticle',
-            Response::POSTING_NOT_PERMITTED => 'onPostingNotPermitted',
-        ];
     }
 
     public function onSendArticle(Response $response)

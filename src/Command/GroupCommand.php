@@ -35,32 +35,23 @@ class GroupCommand extends Command implements CommandInterface
     {
         $this->group = $group;
 
-        parent::__construct([]);
+        parent::__construct();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return sprintf('GROUP %s', $this->group);
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::GROUP_SELECTED => 'onGroupSelected',
-            Response::NO_SUCH_GROUP => 'onNoSuchGroup',
-        ];
-    }
-
     public function onGroupSelected(Response $response)
     {
-        $message = $response->getMessage();
-        $this->result = array_combine(['count', 'first', 'last', 'name'], explode(' ', $message));
+        return array_combine(['count', 'first', 'last', 'name'], explode(' ', $response->getMessage()));
     }
 
     public function onNoSuchGroup(Response $response)

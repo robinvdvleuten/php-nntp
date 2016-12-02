@@ -12,14 +12,13 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\BodyCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * BodyCommandTest.
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class BodyCommandTest extends CommandTest
+class BodyCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItExpectsMultilineResponses()
     {
@@ -33,16 +32,10 @@ class BodyCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertEmpty($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('BODY 12345', $command->execute());
+        $this->assertEquals('BODY 12345', $command());
     }
 
     public function testItReceivesAResultWhenBodyFollowsResponse()
@@ -59,11 +52,7 @@ class BodyCommandTest extends CommandTest
             ->method('getLines')
             ->will($this->returnValue($lines));
 
-        $command->onBodyFollows($response);
-
-        $result = $command->getResult();
-
-        $this->assertEquals(implode("\r\n", $lines->toArray()), $result);
+        $this->assertEquals(implode("\r\n", $lines->toArray()), $command->onBodyFollows($response));
     }
 
     public function testItErrorsWhenGroupNotSelectedResponse()
@@ -120,18 +109,5 @@ class BodyCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new BodyCommand('12345');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::BODY_FOLLOWS,
-            Response::NO_NEWSGROUP_CURRENT_SELECTED,
-            Response::NO_SUCH_ARTICLE_NUMBER,
-            Response::NO_SUCH_ARTICLE_ID,
-        ];
     }
 }

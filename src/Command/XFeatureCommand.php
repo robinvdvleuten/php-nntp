@@ -36,29 +36,19 @@ class XFeatureCommand extends Command implements CommandInterface
     {
         $this->feature = $feature;
 
-        parent::__construct(false);
+        parent::__construct();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function __invoke()
     {
         return sprintf('XFEATURE %s', $this->feature);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            Response::XFEATURE_ENABLED => 'onXFeatureEnabled',
-        ];
-    }
-
     public function onXFeatureEnabled(Response $response)
     {
-        $this->result = true;
+        return true;
     }
 }

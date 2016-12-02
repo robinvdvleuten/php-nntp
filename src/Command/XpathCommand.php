@@ -39,26 +39,15 @@ class XpathCommand extends Command implements CommandInterface
     {
         $this->reference = $reference;
 
-        parent::__construct([]);
+        parent::__construct();
     }
 
     /**
      * @return string
      */
-    public function execute()
+    public function __invoke()
     {
         return sprintf('XPATH %s', $this->reference);
-    }
-
-    /**
-     * @return array
-     */
-    public function getExpectedResponseCodes()
-    {
-        return [
-            self::FOUND_PATH => 'onFoundPath',
-            self::INVALID_REFERENCE => 'onInvalidMessage',
-        ];
     }
 
     /**
@@ -68,7 +57,7 @@ class XpathCommand extends Command implements CommandInterface
      */
     public function onFoundPath(Response $response)
     {
-        $this->result = $response->getMessage();
+        return $response->getMessage();
     }
 
     /**
@@ -78,6 +67,6 @@ class XpathCommand extends Command implements CommandInterface
      */
     public function onInvalidMessage(Response $response)
     {
-        $this->result = null;
+        return null;
     }
 }

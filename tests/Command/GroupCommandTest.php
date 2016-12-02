@@ -12,14 +12,13 @@
 namespace Rvdv\Nntp\Tests\Command;
 
 use Rvdv\Nntp\Command\GroupCommand;
-use Rvdv\Nntp\Response\Response;
 
 /**
  * GroupCommandTest.
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class GroupCommandTest extends CommandTest
+class GroupCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {
@@ -33,16 +32,10 @@ class GroupCommandTest extends CommandTest
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItHasDefaultResult()
-    {
-        $command = $this->createCommandInstance();
-        $this->assertEmpty($command->getResult());
-    }
-
     public function testItReturnsStringWhenExecuting()
     {
         $command = $this->createCommandInstance();
-        $this->assertEquals('GROUP php.doc', $command->execute());
+        $this->assertEquals('GROUP php.doc', $command());
     }
 
     public function testItReceivesAResultWhenGroupSelectedResponse()
@@ -57,8 +50,7 @@ class GroupCommandTest extends CommandTest
             ->method('getMessage')
             ->will($this->returnValue('1234 3000234 3002322 php.doc'));
 
-        $command->onGroupSelected($response);
-        $result = $command->getResult();
+        $result = $command->onGroupSelected($response);
 
         $this->assertEquals('1234', $result['count']);
         $this->assertEquals('3000234', $result['first']);
@@ -88,16 +80,5 @@ class GroupCommandTest extends CommandTest
     protected function createCommandInstance()
     {
         return new GroupCommand('php.doc');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRFCResponseCodes()
-    {
-        return [
-            Response::GROUP_SELECTED,
-            Response::NO_SUCH_GROUP,
-        ];
     }
 }
