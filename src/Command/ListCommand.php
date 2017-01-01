@@ -61,7 +61,7 @@ class ListCommand extends Command
      *
      * @return array
      */
-    public function onListFollows(MultiLineResponse $response)
+    public function onInformationFollows(MultiLineResponse $response)
     {
         $lines = $response->getLines();
         $totalLines = count($lines);
