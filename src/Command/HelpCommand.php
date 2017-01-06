@@ -39,7 +39,7 @@ class HelpCommand extends Command implements CommandInterface
      *
      * @return string
      */
-    public function onHelpTextFollow(MultiLineResponse $response)
+    public function onHelpTextFollows(MultiLineResponse $response)
     {
         return implode("\n", (array) $response->getLines());
     }
