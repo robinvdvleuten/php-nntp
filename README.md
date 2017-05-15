@@ -63,4 +63,4 @@ $ php vendor/bin/phpunit
 
 ## License
 
-MIT, see LICENSE
+MIT © [Robin van der Vleuten](https://www.robinvdvleuten.nl)
