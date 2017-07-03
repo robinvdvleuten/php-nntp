@@ -159,7 +159,7 @@ class Connection implements ConnectionInterface
 
             // Check if the line terminates the text response.
             if ($line === '.') {
-                return new MultiLineResponse($response, array_filter($lines));
+                return new MultiLineResponse($response, $lines);
             }
 
             // If 1st char is '.' it's doubled (NNTP/RFC977 2.4.1).
