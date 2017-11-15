@@ -328,6 +328,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         return [
             [Command\AuthInfoCommand::class, 'authInfo', ['USER', 'user']],
             [Command\BodyCommand::class, 'body', ['1234']],
+            [Command\HeadCommand::class, 'head', ['12345']],
             [Command\GroupCommand::class, 'group', ['php.doc']],
             [Command\HelpCommand::class, 'help', []],
             [Command\ListCommand::class, 'listGroups', ['php', []]],

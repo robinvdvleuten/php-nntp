@@ -52,14 +52,7 @@ class HeadCommand extends Command implements CommandInterface
      */
     public function onHeadFollows(MultiLineResponse $response)
     {
-        return array_reduce($response->getLines(), function ($headers, $line) {
-            preg_match('/^([^\:]+)\:\s*(.*)$/', $line, $matches);
-            if (!empty($matches)) {
-                $headers[$matches[1]] = trim($matches[2]);
-            }
-
-            return $headers;
-        });
+        return implode("\r\n", $response->getLines());
     }
 
     public function onNoNewsGroupCurrentSelected(Response $response)
