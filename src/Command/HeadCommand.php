@@ -18,7 +18,7 @@ use Rvdv\Nntp\Response\Response;
 /**
  * HeadCommand.
  *
- * @author thebandit
+ * @author elabz
  */
 class HeadCommand extends Command implements CommandInterface
 {
