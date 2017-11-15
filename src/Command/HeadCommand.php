@@ -55,7 +55,7 @@ class HeadCommand extends Command implements CommandInterface
         $headers = [];
         array_map(function ($line) use (&$headers) {
             preg_match('/^([^\:]+)\:\s*(.*)$/', $line, $matches);
-            if(!empty($matches)) {
+            if (!empty($matches)) {
                 $headers[$matches[1]] = trim($matches[2]);
             }
         }, $response->getLines());
