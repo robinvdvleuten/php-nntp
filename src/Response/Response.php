@@ -34,6 +34,7 @@ class Response implements ResponseInterface
         'GroupSelected' => 211, // rfc 3977
         'InformationFollows' => 215, // rfc 2980
         'ArticleFollows' => 220, //rfc 3977
+        'HeadFollows' => 221, //rfc 3977 Section 6.2.2
         'BodyFollows' => 222, //rfc 3977
         'OverviewInformationFollows' => 224, // rfc 2980
         'ArticleReceived' => 240, //rfc 3977
