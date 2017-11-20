@@ -22,12 +22,12 @@ use Rvdv\Nntp\Response\Response;
 class PostCommand extends Command implements CommandInterface
 {
     /**
-    * Constructor.
-    */
-   public function __construct()
-   {
-       parent::__construct();
-   }
+     * Constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}

@@ -135,8 +135,9 @@ class Connection implements ConnectionInterface
                 break;
             }
 
-            if ($buffer === false) {
+            if (false === $buffer) {
                 $this->disconnect();
+
                 throw new RuntimeException('Incorrect data received from buffer');
             }
         }
@@ -150,7 +151,7 @@ class Connection implements ConnectionInterface
 
         while (!$this->socket->eof()) {
             $line = $this->socket->gets(self::BUFFER_SIZE);
-            if (substr($line, -2) !== "\r\n" || strlen($line) < 2) {
+            if ("\r\n" !== substr($line, -2) || strlen($line) < 2) {
                 continue;
             }
 
@@ -158,12 +159,12 @@ class Connection implements ConnectionInterface
             $line = substr($line, 0, -2);
 
             // Check if the line terminates the text response.
-            if ($line === '.') {
+            if ('.' === $line) {
                 return new MultiLineResponse($response, $lines);
             }
 
             // If 1st char is '.' it's doubled (NNTP/RFC977 2.4.1).
-            if (substr($line, 0, 2) === '..') {
+            if ('..' === substr($line, 0, 2)) {
                 $line = substr($line, 1);
             }
 
@@ -177,8 +178,9 @@ class Connection implements ConnectionInterface
         // Determine encoding by fetching first line.
         $line = $this->socket->gets(self::BUFFER_SIZE);
 
-        if (substr($line, 0, 7) == '=ybegin') {
+        if ('=ybegin' == substr($line, 0, 7)) {
             $this->disconnect();
+
             throw new RuntimeException('yEnc encoded overviews are not currently supported.');
         }
 
@@ -187,16 +189,17 @@ class Connection implements ConnectionInterface
         while (!$this->socket->eof()) {
             $buffer = $this->socket->gets(self::BUFFER_SIZE);
 
-            if (strlen($buffer) === 0) {
+            if (0 === strlen($buffer)) {
                 $uncompressed = @gzuncompress($line);
 
-                if ($uncompressed !== false) {
+                if (false !== $uncompressed) {
                     break;
                 }
             }
 
-            if ($buffer === false) {
+            if (false === $buffer) {
                 $this->disconnect();
+
                 throw new RuntimeException('Incorrect data received from buffer');
             }
 
@@ -204,7 +207,7 @@ class Connection implements ConnectionInterface
         }
 
         $lines = explode("\r\n", trim($uncompressed));
-        if (end($lines) === '.') {
+        if ('.' === end($lines)) {
             array_pop($lines);
         }
 
@@ -218,7 +221,7 @@ class Connection implements ConnectionInterface
         }
 
         // Check if we received a response code that we're aware of.
-        if (($responseName = array_search($response->getStatusCode(), Response::$codes, true)) === false) {
+        if (false === ($responseName = array_search($response->getStatusCode(), Response::$codes, true))) {
             throw new RuntimeException(sprintf(
                 'Unexpected response received: [%d] %s',
                 $response->getStatusCode(),

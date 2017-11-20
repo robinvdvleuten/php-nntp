@@ -46,19 +46,19 @@ class PostArticleCommand extends Command implements CommandInterface
      */
     private $headers;
 
-   /**
-    * Constructor.
-    */
-   public function __construct($groups, $subject, $body, $from, $headers)
-   {
-       $this->groups = $groups;
-       $this->subject = $subject;
-       $this->body = $body;
-       $this->from = $from;
-       $this->headers = $headers;
+    /**
+     * Constructor.
+     */
+    public function __construct($groups, $subject, $body, $from, $headers)
+    {
+        $this->groups = $groups;
+        $this->subject = $subject;
+        $this->body = $body;
+        $this->from = $from;
+        $this->headers = $headers;
 
-       parent::__construct();
-   }
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
@@ -72,7 +72,7 @@ class PostArticleCommand extends Command implements CommandInterface
             'X-poster: php-nntp',
         ];
 
-        if ($this->headers !== null) {
+        if (null !== $this->headers) {
             $article[] = $this->headers;
         }
 

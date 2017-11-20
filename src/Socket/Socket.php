@@ -84,7 +84,7 @@ class Socket implements SocketInterface
      */
     public function gets($length = null)
     {
-        if (($data = fgets($this->stream, $length)) === false) {
+        if (false === ($data = fgets($this->stream, $length))) {
             throw new SocketException();
         }
 
@@ -96,7 +96,7 @@ class Socket implements SocketInterface
      */
     public function read($length)
     {
-        if (($data = fread($this->stream, $length)) === false) {
+        if (false === ($data = fread($this->stream, $length))) {
             throw new SocketException();
         }
 
@@ -108,7 +108,7 @@ class Socket implements SocketInterface
      */
     public function write($data)
     {
-        if (($bytes = fwrite($this->stream, $data)) === false) {
+        if (false === ($bytes = fwrite($this->stream, $data))) {
             throw new SocketException();
         }
 
