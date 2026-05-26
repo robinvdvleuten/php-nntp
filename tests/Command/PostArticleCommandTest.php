@@ -43,9 +43,7 @@ class PostArticleCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         try {
             $command->onPostingFailed($response);
@@ -59,9 +57,7 @@ class PostArticleCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         $this->assertSame($response, $command->onArticleReceived($response));
     }

@@ -43,9 +43,7 @@ class OverviewFormatCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\MultiLineResponse')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\MultiLineResponse::class);
 
         $lines = ['Subject:', 'From:', 'Date:', 'Message-ID:', 'References:', 'Bytes:', 'Lines:', 'Xref:full'];
 

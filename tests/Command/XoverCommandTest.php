@@ -41,9 +41,7 @@ class XoverCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\MultiLineResponse')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\MultiLineResponse::class);
 
         $lines = [
             "123456789\tRe: Are you checking out NNTP?\trobinvdvleuten@example.com (\"Robin van der Vleuten\")\tSat,3 Aug 2013 13:19:22 -0000\t<nntp123456789@nntp>\t<nntp987654321@nntp>\t321\t123\tXref: nntp:123456789",
@@ -71,9 +69,7 @@ class XoverCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         try {
             $command->onNoNewsGroupCurrentSelected($response);
@@ -87,9 +83,7 @@ class XoverCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         try {
             $command->onNoArticlesSelected($response);

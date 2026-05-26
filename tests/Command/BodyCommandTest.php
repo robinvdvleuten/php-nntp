@@ -43,9 +43,7 @@ class BodyCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\MultiLineResponse')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\MultiLineResponse::class);
 
         $lines = ['Lorem ipsum dolor sit amet, ', 'consectetur adipiscing elit. ', 'Sed volutpat sit amet leo sit amet sagittis.'];
 
@@ -60,9 +58,7 @@ class BodyCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         try {
             $command->onNoNewsGroupCurrentSelected($response);
@@ -76,9 +72,7 @@ class BodyCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         try {
             $command->onNoSuchArticleNumber($response);
@@ -92,9 +86,7 @@ class BodyCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         try {
             $command->onNoSuchArticleId($response);

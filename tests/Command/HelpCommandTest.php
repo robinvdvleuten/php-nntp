@@ -41,9 +41,7 @@ class HelpCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\MultiLineResponse')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\MultiLineResponse::class);
 
         $lines = ['body [MessageID|Number]', 'date', 'head [MessageID|Number]', 'help', 'ihave'];
 

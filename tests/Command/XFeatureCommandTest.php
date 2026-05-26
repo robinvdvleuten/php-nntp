@@ -43,9 +43,7 @@ class XFeatureCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         $this->assertTrue($command->onXFeatureEnabled($response));
     }

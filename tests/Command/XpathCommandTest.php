@@ -25,9 +25,7 @@ class XpathCommandTest extends TestCase
     public function testItCanReturnResults()
     {
         $command = $this->createCommandInstance();
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-                         ->disableOriginalConstructor()
-                         ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         $response->expects($this->once())
                  ->method('getMessage')
@@ -39,9 +37,7 @@ class XpathCommandTest extends TestCase
     public function testItReturnsNothingIfNoFoundPath()
     {
         $command = $this->createCommandInstance();
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-                         ->disableOriginalConstructor()
-                         ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         $response->expects($this->never())
                  ->method('getMessage')

@@ -43,9 +43,7 @@ class PostCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         try {
             $command->onPostingNotPermitted($response);
@@ -59,9 +57,7 @@ class PostCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         $this->assertEmpty($command->onSendArticle($response));
     }

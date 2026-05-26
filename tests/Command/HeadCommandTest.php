@@ -43,9 +43,7 @@ class HeadCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\MultiLineResponse')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\MultiLineResponse::class);
 
         $lines = ['Message-ID: <1234567890@1234567890.com>', 'Date: Thu, 28 Sep 2017 12:56:35 +0000', 'Newsgroups: php.announce'];
 
@@ -60,9 +58,7 @@ class HeadCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         try {
             $command->onNoNewsGroupCurrentSelected($response);
@@ -76,9 +72,7 @@ class HeadCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         try {
             $command->onNoSuchArticleNumber($response);
@@ -92,9 +86,7 @@ class HeadCommandTest extends TestCase
     {
         $command = $this->createCommandInstance();
 
-        $response = $this->getMockBuilder('Rvdv\Nntp\Response\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
         try {
             $command->onNoSuchArticleId($response);
