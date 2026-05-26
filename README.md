@@ -58,6 +58,26 @@ $ composer install
 $ php vendor/bin/phpunit
 ```
 
+## Contributing
+
+Everyone is encouraged to help improve this project. Here are a few ways you can help:
+
+- [Report bugs](https://github.com/robinvdvleuten/php-nntp/issues)
+- Fix bugs and [submit pull requests](https://github.com/robinvdvleuten/php-nntp/pulls)
+- Write, clarify, or fix documentation
+- Suggest or add new features
+
+To get started with development:
+
+```
+git clone https://github.com/robinvdvleuten/php-nntp.git
+cd php-nntp
+composer install
+composer test
+```
+
+Feel free to open an issue to get feedback on your idea before spending too much time on it.
+
 ## License
 
-MIT © [Robin van der Vleuten](https://www.robinvdvleuten.nl)
+MIT © [Robin van der Vleuten](https://robinvdvleuten.nl)
