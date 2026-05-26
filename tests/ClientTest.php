@@ -87,18 +87,15 @@ class ClientTest extends TestCase
             ->method('getStatusCode')
             ->will($this->onConsecutiveCalls(Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']));
 
+        $expectedCommands = ['AUTHINFO USER username', 'AUTHINFO PASS password'];
+
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->exactly(2))
             ->method('sendCommand')
-            ->withConsecutive(
-                [$this->callback(function (Command\AuthInfoCommand $command) {
-                    return 'AUTHINFO USER username' === $command();
-                })],
-                [$this->callback(function (Command\AuthInfoCommand $command) {
-                    return 'AUTHINFO PASS password' === $command();
-                })]
-            )
+            ->with($this->callback(function (Command\AuthInfoCommand $command) use (&$expectedCommands) {
+                return array_shift($expectedCommands) === $command();
+            }))
             ->will($this->returnValue($response));
 
         $client = new Client($connection);
@@ -184,6 +181,8 @@ class ClientTest extends TestCase
             ->method('getStatusCode')
             ->will($this->onConsecutiveCalls(Response::$codes['PostingAllowed'], Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']));
 
+        $expectedCommands = ['AUTHINFO USER username', 'AUTHINFO PASS password'];
+
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
@@ -192,14 +191,9 @@ class ClientTest extends TestCase
 
         $connection->expects($this->exactly(2))
             ->method('sendCommand')
-            ->withConsecutive(
-                [$this->callback(function (Command\AuthInfoCommand $command) {
-                    return 'AUTHINFO USER username' === $command();
-                })],
-                [$this->callback(function (Command\AuthInfoCommand $command) {
-                    return 'AUTHINFO PASS password' === $command();
-                })]
-            )
+            ->with($this->callback(function (Command\AuthInfoCommand $command) use (&$expectedCommands) {
+                return array_shift($expectedCommands) === $command();
+            }))
             ->will($this->returnValue($response));
 
         $client = new Client($connection);
