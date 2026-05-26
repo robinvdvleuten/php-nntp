@@ -19,161 +19,117 @@ use Rvdv\Nntp\Response\ResponseInterface;
  */
 interface ClientInterface
 {
-    /**
-     * Establish a connection with the NNTP server.
-     *
-     * @return ResponseInterface
-     */
-    public function connect();
+    public function connect(): ResponseInterface;
 
-    /**
-     * Disconnect the connection with the NNTP server.
-     */
-    public function disconnect();
+    public function disconnect(): void;
 
     /**
      * Authenticate with the given username/password.
      *
-     * @param string      $username
-     * @param string|null $password
-     *
      * @return ResponseInterface
      */
-    public function authenticate($username, $password = null);
+    public function authenticate(string $username, ?string $password = null): ResponseInterface;
 
     /**
      * Connect and optionally authenticate with the server if
      * a username and optional password are given.
      *
-     * @param string      $username
-     * @param string|null $password
-     *
      * @return ResponseInterface
      */
-    public function connectAndAuthenticate($username, $password = null);
+    public function connectAndAuthenticate(string $username, ?string $password = null): ResponseInterface;
 
     /**
      * Send the AUTHINFO command.
      *
-     * @param string $type
-     * @param string $value
-     *
-     * @return ResponseInterface
+     * @return mixed
      */
-    public function authInfo($type, $value);
+    public function authInfo(string $type, string $value): mixed;
 
     /**
      * Send the BODY command.
      *
-     * @param $article
-     *
-     * @return \Rvdv\Nntp\Command\BodyCommand
+     * @return mixed
      */
-    public function body($article);
+    public function body(string $article): mixed;
 
     /**
      * Send the HELP command.
      *
-     * @return \Rvdv\Nntp\Command\HelpCommand
+     * @return mixed
      */
-    public function help();
+    public function help(): mixed;
 
     /**
      * Send the LIST command.
      *
-     * @param string|null $keyword
-     * @param string|null $arguments
-     *
-     * @return \Rvdv\Nntp\Command\GroupCommand
+     * @return mixed
      */
-    public function listGroups($keyword = null, $arguments = null);
+    public function listGroups(?string $keyword = null, mixed $arguments = null): mixed;
 
     /**
      * Send the GROUP command.
      *
-     * @param $name
-     *
-     * @return \Rvdv\Nntp\Command\GroupCommand
+     * @return mixed
      */
-    public function group($name);
+    public function group(string $name): mixed;
 
     /**
      * Send the LIST OVERVIEW.FMT command.
      *
-     * @return \Rvdv\Nntp\Command\OverviewFormatCommand
+     * @return mixed
      */
-    public function overviewFormat();
+    public function overviewFormat(): mixed;
 
     /**
      * Post an article to usenet.
      *
-     * @param string      $groups
-     * @param string      $subject
-     * @param string      $body
-     * @param string      $from
-     * @param string|null $headers
-     *
      * @return ResponseInterface
      */
-    public function post($groups, $subject, $body, $from, $headers = null);
+    public function post(string $groups, string $subject, string $body, string $from, ?string $headers = null): ResponseInterface;
 
     /**
      * Send the article.
      *
-     * @param string      $groups
-     * @param string      $subject
-     * @param string      $body
-     * @param string      $from
-     * @param string|null $headers
-     *
-     * @return ResponseInterface
+     * @return mixed
      */
-    public function postArticle($groups, $subject, $body, $from, $headers = null);
+    public function postArticle(string $groups, string $subject, string $body, string $from, ?string $headers = null): mixed;
 
     /**
      * Send the QUIT command.
      *
-     * @return \Rvdv\Nntp\Command\QuitCommand
+     * @return mixed
      */
-    public function quit();
+    public function quit(): mixed;
 
     /**
      * Send the XFEATURE command.
      *
-     * @param $feature
-     *
-     * @return \Rvdv\Nntp\Command\XFeatureCommand
+     * @return mixed
      */
-    public function xfeature($feature);
+    public function xfeature(string $feature): mixed;
 
     /**
      * Send the XOVER command.
      *
-     * @param $from
-     * @param $to
-     * @param array $format
+     * @param array<string, bool> $format
      *
-     * @return \Rvdv\Nntp\Command\XoverCommand
+     * @return mixed
      */
-    public function xover($from, $to, array $format);
+    public function xover(int $from, int $to, array $format): mixed;
 
     /**
      * Send the XZVER command.
      *
-     * @param $from
-     * @param $to
-     * @param array $format
+     * @param array<string, bool> $format
      *
-     * @return \Rvdv\Nntp\Command\XzverCommand
+     * @return mixed
      */
-    public function xzver($from, $to, array $format);
+    public function xzver(int $from, int $to, array $format): mixed;
 
     /**
      * Send the given command to the NNTP server.
      *
-     * @param CommandInterface $command
-     *
      * @return mixed
      */
-    public function sendCommand(CommandInterface $command);
+    public function sendCommand(CommandInterface $command): mixed;
 }
