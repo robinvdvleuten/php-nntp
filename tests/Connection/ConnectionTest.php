@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Connection;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Exception\SocketException;
@@ -20,7 +21,7 @@ use Rvdv\Nntp\Socket\Socket;
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class ConnectionTest extends \PHPUnit_Framework_TestCase
+class ConnectionTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -30,7 +31,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setup()
+    protected function setUp(): void
     {
         $this->socket = $this->getMockBuilder(Socket::class)
             ->disableOriginalConstructor()
@@ -86,11 +87,10 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('server ready - posting allowed', $response->getMessage());
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
-     */
     public function testErrorIsThrownWhenConnectionCannotBeEstablished()
     {
+        $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
+
         $this->socket->expects($this->once())
             ->method('connect')
             ->with('tcp://localhost:5000')
@@ -113,9 +113,10 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $result = 'result';
 
-        $command = $this->getMock(CommandInterface::class, [
-            '__invoke', 'isMultiLine', 'isCompressed', 'onPostingAllowed',
-        ]);
+        $command = $this->getMockBuilder(CommandInterface::class)
+            ->onlyMethods(['__invoke', 'isMultiLine', 'isCompressed'])
+            ->addMethods(['onPostingAllowed'])
+            ->getMock();
 
         $command->expects($this->once())
             ->method('__invoke')
@@ -148,12 +149,11 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($result, $connection->sendCommand($command));
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\InvalidArgumentException
-     */
     public function testSendingCommandFailsWhenCommandStringExceedsMaximumCharacters()
     {
-        $command = $this->getMock(CommandInterface::class);
+        $this->expectException(\Rvdv\Nntp\Exception\InvalidArgumentException::class);
+
+        $command = $this->createMock(CommandInterface::class);
 
         $command->expects($this->once())
             ->method('__invoke')
@@ -163,12 +163,11 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $connection->sendCommand($command);
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
-     */
     public function testSendingCommandFailsWhenCommandStringIsNotSameAsSocketOutput()
     {
-        $command = $this->getMock(CommandInterface::class);
+        $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
+
+        $command = $this->createMock(CommandInterface::class);
 
         $command->expects($this->once())
             ->method('__invoke')

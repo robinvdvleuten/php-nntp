@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\HeadCommand;
 
 /**
@@ -18,7 +19,7 @@ use Rvdv\Nntp\Command\HeadCommand;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class HeadCommandTest extends \PHPUnit_Framework_TestCase
+class HeadCommandTest extends TestCase
 {
     public function testItExpectsMultilineResponses()
     {

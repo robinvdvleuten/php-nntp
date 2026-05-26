@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\AuthInfoCommand;
 
 /**
@@ -18,7 +19,7 @@ use Rvdv\Nntp\Command\AuthInfoCommand;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class AuthInfoCommandTest extends \PHPUnit_Framework_TestCase
+class AuthInfoCommandTest extends TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {

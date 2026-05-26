@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\QuitCommand;
 
 /**
@@ -18,7 +19,7 @@ use Rvdv\Nntp\Command\QuitCommand;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class QuitCommandTest extends \PHPUnit_Framework_TestCase
+class QuitCommandTest extends TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {

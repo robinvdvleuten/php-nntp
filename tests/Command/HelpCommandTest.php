@@ -11,12 +11,13 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\HelpCommand;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class HelpCommandTest extends \PHPUnit_Framework_TestCase
+class HelpCommandTest extends TestCase
 {
     public function testItExpectsMultilineResponses()
     {

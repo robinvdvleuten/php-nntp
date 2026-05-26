@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\GroupCommand;
 
 /**
@@ -18,7 +19,7 @@ use Rvdv\Nntp\Command\GroupCommand;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class GroupCommandTest extends \PHPUnit_Framework_TestCase
+class GroupCommandTest extends TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {

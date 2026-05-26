@@ -11,12 +11,13 @@
 
 namespace Rvdv\Nntp\Tests\Socket;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Socket\Socket;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class SocketTest extends \PHPUnit_Framework_TestCase
+class SocketTest extends TestCase
 {
     public function testConnectGoogle()
     {
@@ -39,11 +40,10 @@ class SocketTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($socket, $socket->disconnect());
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\SocketException
-     */
     public function testConnectFail()
     {
+        $this->expectException(\Rvdv\Nntp\Exception\SocketException::class);
+
         $socket = new Socket();
         $socket->connect('localhost:2');
     }

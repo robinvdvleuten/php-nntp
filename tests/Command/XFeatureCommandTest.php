@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\XFeatureCommand;
 
 /**
@@ -18,7 +19,7 @@ use Rvdv\Nntp\Command\XFeatureCommand;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class XFeatureCommandTest extends \PHPUnit_Framework_TestCase
+class XFeatureCommandTest extends TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {

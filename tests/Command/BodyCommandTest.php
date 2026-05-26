@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\BodyCommand;
 
 /**
@@ -18,7 +19,7 @@ use Rvdv\Nntp\Command\BodyCommand;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class BodyCommandTest extends \PHPUnit_Framework_TestCase
+class BodyCommandTest extends TestCase
 {
     public function testItExpectsMultilineResponses()
     {
