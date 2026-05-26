@@ -157,7 +157,7 @@ class Connection implements ConnectionInterface
             throw new RuntimeException('yEnc encoded overviews are not currently supported.');
         }
 
-        $uncompressed = '';
+        $uncompressed = false;
 
         while (!$this->socket->eof()) {
             $buffer = $this->socket->gets(self::BUFFER_SIZE);
@@ -171,6 +171,10 @@ class Connection implements ConnectionInterface
             }
 
             $line .= $buffer;
+        }
+
+        if (false === $uncompressed) {
+            throw new RuntimeException('Incorrect data received from buffer');
         }
 
         $lines = explode("\r\n", trim($uncompressed));
