@@ -16,7 +16,8 @@
     "require-dev": {
         "phpunit/phpunit": "^9.6",
         "friendsofphp/php-cs-fixer": "^3.95",
-        "scrutinizer/ocular": "^1.1"
+        "scrutinizer/ocular": "^1.1",
+        "phpstan/phpstan": "^2.1"
     },
     "autoload": {
         "psr-4": {"Rvdv\\Nntp\\": "src"}
@@ -25,7 +26,8 @@
         "psr-4": {"Rvdv\\Nntp\\Tests\\": "tests"}
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --coverage-text; vendor/bin/php-cs-fixer fix -v --diff --dry-run;"
+        "test": "vendor/bin/phpunit --coverage-text; vendor/bin/php-cs-fixer fix -v --diff --dry-run;",
+        "analyze": "vendor/bin/phpstan analyze"
     },
     "extra": {
         "branch-alias": {

@@ -1,0 +1,18 @@
+name: phpstan
+
+on:
+  push:
+    paths:
+      - '**.php'
+
+jobs:
+    phpstan:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+            - uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # v2
+              with:
+                php-version: '8.4'
+            - uses: ramsey/composer-install@5c2bcf28d7b060ef3c601d7b476d5430a7b46c27 # v4
+            - name: Execute tests
+              run: vendor/bin/phpstan --error-format=github
