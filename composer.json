@@ -1,6 +1,6 @@
 {
     "name": "rvdv/nntp",
-    "description": "Client for communicating with servers throught the Network News Transfer Protocol (NNTP) protocol.",
+    "description": "Client for communicating with servers through the Network News Transfer Protocol (NNTP) protocol.",
     "type": "library",
     "license": "MIT",
     "authors": [
