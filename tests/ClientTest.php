@@ -23,7 +23,7 @@ use Rvdv\Nntp\Response\ResponseInterface;
  */
 class ClientTest extends TestCase
 {
-    public function testItReturnsConnectionInstance()
+    public function testItReturnsConnectionInstance(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -32,7 +32,7 @@ class ClientTest extends TestCase
         $this->assertSame($client->getConnection(), $connection);
     }
 
-    public function testItConnectsWithAServer()
+    public function testItConnectsWithAServer(): void
     {
         $response = $this->createMock(ResponseInterface::class);
 
@@ -47,7 +47,7 @@ class ClientTest extends TestCase
         $this->assertSame($client->connect(), $response);
     }
 
-    public function testItDisconnectsFromAnEstablishedConnection()
+    public function testItDisconnectsFromAnEstablishedConnection(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -58,7 +58,7 @@ class ClientTest extends TestCase
         $client->disconnect();
     }
 
-    public function testItAuthenticatesUsernameWithConnectedServer()
+    public function testItAuthenticatesUsernameWithConnectedServer(): void
     {
         $response = $this->createMock(ResponseInterface::class);
 
@@ -79,7 +79,7 @@ class ClientTest extends TestCase
         $client->authenticate('username');
     }
 
-    public function testItAuthenticatesUsernamePasswordWithConnectedServer()
+    public function testItAuthenticatesUsernamePasswordWithConnectedServer(): void
     {
         $response = $this->createMock(ResponseInterface::class);
 
@@ -102,7 +102,7 @@ class ClientTest extends TestCase
         $client->authenticate('username', 'password');
     }
 
-    public function testItErrorsWhenAuthenticateNeedsPassword()
+    public function testItErrorsWhenAuthenticateNeedsPassword(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
 
@@ -125,7 +125,7 @@ class ClientTest extends TestCase
         $client->authenticate('username');
     }
 
-    public function testItErrorsWhenAuthenticateFails()
+    public function testItErrorsWhenAuthenticateFails(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
 
@@ -148,7 +148,7 @@ class ClientTest extends TestCase
         $client->authenticate('unknown');
     }
 
-    public function testItConnectsAndAuthenticatesUsernameWithConnectedServer()
+    public function testItConnectsAndAuthenticatesUsernameWithConnectedServer(): void
     {
         $response = $this->createMock(ResponseInterface::class);
 
@@ -173,7 +173,7 @@ class ClientTest extends TestCase
         $client->connectAndAuthenticate('username');
     }
 
-    public function testItConnectsAndAuthenticatesUsernamePasswordWithConnectedServer()
+    public function testItConnectsAndAuthenticatesUsernamePasswordWithConnectedServer(): void
     {
         $response = $this->createMock(ResponseInterface::class);
 
@@ -200,7 +200,7 @@ class ClientTest extends TestCase
         $client->connectAndAuthenticate('username', 'password');
     }
 
-    public function testItErrorsWhenConnectingFails()
+    public function testItErrorsWhenConnectingFails(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
 
@@ -223,7 +223,7 @@ class ClientTest extends TestCase
         $client->connectAndAuthenticate('username');
     }
 
-    public function testItReturnResponseWhenPostingAnArticle()
+    public function testItReturnResponseWhenPostingAnArticle(): void
     {
         $response = $this->createMock(ResponseInterface::class);
 
@@ -247,7 +247,7 @@ class ClientTest extends TestCase
         $client->post('php.doc', 'A very important article', 'Read more in the body', 'johndoe@example.com');
     }
 
-    public function testItErrorsWhenPostingFails()
+    public function testItErrorsWhenPostingFails(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
 
@@ -274,9 +274,9 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<int, array{class-string, string, array<int, mixed>}>
      */
-    public static function getClassesForCommandMethods()
+    public static function getClassesForCommandMethods(): array
     {
         return [
             [Command\AuthInfoCommand::class, 'authInfo', ['USER', 'user']],
@@ -296,8 +296,11 @@ class ClientTest extends TestCase
 
     /**
      * @dataProvider getClassesForCommandMethods
+     *
+     * @param class-string      $commandClass
+     * @param array<int, mixed> $arguments
      */
-    public function testItReturnsResultOfCommandWhenCallingMethod($commandClass, $method, array $arguments)
+    public function testItReturnsResultOfCommandWhenCallingMethod(string $commandClass, string $method, array $arguments): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 

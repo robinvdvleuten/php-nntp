@@ -21,25 +21,25 @@ use Rvdv\Nntp\Command\GroupCommand;
  */
 class GroupCommandTest extends TestCase
 {
-    public function testItNotExpectsMultilineResponses()
+    public function testItNotExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals('GROUP php.doc', $command());
     }
 
-    public function testItReceivesAResultWhenGroupSelectedResponse()
+    public function testItReceivesAResultWhenGroupSelectedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -57,7 +57,7 @@ class GroupCommandTest extends TestCase
         $this->assertEquals('php.doc', $result['name']);
     }
 
-    public function testItErrorsWhenAuthenticationRejectedResponse()
+    public function testItErrorsWhenAuthenticationRejectedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -74,7 +74,7 @@ class GroupCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): GroupCommand
     {
         return new GroupCommand('php.doc');
     }

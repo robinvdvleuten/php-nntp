@@ -21,25 +21,25 @@ use Rvdv\Nntp\Command\PostArticleCommand;
  */
 class PostArticleCommandTest extends TestCase
 {
-    public function testItNotExpectsMultilineResponses()
+    public function testItNotExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals("From: from <user@example.com>\r\nNewsgroups: php.doc\r\nSubject: subject\r\nX-poster: php-nntp\r\n\r\nbody", $command());
     }
 
-    public function testItErrorsWhenPostingFailedResponse()
+    public function testItErrorsWhenPostingFailedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -53,7 +53,7 @@ class PostArticleCommandTest extends TestCase
         }
     }
 
-    public function testItReceivesResponseAsResultWhenArticleReceivedResponse()
+    public function testItReceivesResponseAsResultWhenArticleReceivedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -65,7 +65,7 @@ class PostArticleCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): PostArticleCommand
     {
         return new PostArticleCommand('php.doc', 'subject', 'body', 'from <user@example.com>', null);
     }

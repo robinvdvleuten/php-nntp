@@ -21,25 +21,25 @@ use Rvdv\Nntp\Command\OverviewFormatCommand;
  */
 class OverviewFormatCommandTest extends TestCase
 {
-    public function testItExpectsMultilineResponses()
+    public function testItExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertTrue($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals('LIST OVERVIEW.FMT', $command());
     }
 
-    public function testItReceivesAResultWhenInformationFollowsResponse()
+    public function testItReceivesAResultWhenInformationFollowsResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -70,7 +70,7 @@ class OverviewFormatCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): OverviewFormatCommand
     {
         return new OverviewFormatCommand();
     }

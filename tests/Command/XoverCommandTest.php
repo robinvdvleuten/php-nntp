@@ -19,25 +19,25 @@ use Rvdv\Nntp\Command\XoverCommand;
  */
 class XoverCommandTest extends TestCase
 {
-    public function testItExpectsMultilineResponses()
+    public function testItExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertTrue($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals('XOVER 1-11', $command());
     }
 
-    public function testItReceivesAResultWhenOverviewInformationFollowsResponse()
+    public function testItReceivesAResultWhenOverviewInformationFollowsResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -65,7 +65,7 @@ class XoverCommandTest extends TestCase
         $this->assertEquals('nntp:123456789', $result[0]['xref']);
     }
 
-    public function testItErrorsWhenNoNewsGroupCurrentSelectedResponse()
+    public function testItErrorsWhenNoNewsGroupCurrentSelectedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -79,7 +79,7 @@ class XoverCommandTest extends TestCase
         }
     }
 
-    public function testItErrorsWhenNoArticlesSelectedResponse()
+    public function testItErrorsWhenNoArticlesSelectedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -96,7 +96,7 @@ class XoverCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): XoverCommand
     {
         return new XoverCommand(1, 11, [
             'subject' => false,

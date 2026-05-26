@@ -44,17 +44,17 @@ class BodyCommand extends Command implements CommandInterface
         return implode("\r\n", $response->getLines());
     }
 
-    public function onNoNewsGroupCurrentSelected(Response $response): never
+    public function onNoNewsGroupCurrentSelected(Response $response): void
     {
         throw new RuntimeException('A group must be selected first before getting an article body.', (int) $response->getStatusCode());
     }
 
-    public function onNoSuchArticleNumber(Response $response): never
+    public function onNoSuchArticleNumber(Response $response): void
     {
         throw new RuntimeException('No article with that number.', (int) $response->getStatusCode());
     }
 
-    public function onNoSuchArticleId(Response $response): never
+    public function onNoSuchArticleId(Response $response): void
     {
         throw new RuntimeException('No article with that message-id.', (int) $response->getStatusCode());
     }

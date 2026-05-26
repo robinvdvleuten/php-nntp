@@ -21,19 +21,19 @@ use Rvdv\Nntp\Command\AuthInfoCommand;
  */
 class AuthInfoCommandTest extends TestCase
 {
-    public function testItNotExpectsMultilineResponses()
+    public function testItNotExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance(AuthInfoCommand::AUTHINFO_USER, 'user');
         $this->assertEquals('AUTHINFO USER user', $command());
@@ -42,7 +42,7 @@ class AuthInfoCommandTest extends TestCase
         $this->assertEquals('AUTHINFO PASS pass', $command());
     }
 
-    public function testItReceivesResponseAsResultWhenAuthenticatedAcceptedResponse()
+    public function testItReceivesResponseAsResultWhenAuthenticatedAcceptedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -51,7 +51,7 @@ class AuthInfoCommandTest extends TestCase
         $this->assertSame($response, $command->onAuthenticationAccepted($response));
     }
 
-    public function testItReceivesResponseAsResultWhenPasswordRequiredResponse()
+    public function testItReceivesResponseAsResultWhenPasswordRequiredResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -60,7 +60,7 @@ class AuthInfoCommandTest extends TestCase
         $this->assertSame($response, $command->onPasswordRequired($response));
     }
 
-    public function testItErrorsWhenAuthenticationRejectedResponse()
+    public function testItErrorsWhenAuthenticationRejectedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -74,7 +74,7 @@ class AuthInfoCommandTest extends TestCase
         }
     }
 
-    public function testItErrorsWhenAuthenticationOutOfSequenceResponse()
+    public function testItErrorsWhenAuthenticationOutOfSequenceResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -91,7 +91,7 @@ class AuthInfoCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): AuthInfoCommand
     {
         $args = func_get_args();
         if (empty($args)) {

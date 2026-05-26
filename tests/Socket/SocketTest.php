@@ -19,7 +19,7 @@ use Rvdv\Nntp\Socket\Socket;
  */
 class SocketTest extends TestCase
 {
-    public function testConnectGoogle()
+    public function testConnectGoogle(): void
     {
         $socket = new Socket();
 
@@ -40,7 +40,7 @@ class SocketTest extends TestCase
         $this->assertSame($socket, $socket->disconnect());
     }
 
-    public function testConnectFail()
+    public function testConnectFail(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\SocketException::class);
 
