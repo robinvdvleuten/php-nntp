@@ -275,23 +275,29 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @return array<int, array{class-string, string, array<int, mixed>}>
+     * @return array<int, array{class-string, string, array<int, mixed>, mixed, bool}>
      */
     public static function getClassesForCommandMethods(): array
     {
+        $response = new Response(200, 'ok');
+        $group = ['count' => '1', 'first' => '1', 'last' => '1', 'name' => 'php.doc'];
+        $groups = [['name' => 'php.doc', 'high' => '1', 'low' => '1', 'status' => 'y']];
+        $overviewFormat = ['subject' => false];
+        $overview = [['number' => '1', 'subject' => 'subject']];
+
         return [
-            [Command\AuthInfoCommand::class, 'authInfo', ['USER', 'user']],
-            [Command\BodyCommand::class, 'body', ['1234']],
-            [Command\HeadCommand::class, 'head', ['12345']],
-            [Command\GroupCommand::class, 'group', ['php.doc']],
-            [Command\HelpCommand::class, 'help', []],
-            [Command\ListCommand::class, 'listGroups', ['php', []]],
-            [Command\OverviewFormatCommand::class, 'overviewFormat', []],
-            [Command\PostArticleCommand::class, 'postArticle', ['php.doc', 'A very important article', 'Read more in the body', 'johndoe@example.com', 'headers']],
-            [Command\QuitCommand::class, 'quit', []],
-            [Command\XFeatureCommand::class, 'xfeature', ['COMPRESS GZIP']],
-            [Command\XoverCommand::class, 'xover', [1, 1, []]],
-            [Command\XzverCommand::class, 'xzver', [1, 1, []]],
+            [Command\AuthInfoCommand::class, 'authInfo', ['USER', 'user'], $response, false],
+            [Command\BodyCommand::class, 'body', ['1234'], 'body', false],
+            [Command\HeadCommand::class, 'head', ['12345'], 'head', false],
+            [Command\GroupCommand::class, 'group', ['php.doc'], $group, false],
+            [Command\HelpCommand::class, 'help', [], 'help', false],
+            [Command\ListCommand::class, 'listGroups', ['php', null], $groups, false],
+            [Command\OverviewFormatCommand::class, 'overviewFormat', [], $overviewFormat, false],
+            [Command\PostArticleCommand::class, 'postArticle', ['php.doc', 'A very important article', 'Read more in the body', 'johndoe@example.com', 'headers'], $response, true],
+            [Command\QuitCommand::class, 'quit', [], null, false],
+            [Command\XFeatureCommand::class, 'xfeature', ['COMPRESS GZIP'], true, false],
+            [Command\XoverCommand::class, 'xover', [1, 1, []], $overview, false],
+            [Command\XzverCommand::class, 'xzver', [1, 1, []], $overview, false],
         ];
     }
 
@@ -300,21 +306,23 @@ class ClientTest extends TestCase
      * @param array<int, mixed> $arguments
      */
     #[DataProvider('getClassesForCommandMethods')]
-    public function testItReturnsResultOfCommandWhenCallingMethod(string $commandClass, string $method, array $arguments): void
+    public function testItReturnsResultOfCommandWhenCallingMethod(string $commandClass, string $method, array $arguments, mixed $result, bool $sendsArticle): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
-        $connection->expects($this->any())
+        $connection->expects($sendsArticle ? $this->never() : $this->once())
             ->method('sendCommand')
-            ->willReturnArgument(0);
+            ->with($this->isInstanceOf($commandClass))
+            ->willReturn($result);
 
-        $connection->expects($this->any())
+        $connection->expects($sendsArticle ? $this->once() : $this->never())
             ->method('sendArticle')
-            ->willReturnArgument(0);
+            ->with($this->isInstanceOf($commandClass))
+            ->willReturn($result);
 
         $client = new Client($connection);
 
         $this->assertTrue(method_exists($client, $method));
-        $this->assertInstanceOf($commandClass, $client->{$method}(...$arguments));
+        $this->assertSame($result, $client->{$method}(...$arguments));
     }
 }

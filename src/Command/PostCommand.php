@@ -31,8 +31,9 @@ class PostCommand extends Command implements CommandInterface
         return 'POST';
     }
 
-    public function onSendArticle(Response $response): void
+    public function onSendArticle(Response $response): Response
     {
+        return $response;
     }
 
     public function onPostingNotPermitted(Response $response): void
