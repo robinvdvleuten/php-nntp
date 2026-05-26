@@ -203,4 +203,51 @@ class ConnectionTest extends TestCase
         $connection = new Connection('localhost', 5000, false, $this->socket);
         $connection->sendCommand($command);
     }
+
+    public function testSendingArticleAppendsFinalTerminator(): void
+    {
+        $command = new class () implements CommandInterface {
+            public function __invoke(): string
+            {
+                return "From: from <user@example.com>\r\n\r\n..body";
+            }
+
+            public function isMultiLine(): bool
+            {
+                return false;
+            }
+
+            public function isCompressed(): bool
+            {
+                return false;
+            }
+
+            public function onArticleReceived(ResponseInterface $response): ResponseInterface
+            {
+                return $response;
+            }
+        };
+
+        $this->socket->expects($this->atLeastOnce())
+            ->method('eof')
+            ->willReturn(false);
+
+        $this->socket->expects($this->once())
+            ->method('gets')
+            ->with(1024)
+            ->willReturn("240 article received ok\r\n");
+
+        $expectedWrite = "From: from <user@example.com>\r\n\r\n..body\r\n.\r\n";
+
+        $this->socket->expects($this->once())
+            ->method('write')
+            ->with($expectedWrite)
+            ->willReturn(strlen($expectedWrite));
+
+        $connection = new Connection('localhost', 5000, false, $this->socket);
+
+        $response = $connection->sendArticle($command);
+
+        $this->assertSame(Response::$codes['ArticleReceived'], $response->getStatusCode());
+    }
 }

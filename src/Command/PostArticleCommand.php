@@ -44,6 +44,11 @@ class PostArticleCommand extends Command implements CommandInterface
 
     public function __invoke(): string
     {
+        return $this->dotStuffLines($this->buildArticle());
+    }
+
+    private function buildArticle(): string
+    {
         $article = [
             'From: '.$this->from,
             'Newsgroups: '.$this->groups,
@@ -57,7 +62,23 @@ class PostArticleCommand extends Command implements CommandInterface
 
         $article[] = "\r\n".$this->body;
 
-        return implode("\r\n", $article);
+        return $this->normalizeLineEndings(implode("\r\n", $article));
+    }
+
+    private function normalizeLineEndings(string $value): string
+    {
+        $value = str_replace("\r\n", "\n", $value);
+        $value = str_replace("\r", "\n", $value);
+
+        return str_replace("\n", "\r\n", $value);
+    }
+
+    private function dotStuffLines(string $article): string
+    {
+        return implode("\r\n", array_map(
+            static fn (string $line): string => str_starts_with($line, '.') ? '.'.$line : $line,
+            explode("\r\n", $article)
+        ));
     }
 
     public function onArticleReceived(Response $response): Response
