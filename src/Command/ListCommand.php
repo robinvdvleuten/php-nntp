@@ -17,12 +17,12 @@ use Rvdv\Nntp\Response\Response;
 
 class ListCommand extends Command
 {
-    const KEYWORD_ACTIVE = 'ACTIVE';
-    const KEYWORD_ACTIVE_TIMES = 'ACTIVE.TIMES';
-    const KEYWORD_DISTRIB_PATS = 'DISTRIB.PATS';
-    const KEYWORD_HEADERS = 'HEADERS';
-    const KEYWORD_NEWSGROUPS = 'NEWSGROUPS';
-    const KEYWORD_OVERVIEW_FMT = 'OVERVIEW.FMT';
+    public const KEYWORD_ACTIVE = 'ACTIVE';
+    public const KEYWORD_ACTIVE_TIMES = 'ACTIVE.TIMES';
+    public const KEYWORD_DISTRIB_PATS = 'DISTRIB.PATS';
+    public const KEYWORD_HEADERS = 'HEADERS';
+    public const KEYWORD_NEWSGROUPS = 'NEWSGROUPS';
+    public const KEYWORD_OVERVIEW_FMT = 'OVERVIEW.FMT';
 
     /**
      * @var string

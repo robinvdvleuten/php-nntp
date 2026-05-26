@@ -18,12 +18,12 @@ class XpathCommand extends Command implements CommandInterface
     /**
      * @var int
      */
-    const FOUND_PATH = 223;
+    public const FOUND_PATH = 223;
 
     /**
      * @var int
      */
-    const INVALID_REFERENCE = 501;
+    public const INVALID_REFERENCE = 501;
 
     /**
      * @var string

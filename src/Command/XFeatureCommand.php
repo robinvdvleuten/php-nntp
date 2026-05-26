@@ -20,7 +20,7 @@ use Rvdv\Nntp\Response\Response;
  */
 class XFeatureCommand extends Command implements CommandInterface
 {
-    const COMPRESS_GZIP = 'COMPRESS GZIP';
+    public const COMPRESS_GZIP = 'COMPRESS GZIP';
 
     /**
      * @var string
