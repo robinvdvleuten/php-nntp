@@ -11,7 +11,7 @@ Client for communicating with servers throught the Network News Transfer Protoco
 The recommended way to install the library is [through composer](http://getcomposer.org).
 
 ```bash
-composer require rvdv/nntp:^0.9.0
+composer require rvdv/nntp
 ```
 
 ## NNTP?
