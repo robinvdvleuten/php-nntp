@@ -276,7 +276,7 @@ class ClientTest extends TestCase
     /**
      * @return array
      */
-    public function getClassesForCommandMethods()
+    public static function getClassesForCommandMethods()
     {
         return [
             [Command\AuthInfoCommand::class, 'authInfo', ['USER', 'user']],
