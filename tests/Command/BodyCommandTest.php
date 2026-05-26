@@ -49,7 +49,7 @@ class BodyCommandTest extends TestCase
 
         $response->expects($this->once())
             ->method('getLines')
-            ->will($this->returnValue($lines));
+            ->willReturn($lines);
 
         $this->assertEquals(implode("\r\n", $lines), $command->onBodyFollows($response));
     }

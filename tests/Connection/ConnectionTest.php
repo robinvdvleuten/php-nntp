@@ -17,6 +17,7 @@ use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Exception\SocketException;
 use Rvdv\Nntp\Response\Response;
+use Rvdv\Nntp\Response\ResponseInterface;
 use Rvdv\Nntp\Socket\SocketInterface;
 
 /**
@@ -112,22 +113,41 @@ class ConnectionTest extends TestCase
     {
         $result = 'result';
 
-        $command = $this->getMockBuilder(CommandInterface::class)
-            ->onlyMethods(['__invoke', 'isMultiLine', 'isCompressed'])
-            ->addMethods(['onPostingAllowed'])
-            ->getMock();
+        $command = new class ($result) implements CommandInterface {
+            public int $invocations = 0;
+            public int $multiLineChecks = 0;
+            public int $handlerCalls = 0;
 
-        $command->expects($this->once())
-            ->method('__invoke')
-            ->willReturn('command');
+            public function __construct(private readonly string $result)
+            {
+            }
 
-        $command->expects($this->once())
-            ->method('isMultiLine')
-            ->willReturn(false);
+            public function __invoke(): string
+            {
+                ++$this->invocations;
 
-        $command->expects($this->once())
-            ->method('onPostingAllowed')
-            ->willReturn($result);
+                return 'command';
+            }
+
+            public function isMultiLine(): bool
+            {
+                ++$this->multiLineChecks;
+
+                return false;
+            }
+
+            public function isCompressed(): bool
+            {
+                return false;
+            }
+
+            public function onPostingAllowed(ResponseInterface $response): string
+            {
+                ++$this->handlerCalls;
+
+                return $this->result;
+            }
+        };
 
         $this->socket->expects($this->atLeastOnce())
             ->method('eof')
@@ -146,6 +166,9 @@ class ConnectionTest extends TestCase
         $connection = new Connection('localhost', 5000, false, $this->socket);
 
         $this->assertSame($result, $connection->sendCommand($command));
+        $this->assertSame(1, $command->invocations);
+        $this->assertSame(1, $command->multiLineChecks);
+        $this->assertSame(1, $command->handlerCalls);
     }
 
     public function testSendingCommandFailsWhenCommandStringExceedsMaximumCharacters(): void

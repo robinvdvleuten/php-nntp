@@ -12,6 +12,7 @@
 namespace Rvdv\Nntp\Tests;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Rvdv\Nntp\Client;
 use Rvdv\Nntp\Command;
 use Rvdv\Nntp\Connection\ConnectionInterface;
@@ -40,7 +41,7 @@ class ClientTest extends TestCase
 
         $connection->expects($this->once())
             ->method('connect')
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $client = new Client($connection);
 
@@ -64,7 +65,7 @@ class ClientTest extends TestCase
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
-            ->will($this->returnValue(Response::$codes['AuthenticationAccepted']));
+            ->willReturn(Response::$codes['AuthenticationAccepted']);
 
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -73,7 +74,7 @@ class ClientTest extends TestCase
             ->with($this->callback(function (Command\AuthInfoCommand $command) {
                 return 'AUTHINFO USER username' === $command();
             }))
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $client = new Client($connection);
         $client->authenticate('username');
@@ -85,7 +86,7 @@ class ClientTest extends TestCase
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
-            ->will($this->onConsecutiveCalls(Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']));
+            ->willReturn(Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']);
 
         $expectedCommands = ['AUTHINFO USER username', 'AUTHINFO PASS password'];
 
@@ -96,7 +97,7 @@ class ClientTest extends TestCase
             ->with($this->callback(function (Command\AuthInfoCommand $command) use (&$expectedCommands) {
                 return array_shift($expectedCommands) === $command();
             }))
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $client = new Client($connection);
         $client->authenticate('username', 'password');
@@ -110,7 +111,7 @@ class ClientTest extends TestCase
 
         $response->expects($this->once())
             ->method('getStatusCode')
-            ->will($this->returnValue(Response::$codes['PasswordRequired']));
+            ->willReturn(Response::$codes['PasswordRequired']);
 
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -119,7 +120,7 @@ class ClientTest extends TestCase
             ->with($this->callback(function (Command\AuthInfoCommand $command) {
                 return 'AUTHINFO USER username' === $command();
             }))
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $client = new Client($connection);
         $client->authenticate('username');
@@ -133,7 +134,7 @@ class ClientTest extends TestCase
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
-            ->will($this->returnValue(Response::$codes['AuthenticationRejected']));
+            ->willReturn(Response::$codes['AuthenticationRejected']);
 
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -142,7 +143,7 @@ class ClientTest extends TestCase
             ->with($this->callback(function (Command\AuthInfoCommand $command) {
                 return 'AUTHINFO USER unknown' === $command();
             }))
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $client = new Client($connection);
         $client->authenticate('unknown');
@@ -154,7 +155,7 @@ class ClientTest extends TestCase
 
         $response->expects($this->exactly(3))
             ->method('getStatusCode')
-            ->will($this->onConsecutiveCalls(Response::$codes['PostingAllowed'], Response::$codes['AuthenticationAccepted'], Response::$codes['AuthenticationAccepted']));
+            ->willReturn(Response::$codes['PostingAllowed'], Response::$codes['AuthenticationAccepted'], Response::$codes['AuthenticationAccepted']);
 
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -167,7 +168,7 @@ class ClientTest extends TestCase
             ->with($this->callback(function (Command\AuthInfoCommand $command) {
                 return 'AUTHINFO USER username' === $command();
             }))
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $client = new Client($connection);
         $client->connectAndAuthenticate('username');
@@ -179,7 +180,7 @@ class ClientTest extends TestCase
 
         $response->expects($this->exactly(3))
             ->method('getStatusCode')
-            ->will($this->onConsecutiveCalls(Response::$codes['PostingAllowed'], Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']));
+            ->willReturn(Response::$codes['PostingAllowed'], Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']);
 
         $expectedCommands = ['AUTHINFO USER username', 'AUTHINFO PASS password'];
 
@@ -194,7 +195,7 @@ class ClientTest extends TestCase
             ->with($this->callback(function (Command\AuthInfoCommand $command) use (&$expectedCommands) {
                 return array_shift($expectedCommands) === $command();
             }))
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $client = new Client($connection);
         $client->connectAndAuthenticate('username', 'password');
@@ -208,7 +209,7 @@ class ClientTest extends TestCase
 
         $response->expects($this->once())
             ->method('getStatusCode')
-            ->will($this->returnValue(Response::$codes['CommandUnavailable']));
+            ->willReturn(Response::$codes['CommandUnavailable']);
 
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -229,19 +230,19 @@ class ClientTest extends TestCase
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
-            ->will($this->onConsecutiveCalls(Response::$codes['SendArticle'], Response::$codes['ArticleReceived']));
+            ->willReturn(Response::$codes['SendArticle'], Response::$codes['ArticleReceived']);
 
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('sendCommand')
             ->with($this->isInstanceOf(Command\PostCommand::class))
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $connection->expects($this->once())
             ->method('sendArticle')
             ->with($this->isInstanceOf(Command\PostArticleCommand::class))
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $client = new Client($connection);
         $client->post('php.doc', 'A very important article', 'Read more in the body', 'johndoe@example.com');
@@ -255,19 +256,19 @@ class ClientTest extends TestCase
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
-            ->will($this->onConsecutiveCalls(Response::$codes['SendArticle'], Response::$codes['PostingFailed']));
+            ->willReturn(Response::$codes['SendArticle'], Response::$codes['PostingFailed']);
 
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('sendCommand')
             ->with($this->isInstanceOf(Command\PostCommand::class))
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $connection->expects($this->once())
             ->method('sendArticle')
             ->with($this->isInstanceOf(Command\PostArticleCommand::class))
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $client = new Client($connection);
         $client->post('php.doc', 'A very important article', 'Read more in the body', 'johndoe@example.com');
@@ -295,22 +296,21 @@ class ClientTest extends TestCase
     }
 
     /**
-     * @dataProvider getClassesForCommandMethods
-     *
      * @param class-string      $commandClass
      * @param array<int, mixed> $arguments
      */
+    #[DataProvider('getClassesForCommandMethods')]
     public function testItReturnsResultOfCommandWhenCallingMethod(string $commandClass, string $method, array $arguments): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->any())
             ->method('sendCommand')
-            ->will($this->returnArgument(0));
+            ->willReturnArgument(0);
 
         $connection->expects($this->any())
             ->method('sendArticle')
-            ->will($this->returnArgument(0));
+            ->willReturnArgument(0);
 
         $client = new Client($connection);
 

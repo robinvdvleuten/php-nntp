@@ -47,7 +47,7 @@ class GroupCommandTest extends TestCase
 
         $response->expects($this->once())
             ->method('getMessage')
-            ->will($this->returnValue('1234 3000234 3002322 php.doc'));
+            ->willReturn('1234 3000234 3002322 php.doc');
 
         $result = $command->onGroupSelected($response);
 

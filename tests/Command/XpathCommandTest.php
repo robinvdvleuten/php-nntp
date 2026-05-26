@@ -29,7 +29,7 @@ class XpathCommandTest extends TestCase
 
         $response->expects($this->once())
                  ->method('getMessage')
-                 ->will($this->returnValue('1'));
+                 ->willReturn('1');
 
         $this->assertEquals('1', $command->onFoundPath($response));
     }
@@ -41,7 +41,7 @@ class XpathCommandTest extends TestCase
 
         $response->expects($this->never())
                  ->method('getMessage')
-                 ->will($this->returnValue('501 invalid msgid'));
+                 ->willReturn('501 invalid msgid');
 
         $command->onInvalidMessage($response);
         $this->addToAssertionCount(1);
