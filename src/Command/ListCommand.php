@@ -24,23 +24,11 @@ class ListCommand extends Command
     public const KEYWORD_NEWSGROUPS = 'NEWSGROUPS';
     public const KEYWORD_OVERVIEW_FMT = 'OVERVIEW.FMT';
 
-    /**
-     * @var string
-     */
-    protected $keyword;
+    protected ?string $keyword;
 
-    /**
-     * @var string
-     */
-    protected $arguments;
+    protected mixed $arguments;
 
-    /**
-     * Constructor.
-     *
-     * @param string $keyword
-     * @param string $arguments
-     */
-    public function __construct($keyword = null, $arguments = null)
+    public function __construct(?string $keyword = null, mixed $arguments = null)
     {
         $this->keyword = $keyword;
         $this->arguments = $arguments;
@@ -48,20 +36,15 @@ class ListCommand extends Command
         parent::__construct(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return trim(sprintf('LIST %s %s', $this->keyword, $this->arguments));
     }
 
     /**
-     * @param MultiLineResponse $response
-     *
-     * @return array
+     * @return array<int, array{name: string, high: string, low: string, status: string}>
      */
-    public function onInformationFollows(MultiLineResponse $response)
+    public function onInformationFollows(MultiLineResponse $response): array
     {
         $lines = $response->getLines();
         $totalLines = count($lines);
@@ -82,12 +65,12 @@ class ListCommand extends Command
         return $result;
     }
 
-    public function onInvalidKeyword(Response $response)
+    public function onInvalidKeyword(Response $response): never
     {
         throw new RuntimeException('Invalid keyword, or unexpected argument for keyword.', (int) $response->getStatusCode());
     }
 
-    public function onError(Response $response)
+    public function onError(Response $response): never
     {
         throw new RuntimeException('Error retrieving group list', (int) $response->getStatusCode());
     }

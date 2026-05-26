@@ -20,15 +20,12 @@ use Rvdv\Nntp\Response\Response;
  */
 class QuitCommand extends Command implements CommandInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return 'QUIT';
     }
 
-    public function onConnectionClosing(Response $response)
+    public function onConnectionClosing(Response $response): void
     {
     }
 }

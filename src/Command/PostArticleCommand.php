@@ -21,35 +21,17 @@ use Rvdv\Nntp\Response\Response;
  */
 class PostArticleCommand extends Command implements CommandInterface
 {
-    /**
-     * @var string
-     */
-    private $groups;
+    private string $groups;
 
-    /**
-     * @var string
-     */
-    private $subject;
+    private string $subject;
 
-    /**
-     * @var string
-     */
-    private $body;
+    private string $body;
 
-    /**
-     * @var string
-     */
-    private $from;
+    private string $from;
 
-    /**
-     * @var string
-     */
-    private $headers;
+    private ?string $headers;
 
-    /**
-     * Constructor.
-     */
-    public function __construct($groups, $subject, $body, $from, $headers)
+    public function __construct(string $groups, string $subject, string $body, string $from, ?string $headers)
     {
         $this->groups = $groups;
         $this->subject = $subject;
@@ -60,10 +42,7 @@ class PostArticleCommand extends Command implements CommandInterface
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         $article = [
             'From: '.$this->from,
@@ -81,12 +60,12 @@ class PostArticleCommand extends Command implements CommandInterface
         return implode("\r\n", $article);
     }
 
-    public function onArticleReceived(Response $response)
+    public function onArticleReceived(Response $response): Response
     {
         return $response;
     }
 
-    public function onPostingFailed(Response $response)
+    public function onPostingFailed(Response $response): never
     {
         throw new RuntimeException(sprintf('Posting failed: %s', $response->getMessage()), (int) $response->getStatusCode());
     }

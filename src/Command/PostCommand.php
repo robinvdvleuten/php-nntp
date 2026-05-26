@@ -21,27 +21,21 @@ use Rvdv\Nntp\Response\Response;
  */
 class PostCommand extends Command implements CommandInterface
 {
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return 'POST';
     }
 
-    public function onSendArticle(Response $response)
+    public function onSendArticle(Response $response): void
     {
     }
 
-    public function onPostingNotPermitted(Response $response)
+    public function onPostingNotPermitted(Response $response): never
     {
         throw new RuntimeException('Posting not permitted.', (int) $response->getStatusCode());
     }

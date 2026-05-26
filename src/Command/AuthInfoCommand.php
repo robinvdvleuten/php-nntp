@@ -24,17 +24,11 @@ class AuthInfoCommand extends Command implements CommandInterface
     public const AUTHINFO_USER = 'USER';
     public const AUTHINFO_PASS = 'PASS';
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
-    public function __construct($type, $value)
+    public function __construct(string $type, string $value)
     {
         $this->type = $type;
         $this->value = $value;
@@ -42,30 +36,27 @@ class AuthInfoCommand extends Command implements CommandInterface
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return sprintf('AUTHINFO %s %s', $this->type, $this->value);
     }
 
-    public function onAuthenticationAccepted(Response $response)
+    public function onAuthenticationAccepted(Response $response): Response
     {
         return $response;
     }
 
-    public function onPasswordRequired(Response $response)
+    public function onPasswordRequired(Response $response): Response
     {
         return $response;
     }
 
-    public function onAuthenticationRejected(Response $response)
+    public function onAuthenticationRejected(Response $response): never
     {
         throw new RuntimeException(sprintf('Authentication failed with given value for type %s', $this->type));
     }
 
-    public function onAuthenticationOutOfSequence(Response $response)
+    public function onAuthenticationOutOfSequence(Response $response): never
     {
         throw new RuntimeException(sprintf('Authentication is out of sequence for type %s', $this->type));
     }

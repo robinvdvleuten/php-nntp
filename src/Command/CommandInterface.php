@@ -16,18 +16,9 @@ namespace Rvdv\Nntp\Command;
  */
 interface CommandInterface
 {
-    /**
-     * @return bool
-     */
-    public function isMultiLine();
+    public function isMultiLine(): bool;
 
-    /**
-     * @return bool
-     */
-    public function isCompressed();
+    public function isCompressed(): bool;
 
-    /**
-     * @return string
-     */
-    public function __invoke();
+    public function __invoke(): string;
 }

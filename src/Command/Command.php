@@ -16,33 +16,19 @@ namespace Rvdv\Nntp\Command;
  */
 abstract class Command implements CommandInterface
 {
-    /**
-     * @var bool
-     */
-    protected $isMultiLine;
+    protected bool $isMultiLine;
 
-    /**
-     * Constructor.
-     *
-     * @param bool $isMultiLine a bool indicating the response is multiline or not
-     */
-    public function __construct($isMultiLine = false)
+    public function __construct(bool $isMultiLine = false)
     {
         $this->isMultiLine = $isMultiLine;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isMultiLine()
+    public function isMultiLine(): bool
     {
         return $this->isMultiLine;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCompressed()
+    public function isCompressed(): bool
     {
         return false;
     }

@@ -25,47 +25,35 @@ class XpathCommand extends Command implements CommandInterface
      */
     public const INVALID_REFERENCE = 501;
 
-    /**
-     * @var string
-     */
-    private $reference;
+    private string $reference;
 
     /**
-     * Constructor.
-     *
      * @param string $reference The reference
      */
-    public function __construct($reference)
+    public function __construct(string $reference)
     {
         $this->reference = $reference;
 
         parent::__construct();
     }
 
-    /**
-     * @return string
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return sprintf('XPATH %s', $this->reference);
     }
 
     /**
      * Return the message's reference.
-     *
-     * @param Response $response
      */
-    public function onFoundPath(Response $response)
+    public function onFoundPath(Response $response): string
     {
         return $response->getMessage();
     }
 
     /**
      * If we didn't find the message, just return an empty response.
-     *
-     * @param Response $response
      */
-    public function onInvalidMessage(Response $response)
+    public function onInvalidMessage(Response $response): void
     {
         return;
     }
