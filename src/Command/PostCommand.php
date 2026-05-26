@@ -43,6 +43,6 @@ class PostCommand extends Command implements CommandInterface
 
     public function onPostingNotPermitted(Response $response)
     {
-        throw new RuntimeException('Posting not permitted.', $response->getStatusCode());
+        throw new RuntimeException('Posting not permitted.', (int) $response->getStatusCode());
     }
 }

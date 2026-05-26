@@ -88,6 +88,6 @@ class PostArticleCommand extends Command implements CommandInterface
 
     public function onPostingFailed(Response $response)
     {
-        throw new RuntimeException(sprintf('Posting failed: %s', $response->getMessage()), $response->getStatusCode());
+        throw new RuntimeException(sprintf('Posting failed: %s', $response->getMessage()), (int) $response->getStatusCode());
     }
 }
