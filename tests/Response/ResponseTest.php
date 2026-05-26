@@ -11,12 +11,13 @@
 
 namespace Rvdv\Nntp\Tests\Response;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Response\Response;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class ResponseTest extends \PHPUnit_Framework_TestCase
+class ResponseTest extends TestCase
 {
     public function testItCreatesResponseInstanceFromString()
     {
@@ -32,27 +33,24 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('server ready - posting allowed [200]', (string) Response::createFromString("200 server ready - posting allowed\r\n"));
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\InvalidArgumentException
-     */
     public function testItErrorsWhenIncorrectlyTerminatedStringGiven()
     {
+        $this->expectException(\Rvdv\Nntp\Exception\InvalidArgumentException::class);
+
         Response::createFromString('200 server ready - posting allowed');
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\InvalidArgumentException
-     */
     public function testItErrorsWhenIncorrectlyFormattedStringGiven()
     {
+        $this->expectException(\Rvdv\Nntp\Exception\InvalidArgumentException::class);
+
         Response::createFromString("server ready - posting allowed 200\r\n");
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
-     */
     public function testItErrorsWhenIncorrectStatusCodeIsFound()
     {
+        $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
+
         Response::createFromString("010 server ready - posting allowed\r\n");
     }
 }

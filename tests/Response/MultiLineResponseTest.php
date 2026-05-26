@@ -11,17 +11,19 @@
 
 namespace Rvdv\Nntp\Tests\Response;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Response\MultiLineResponse;
 use Rvdv\Nntp\Response\Response;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class MultiLineResponseTest extends \PHPUnit_Framework_TestCase
+class MultiLineResponseTest extends TestCase
 {
     public function testItReturnsMessageAndStatusCodeFromInjectedResponse()
     {
-        $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
+        $response = $this->createMock(ResponseInterface::class);
 
         $response->expects($this->once())
             ->method('getMessage')

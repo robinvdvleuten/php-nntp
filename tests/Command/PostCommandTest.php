@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\PostCommand;
 
 /**
@@ -18,7 +19,7 @@ use Rvdv\Nntp\Command\PostCommand;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class PostCommandTest extends \PHPUnit_Framework_TestCase
+class PostCommandTest extends TestCase
 {
     public function testItNotExpectsMultilineResponses()
     {

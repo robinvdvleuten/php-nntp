@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\ListCommand;
 
 /**
@@ -18,7 +19,7 @@ use Rvdv\Nntp\Command\ListCommand;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class ListCommandTest extends \PHPUnit_Framework_TestCase
+class ListCommandTest extends TestCase
 {
     public function testItExpectsMultilineResponses()
     {

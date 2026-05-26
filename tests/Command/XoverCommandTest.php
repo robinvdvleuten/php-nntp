@@ -11,12 +11,13 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\XoverCommand;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class XoverCommandTest extends \PHPUnit_Framework_TestCase
+class XoverCommandTest extends TestCase
 {
     public function testItExpectsMultilineResponses()
     {

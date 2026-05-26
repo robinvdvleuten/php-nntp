@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Client;
 use Rvdv\Nntp\Command;
 use Rvdv\Nntp\Connection\ConnectionInterface;
@@ -20,11 +21,11 @@ use Rvdv\Nntp\Response\ResponseInterface;
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends TestCase
 {
     public function testItReturnsConnectionInstance()
     {
-        $connection = $this->getMock(ConnectionInterface::class);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $client = new Client($connection);
 
@@ -33,11 +34,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItConnectsWithAServer()
     {
-        $response = $this->getMock(ResponseInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
 
-        $connection = $this->getMock(ConnectionInterface::class, [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('connect')
@@ -50,9 +49,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItDisconnectsFromAnEstablishedConnection()
     {
-        $connection = $this->getMock(ConnectionInterface::class, [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('disconnect');
@@ -63,23 +60,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItAuthenticatesUsernameWithConnectedServer()
     {
-        $response = $this->getMock(ResponseInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
             ->will($this->returnValue(Response::$codes['AuthenticationAccepted']));
 
-        $connection = $this->getMock(ConnectionInterface::class, [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('sendCommand')
-            ->with($this->logicalAnd(
-                $this->isInstanceOf(Command\AuthInfoCommand::class),
-                $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
-                $this->attributeEqualTo('value', 'username')
-            ))
+            ->with($this->callback(function (Command\AuthInfoCommand $command) {
+                return 'AUTHINFO USER username' === $command();
+            }))
             ->will($this->returnValue($response));
 
         $client = new Client($connection);
@@ -88,29 +81,23 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItAuthenticatesUsernamePasswordWithConnectedServer()
     {
-        $response = $this->getMock(ResponseInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
             ->will($this->onConsecutiveCalls(Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']));
 
-        $connection = $this->getMock(ConnectionInterface::class, [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->exactly(2))
             ->method('sendCommand')
             ->withConsecutive(
-                [$this->logicalAnd(
-                    $this->isInstanceOf(Command\AuthInfoCommand::class),
-                    $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
-                    $this->attributeEqualTo('value', 'username')
-                )],
-                [$this->logicalAnd(
-                    $this->isInstanceOf(Command\AuthInfoCommand::class),
-                    $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_PASS),
-                    $this->attributeEqualTo('value', 'password')
-                )]
+                [$this->callback(function (Command\AuthInfoCommand $command) {
+                    return 'AUTHINFO USER username' === $command();
+                })],
+                [$this->callback(function (Command\AuthInfoCommand $command) {
+                    return 'AUTHINFO PASS password' === $command();
+                })]
             )
             ->will($this->returnValue($response));
 
@@ -118,56 +105,46 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->authenticate('username', 'password');
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
-     */
     public function testItErrorsWhenAuthenticateNeedsPassword()
     {
-        $response = $this->getMock(ResponseInterface::class);
+        $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
+
+        $response = $this->createMock(ResponseInterface::class);
 
         $response->expects($this->once())
             ->method('getStatusCode')
             ->will($this->returnValue(Response::$codes['PasswordRequired']));
 
-        $connection = $this->getMock(ConnectionInterface::class, [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('sendCommand')
-            ->with($this->logicalAnd(
-                $this->isInstanceOf(Command\AuthInfoCommand::class),
-                $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
-                $this->attributeEqualTo('value', 'username')
-            ))
+            ->with($this->callback(function (Command\AuthInfoCommand $command) {
+                return 'AUTHINFO USER username' === $command();
+            }))
             ->will($this->returnValue($response));
 
         $client = new Client($connection);
         $client->authenticate('username');
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
-     */
     public function testItErrorsWhenAuthenticateFails()
     {
-        $response = $this->getMock('Rvdv\Nntp\Response\ResponseInterface');
+        $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
+
+        $response = $this->createMock(ResponseInterface::class);
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
             ->will($this->returnValue(Response::$codes['AuthenticationRejected']));
 
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('sendCommand')
-            ->with($this->logicalAnd(
-                $this->isInstanceOf('Rvdv\Nntp\Command\AuthInfoCommand'),
-                $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
-                $this->attributeEqualTo('value', 'unknown')
-            ))
+            ->with($this->callback(function (Command\AuthInfoCommand $command) {
+                return 'AUTHINFO USER unknown' === $command();
+            }))
             ->will($this->returnValue($response));
 
         $client = new Client($connection);
@@ -176,15 +153,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItConnectsAndAuthenticatesUsernameWithConnectedServer()
     {
-        $response = $this->getMock(ResponseInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
 
         $response->expects($this->exactly(3))
             ->method('getStatusCode')
             ->will($this->onConsecutiveCalls(Response::$codes['PostingAllowed'], Response::$codes['AuthenticationAccepted'], Response::$codes['AuthenticationAccepted']));
 
-        $connection = $this->getMock(ConnectionInterface::class, [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('connect')
@@ -192,11 +167,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $connection->expects($this->once())
             ->method('sendCommand')
-            ->with($this->logicalAnd(
-                $this->isInstanceOf(Command\AuthInfoCommand::class),
-                $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
-                $this->attributeEqualTo('value', 'username')
-            ))
+            ->with($this->callback(function (Command\AuthInfoCommand $command) {
+                return 'AUTHINFO USER username' === $command();
+            }))
             ->will($this->returnValue($response));
 
         $client = new Client($connection);
@@ -205,15 +178,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItConnectsAndAuthenticatesUsernamePasswordWithConnectedServer()
     {
-        $response = $this->getMock(ResponseInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
 
         $response->expects($this->exactly(3))
             ->method('getStatusCode')
             ->will($this->onConsecutiveCalls(Response::$codes['PostingAllowed'], Response::$codes['PasswordRequired'], Response::$codes['AuthenticationAccepted']));
 
-        $connection = $this->getMock(ConnectionInterface::class, [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('connect')
@@ -222,16 +193,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $connection->expects($this->exactly(2))
             ->method('sendCommand')
             ->withConsecutive(
-                [$this->logicalAnd(
-                    $this->isInstanceOf(Command\AuthInfoCommand::class),
-                    $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_USER),
-                    $this->attributeEqualTo('value', 'username')
-                )],
-                [$this->logicalAnd(
-                    $this->isInstanceOf(Command\AuthInfoCommand::class),
-                    $this->attributeEqualTo('type', Command\AuthInfoCommand::AUTHINFO_PASS),
-                    $this->attributeEqualTo('value', 'password')
-                )]
+                [$this->callback(function (Command\AuthInfoCommand $command) {
+                    return 'AUTHINFO USER username' === $command();
+                })],
+                [$this->callback(function (Command\AuthInfoCommand $command) {
+                    return 'AUTHINFO PASS password' === $command();
+                })]
             )
             ->will($this->returnValue($response));
 
@@ -239,20 +206,17 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->connectAndAuthenticate('username', 'password');
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
-     */
     public function testItErrorsWhenConnectingFails()
     {
-        $response = $this->getMock(ResponseInterface::class);
+        $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
+
+        $response = $this->createMock(ResponseInterface::class);
 
         $response->expects($this->once())
             ->method('getStatusCode')
             ->will($this->returnValue(null));
 
-        $connection = $this->getMock(ConnectionInterface::class, [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('connect')
@@ -267,15 +231,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testItReturnResponseWhenPostingAnArticle()
     {
-        $response = $this->getMock(ResponseInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
             ->will($this->onConsecutiveCalls(Response::$codes['SendArticle'], Response::$codes['ArticleReceived']));
 
-        $connection = $this->getMock(ConnectionInterface::class, [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('sendCommand')
@@ -291,20 +253,17 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->post('php.doc', 'A very important article', 'Read more in the body', 'johndoe@example.com');
     }
 
-    /**
-     * @expectedException \Rvdv\Nntp\Exception\RuntimeException
-     */
     public function testItErrorsWhenPostingFails()
     {
-        $response = $this->getMock(ResponseInterface::class);
+        $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
+
+        $response = $this->createMock(ResponseInterface::class);
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
             ->will($this->onConsecutiveCalls(Response::$codes['SendArticle'], null));
 
-        $connection = $this->getMock(ConnectionInterface::class, [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->once())
             ->method('sendCommand')
@@ -346,9 +305,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function testItReturnsResultOfCommandWhenCallingMethod($commandClass, $method, array $arguments)
     {
-        $connection = $this->getMock('Rvdv\Nntp\Connection\ConnectionInterface', [
-            'connect', 'disconnect', 'sendCommand', 'sendArticle',
-        ]);
+        $connection = $this->createMock(ConnectionInterface::class);
 
         $connection->expects($this->any())
             ->method('sendCommand')

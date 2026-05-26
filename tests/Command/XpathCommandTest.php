@@ -11,9 +11,10 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\XpathCommand;
 
-class XpathCommandTest extends \PHPUnit_Framework_TestCase
+class XpathCommandTest extends TestCase
 {
     public function testItReturnsStringWhenExecuting()
     {

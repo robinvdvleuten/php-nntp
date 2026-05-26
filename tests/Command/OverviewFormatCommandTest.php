@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\OverviewFormatCommand;
 
 /**
@@ -18,7 +19,7 @@ use Rvdv\Nntp\Command\OverviewFormatCommand;
  *
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
-class OverviewFormatCommandTest extends \PHPUnit_Framework_TestCase
+class OverviewFormatCommandTest extends TestCase
 {
     public function testItExpectsMultilineResponses()
     {
