@@ -21,8 +21,8 @@ use Rvdv\Nntp\Response\Response;
  */
 class AuthInfoCommand extends Command implements CommandInterface
 {
-    const AUTHINFO_USER = 'USER';
-    const AUTHINFO_PASS = 'PASS';
+    public const AUTHINFO_USER = 'USER';
+    public const AUTHINFO_PASS = 'PASS';
 
     /**
      * @var string

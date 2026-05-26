@@ -16,6 +16,7 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setRules([
+        '@PSR12' => true,
         'header_comment' => ['header' => $header]
     ])
     ->setFinder($finder);
