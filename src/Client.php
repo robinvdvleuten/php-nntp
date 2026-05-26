@@ -15,22 +15,15 @@ use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\ConnectionInterface;
 use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
  */
 class Client implements ClientInterface
 {
-    /**
-     * @var ConnectionInterface
-     */
-    private $connection;
+    private ConnectionInterface $connection;
 
-    /**
-     * Constructor.
-     *
-     * @param ConnectionInterface $connection
-     */
     public function __construct(ConnectionInterface $connection)
     {
         $this->connection = $connection;
@@ -38,34 +31,23 @@ class Client implements ClientInterface
 
     /**
      * Get the connection instance.
-     *
-     * @return ConnectionInterface
      */
-    public function getConnection()
+    public function getConnection(): ConnectionInterface
     {
         return $this->connection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function connect()
+    public function connect(): ResponseInterface
     {
         return $this->connection->connect();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function disconnect()
+    public function disconnect(): void
     {
         $this->connection->disconnect();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function authenticate($username, $password = null)
+    public function authenticate(string $username, ?string $password = null): ResponseInterface
     {
         $response = $this->authInfo(Command\AuthInfoCommand::AUTHINFO_USER, (string) $username);
 
@@ -84,10 +66,7 @@ class Client implements ClientInterface
         return $response;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function connectAndAuthenticate($username, $password = null)
+    public function connectAndAuthenticate(string $username, ?string $password = null): ResponseInterface
     {
         $response = $this->connect();
 
@@ -98,66 +77,42 @@ class Client implements ClientInterface
         return $this->authenticate($username, $password);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function authInfo($type, $value)
+    public function authInfo(string $type, string $value): mixed
     {
         return $this->sendCommand(new Command\AuthInfoCommand($type, $value));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function body($article)
+    public function body(string $article): mixed
     {
         return $this->sendCommand(new Command\BodyCommand($article));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function head($article)
+    public function head(string $article): mixed
     {
         return $this->sendCommand(new Command\HeadCommand($article));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function listGroups($keyword = null, $arguments = null)
+    public function listGroups(?string $keyword = null, mixed $arguments = null): mixed
     {
         return $this->sendCommand(new Command\ListCommand($keyword, $arguments));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function group($name)
+    public function group(string $name): mixed
     {
         return $this->sendCommand(new Command\GroupCommand($name));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function help()
+    public function help(): mixed
     {
         return $this->sendCommand(new Command\HelpCommand());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function overviewFormat()
+    public function overviewFormat(): mixed
     {
         return $this->sendCommand(new Command\OverviewFormatCommand());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function post($groups, $subject, $body, $from, $headers = null)
+    public function post(string $groups, string $subject, string $body, string $from, ?string $headers = null): ResponseInterface
     {
         $response = $this->sendCommand(new Command\PostCommand());
 
@@ -172,58 +127,43 @@ class Client implements ClientInterface
         return $response;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function postArticle($groups, $subject, $body, $from, $headers = null)
+    public function postArticle(string $groups, string $subject, string $body, string $from, ?string $headers = null): mixed
     {
         return $this->sendArticle(new Command\PostArticleCommand($groups, $subject, $body, $from, $headers));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function quit()
+    public function quit(): mixed
     {
         return $this->sendCommand(new Command\QuitCommand());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function xfeature($feature)
+    public function xfeature(string $feature): mixed
     {
         return $this->sendCommand(new Command\XFeatureCommand($feature));
     }
 
     /**
-     * {@inheritdoc}
+     * @param array<string, bool> $format
      */
-    public function xover($from, $to, array $format)
+    public function xover(int $from, int $to, array $format): mixed
     {
         return $this->sendCommand(new Command\XoverCommand($from, $to, $format));
     }
 
     /**
-     * {@inheritdoc}
+     * @param array<string, bool> $format
      */
-    public function xzver($from, $to, array $format)
+    public function xzver(int $from, int $to, array $format): mixed
     {
         return $this->sendCommand(new Command\XzverCommand($from, $to, $format));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function sendCommand(CommandInterface $command)
+    public function sendCommand(CommandInterface $command): mixed
     {
         return $this->connection->sendCommand($command);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function sendArticle(CommandInterface $command)
+    public function sendArticle(CommandInterface $command): mixed
     {
         return $this->connection->sendArticle($command);
     }
