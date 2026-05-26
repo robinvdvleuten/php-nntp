@@ -7,6 +7,9 @@ on:
       - '.php-cs-fixer.dist.php'
       - '.github/workflows/php-cs-fixer.yml'
 
+permissions:
+  contents: read
+
 jobs:
     php-cs-fixer:
         runs-on: ubuntu-latest
