@@ -1,4 +1,4 @@
-name: Test
+name: test
 
 on:
   push:
@@ -7,37 +7,24 @@ on:
   pull_request:
 
 jobs:
-    tests:
+    test:
         runs-on: ubuntu-latest
         strategy:
             matrix:
                 php: [8.2, 8.3, 8.4, 8.5]
                 stability: [prefer-lowest, prefer-stable]
-
-        name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
-
+        name: php${{ matrix.php }} - ${{ matrix.stability }}
         steps:
-            - name: Checkout code
-              uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-            - name: Setup PHP
-              uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # v2
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+            - uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # v2
               with:
                 php-version: ${{ matrix.php }}
-
-            - name: Get composer cache directory
-              id: composer-cache
+            - id: composer-cache
               run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-            - name: Cache dependencies
-              uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+            - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
               with:
                 path: ~/.composer/cache/files
                 key: ${{ matrix.os }}-php-${{ matrix.php }}-composer-${{ matrix.stability }}-${{ hashFiles('**/composer.json') }}
                 restore-keys: ${{ matrix.os }}-php-${{ matrix.php }}-composer-${{ matrix.stability }}-
-
-            - name: Install dependencies
-              run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
-
-            - name: Execute tests
-              run: vendor/bin/phpunit
+            - run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
+            - run: vendor/bin/phpunit
