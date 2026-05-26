@@ -58,6 +58,10 @@ $ composer install
 $ php vendor/bin/phpunit
 ```
 
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
