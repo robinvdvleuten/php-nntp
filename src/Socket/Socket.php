@@ -34,9 +34,12 @@ class Socket implements SocketInterface
 
     public function connect(string $address): self
     {
-        if (!$this->stream = @stream_socket_client($address, $errno, $errstr, 1.0, STREAM_CLIENT_CONNECT)) {
+        $stream = @stream_socket_client($address, $errno, $errstr, 1.0, STREAM_CLIENT_CONNECT);
+        if (false === $stream) {
             throw new SocketException(sprintf('Connection to %s failed: %s', $address, $errstr));
         }
+
+        $this->stream = $stream;
 
         stream_set_blocking($this->stream, true);
 
@@ -69,6 +72,10 @@ class Socket implements SocketInterface
 
     public function gets(?int $length = null): string
     {
+        if (null !== $length && $length < 1) {
+            throw new SocketException();
+        }
+
         if (false === ($data = fgets($this->stream, $length))) {
             throw new SocketException();
         }
@@ -78,6 +85,10 @@ class Socket implements SocketInterface
 
     public function read(int $length): string
     {
+        if ($length < 1) {
+            throw new SocketException();
+        }
+
         if (false === ($data = fread($this->stream, $length))) {
             throw new SocketException();
         }

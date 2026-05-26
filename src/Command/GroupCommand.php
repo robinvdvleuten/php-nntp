@@ -39,11 +39,21 @@ class GroupCommand extends Command implements CommandInterface
     }
 
     /**
-     * @return array{count: string, first: string, last: string, name: string}|false
+     * @return array{count: string, first: string, last: string, name: string}
      */
-    public function onGroupSelected(Response $response): array|false
+    public function onGroupSelected(Response $response): array
     {
-        return array_combine(['count', 'first', 'last', 'name'], explode(' ', $response->getMessage()));
+        $segments = explode(' ', $response->getMessage(), 4);
+        if (4 !== count($segments)) {
+            throw new RuntimeException(sprintf('Invalid group selected response: %s', $response->getMessage()));
+        }
+
+        return [
+            'count' => $segments[0],
+            'first' => $segments[1],
+            'last' => $segments[2],
+            'name' => $segments[3],
+        ];
     }
 
     public function onNoSuchGroup(Response $response): void

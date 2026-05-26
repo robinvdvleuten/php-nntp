@@ -314,6 +314,7 @@ class ClientTest extends TestCase
 
         $client = new Client($connection);
 
-        $this->assertInstanceOf($commandClass, call_user_func_array([$client, $method], $arguments));
+        $this->assertTrue(method_exists($client, $method));
+        $this->assertInstanceOf($commandClass, $client->{$method}(...$arguments));
     }
 }
