@@ -16,13 +16,13 @@ use Rvdv\Nntp\Command\XpathCommand;
 
 class XpathCommandTest extends TestCase
 {
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals('XPATH <CAFp73XuG9PfYv448muxijyk7MS5xG7J5zxz021YQPtAReYvkyQ@mail.gmail.com>', $command());
     }
 
-    public function testItCanReturnResults()
+    public function testItCanReturnResults(): void
     {
         $command = $this->createCommandInstance();
         $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
@@ -34,7 +34,7 @@ class XpathCommandTest extends TestCase
         $this->assertEquals('1', $command->onFoundPath($response));
     }
 
-    public function testItReturnsNothingIfNoFoundPath()
+    public function testItReturnsNothingIfNoFoundPath(): void
     {
         $command = $this->createCommandInstance();
         $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
@@ -43,13 +43,14 @@ class XpathCommandTest extends TestCase
                  ->method('getMessage')
                  ->will($this->returnValue('501 invalid msgid'));
 
-        $this->assertNull($command->onInvalidMessage($response));
+        $command->onInvalidMessage($response);
+        $this->addToAssertionCount(1);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): XpathCommand
     {
         return new XpathCommand('<CAFp73XuG9PfYv448muxijyk7MS5xG7J5zxz021YQPtAReYvkyQ@mail.gmail.com>');
     }

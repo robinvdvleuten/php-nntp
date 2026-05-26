@@ -21,25 +21,25 @@ use Rvdv\Nntp\Command\PostCommand;
  */
 class PostCommandTest extends TestCase
 {
-    public function testItNotExpectsMultilineResponses()
+    public function testItNotExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals('POST', $command());
     }
 
-    public function testItErrorsWhenPostingNotPermittedResponse()
+    public function testItErrorsWhenPostingNotPermittedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -53,19 +53,20 @@ class PostCommandTest extends TestCase
         }
     }
 
-    public function testItNotReceivesAResultWhenSendArticleResponse()
+    public function testItNotReceivesAResultWhenSendArticleResponse(): void
     {
         $command = $this->createCommandInstance();
 
         $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
-        $this->assertEmpty($command->onSendArticle($response));
+        $command->onSendArticle($response);
+        $this->addToAssertionCount(1);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): PostCommand
     {
         return new PostCommand();
     }

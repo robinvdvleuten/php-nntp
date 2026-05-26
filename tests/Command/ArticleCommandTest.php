@@ -21,25 +21,25 @@ use Rvdv\Nntp\Command\ArticleCommand;
  */
 class ArticleCommandTest extends TestCase
 {
-    public function testItExpectsMultilineResponses()
+    public function testItExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertTrue($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals('ARTICLE 12345', $command());
     }
 
-    public function testItReceivesAResultWhenArticleFollowsResponse()
+    public function testItReceivesAResultWhenArticleFollowsResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -54,7 +54,7 @@ class ArticleCommandTest extends TestCase
         $this->assertEquals(implode("\r\n", $lines), $command->onArticleFollows($response));
     }
 
-    public function testItErrorsWhenGroupNotSelectedResponse()
+    public function testItErrorsWhenGroupNotSelectedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -68,7 +68,7 @@ class ArticleCommandTest extends TestCase
         }
     }
 
-    public function testItErrorsWhenNoSuchArticleNumberResponse()
+    public function testItErrorsWhenNoSuchArticleNumberResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -82,7 +82,7 @@ class ArticleCommandTest extends TestCase
         }
     }
 
-    public function testItErrorsWhenNoSuchArticleIdResponse()
+    public function testItErrorsWhenNoSuchArticleIdResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -99,7 +99,7 @@ class ArticleCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): ArticleCommand
     {
         return new ArticleCommand('12345');
     }

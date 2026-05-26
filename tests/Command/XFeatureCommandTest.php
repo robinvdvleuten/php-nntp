@@ -21,25 +21,25 @@ use Rvdv\Nntp\Command\XFeatureCommand;
  */
 class XFeatureCommandTest extends TestCase
 {
-    public function testItNotExpectsMultilineResponses()
+    public function testItNotExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals('XFEATURE COMPRESS GZIP', $command());
     }
 
-    public function testItReceivesAResultWhenXFeatureEnabledResponse()
+    public function testItReceivesAResultWhenXFeatureEnabledResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -51,7 +51,7 @@ class XFeatureCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): XFeatureCommand
     {
         return new XFeatureCommand(XFeatureCommand::COMPRESS_GZIP);
     }

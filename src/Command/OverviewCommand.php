@@ -61,12 +61,12 @@ abstract class OverviewCommand extends Command implements CommandInterface
         }, $response->getLines());
     }
 
-    public function onNoNewsGroupCurrentSelected(Response $response): never
+    public function onNoNewsGroupCurrentSelected(Response $response): void
     {
         throw new RuntimeException('A group must be selected first before getting an overview.');
     }
 
-    public function onNoArticlesSelected(Response $response): never
+    public function onNoArticlesSelected(Response $response): void
     {
         throw new RuntimeException(sprintf('No articles selected in the given range %d-%d.', $this->from, $this->to));
     }

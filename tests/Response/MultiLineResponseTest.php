@@ -21,7 +21,7 @@ use Rvdv\Nntp\Response\ResponseInterface;
  */
 class MultiLineResponseTest extends TestCase
 {
-    public function testItReturnsMessageAndStatusCodeFromInjectedResponse()
+    public function testItReturnsMessageAndStatusCodeFromInjectedResponse(): void
     {
         $response = $this->createMock(ResponseInterface::class);
 
@@ -39,7 +39,7 @@ class MultiLineResponseTest extends TestCase
         $this->assertEquals(200, $multiLineResponse->getStatusCode());
     }
 
-    public function testItReturnsInjectedResponseAsString()
+    public function testItReturnsInjectedResponseAsString(): void
     {
         $response = Response::createFromString("200 server ready - posting allowed\r\n");
 

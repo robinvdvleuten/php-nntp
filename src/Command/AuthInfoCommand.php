@@ -51,12 +51,12 @@ class AuthInfoCommand extends Command implements CommandInterface
         return $response;
     }
 
-    public function onAuthenticationRejected(Response $response): never
+    public function onAuthenticationRejected(Response $response): void
     {
         throw new RuntimeException(sprintf('Authentication failed with given value for type %s', $this->type));
     }
 
-    public function onAuthenticationOutOfSequence(Response $response): never
+    public function onAuthenticationOutOfSequence(Response $response): void
     {
         throw new RuntimeException(sprintf('Authentication is out of sequence for type %s', $this->type));
     }

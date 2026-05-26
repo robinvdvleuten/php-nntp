@@ -21,37 +21,38 @@ use Rvdv\Nntp\Command\QuitCommand;
  */
 class QuitCommandTest extends TestCase
 {
-    public function testItNotExpectsMultilineResponses()
+    public function testItNotExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals('QUIT', $command());
     }
 
-    public function testItNotReceivesAResultWhenConnectionClosingResponse()
+    public function testItNotReceivesAResultWhenConnectionClosingResponse(): void
     {
         $command = $this->createCommandInstance();
 
         $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
-        $this->assertNull($command->onConnectionClosing($response));
+        $command->onConnectionClosing($response);
+        $this->addToAssertionCount(1);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): QuitCommand
     {
         return new QuitCommand();
     }

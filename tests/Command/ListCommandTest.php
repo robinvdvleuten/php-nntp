@@ -21,19 +21,19 @@ use Rvdv\Nntp\Command\ListCommand;
  */
 class ListCommandTest extends TestCase
 {
-    public function testItExpectsMultilineResponses()
+    public function testItExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertTrue($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals('LIST', $command());
@@ -45,7 +45,7 @@ class ListCommandTest extends TestCase
         $this->assertEquals('LIST ACTIVE filter', $command());
     }
 
-    public function testItReceivesAResultWhenGroupSelectedResponse()
+    public function testItReceivesAResultWhenGroupSelectedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -79,7 +79,7 @@ class ListCommandTest extends TestCase
         $this->assertEquals('n', $result[2]['status']);
     }
 
-    public function testItErrorsWhenInvalidKeywordResponse()
+    public function testItErrorsWhenInvalidKeywordResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -93,7 +93,7 @@ class ListCommandTest extends TestCase
         }
     }
 
-    public function testItErrorsFailedResponse()
+    public function testItErrorsFailedResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -110,7 +110,7 @@ class ListCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance($keyword = null, $arguments = null)
+    protected function createCommandInstance(?string $keyword = null, mixed $arguments = null): ListCommand
     {
         return new ListCommand($keyword, $arguments);
     }

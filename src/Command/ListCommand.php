@@ -65,12 +65,12 @@ class ListCommand extends Command
         return $result;
     }
 
-    public function onInvalidKeyword(Response $response): never
+    public function onInvalidKeyword(Response $response): void
     {
         throw new RuntimeException('Invalid keyword, or unexpected argument for keyword.', (int) $response->getStatusCode());
     }
 
-    public function onError(Response $response): never
+    public function onError(Response $response): void
     {
         throw new RuntimeException('Error retrieving group list', (int) $response->getStatusCode());
     }

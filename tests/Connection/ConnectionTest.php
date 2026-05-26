@@ -42,7 +42,7 @@ class ConnectionTest extends TestCase
             ->willReturnSelf();
     }
 
-    public function testConnectionCanBeEstablishedThroughSocket()
+    public function testConnectionCanBeEstablishedThroughSocket(): void
     {
         $this->socket->expects($this->atLeastOnce())
             ->method('eof')
@@ -62,7 +62,7 @@ class ConnectionTest extends TestCase
         $this->assertEquals('server ready - posting allowed', $response->getMessage());
     }
 
-    public function testConnectionCanBeEncrypted()
+    public function testConnectionCanBeEncrypted(): void
     {
         $this->socket->expects($this->atLeastOnce())
             ->method('eof')
@@ -86,7 +86,7 @@ class ConnectionTest extends TestCase
         $this->assertEquals('server ready - posting allowed', $response->getMessage());
     }
 
-    public function testErrorIsThrownWhenConnectionCannotBeEstablished()
+    public function testErrorIsThrownWhenConnectionCannotBeEstablished(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
 
@@ -99,7 +99,7 @@ class ConnectionTest extends TestCase
         $connection->connect();
     }
 
-    public function testConnectionCanBeDisconnected()
+    public function testConnectionCanBeDisconnected(): void
     {
         $this->socket->expects($this->once())
             ->method('disconnect');
@@ -108,7 +108,7 @@ class ConnectionTest extends TestCase
         $connection->disconnect();
     }
 
-    public function testConnectionCallsCorrespondingHandlerWhenSendingCommand()
+    public function testConnectionCallsCorrespondingHandlerWhenSendingCommand(): void
     {
         $result = 'result';
 
@@ -148,7 +148,7 @@ class ConnectionTest extends TestCase
         $this->assertSame($result, $connection->sendCommand($command));
     }
 
-    public function testSendingCommandFailsWhenCommandStringExceedsMaximumCharacters()
+    public function testSendingCommandFailsWhenCommandStringExceedsMaximumCharacters(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\InvalidArgumentException::class);
 
@@ -162,7 +162,7 @@ class ConnectionTest extends TestCase
         $connection->sendCommand($command);
     }
 
-    public function testSendingCommandFailsWhenCommandStringIsNotSameAsSocketOutput()
+    public function testSendingCommandFailsWhenCommandStringIsNotSameAsSocketOutput(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
 

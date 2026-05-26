@@ -19,7 +19,7 @@ use Rvdv\Nntp\Response\Response;
  */
 class ResponseTest extends TestCase
 {
-    public function testItCreatesResponseInstanceFromString()
+    public function testItCreatesResponseInstanceFromString(): void
     {
         $response = Response::createFromString("200 server ready - posting allowed\r\n");
 
@@ -28,26 +28,26 @@ class ResponseTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testItReturnsResponseAsString()
+    public function testItReturnsResponseAsString(): void
     {
         $this->assertEquals('server ready - posting allowed [200]', (string) Response::createFromString("200 server ready - posting allowed\r\n"));
     }
 
-    public function testItErrorsWhenIncorrectlyTerminatedStringGiven()
+    public function testItErrorsWhenIncorrectlyTerminatedStringGiven(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\InvalidArgumentException::class);
 
         Response::createFromString('200 server ready - posting allowed');
     }
 
-    public function testItErrorsWhenIncorrectlyFormattedStringGiven()
+    public function testItErrorsWhenIncorrectlyFormattedStringGiven(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\InvalidArgumentException::class);
 
         Response::createFromString("server ready - posting allowed 200\r\n");
     }
 
-    public function testItErrorsWhenIncorrectStatusCodeIsFound()
+    public function testItErrorsWhenIncorrectStatusCodeIsFound(): void
     {
         $this->expectException(\Rvdv\Nntp\Exception\RuntimeException::class);
 

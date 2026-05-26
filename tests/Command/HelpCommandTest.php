@@ -19,25 +19,25 @@ use Rvdv\Nntp\Command\HelpCommand;
  */
 class HelpCommandTest extends TestCase
 {
-    public function testItExpectsMultilineResponses()
+    public function testItExpectsMultilineResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertTrue($command->isMultiLine());
     }
 
-    public function testItNotExpectsCompressedResponses()
+    public function testItNotExpectsCompressedResponses(): void
     {
         $command = $this->createCommandInstance();
         $this->assertFalse($command->isCompressed());
     }
 
-    public function testItReturnsStringWhenExecuting()
+    public function testItReturnsStringWhenExecuting(): void
     {
         $command = $this->createCommandInstance();
         $this->assertEquals('HELP', $command());
     }
 
-    public function testItReceivesAResultWhenInformationFollowsResponse()
+    public function testItReceivesAResultWhenInformationFollowsResponse(): void
     {
         $command = $this->createCommandInstance();
 
@@ -55,7 +55,7 @@ class HelpCommandTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createCommandInstance()
+    protected function createCommandInstance(): HelpCommand
     {
         return new HelpCommand();
     }

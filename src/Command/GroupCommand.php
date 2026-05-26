@@ -46,7 +46,7 @@ class GroupCommand extends Command implements CommandInterface
         return array_combine(['count', 'first', 'last', 'name'], explode(' ', $response->getMessage()));
     }
 
-    public function onNoSuchGroup(Response $response): never
+    public function onNoSuchGroup(Response $response): void
     {
         throw new RuntimeException(sprintf('A group with name %s does not exists on server', $this->group));
     }
