@@ -19,20 +19,14 @@ namespace Rvdv\Nntp\Response;
 class MultiLineResponse implements MultiLineResponseInterface
 {
     /**
-     * @var array
+     * @var array<int, string>
      */
-    private $lines;
+    private array $lines;
+
+    private ResponseInterface $response;
 
     /**
-     * @var ResponseInterface
-     */
-    private $response;
-
-    /**
-     * Constructor.
-     *
-     * @param ResponseInterface $response
-     * @param array             $lines
+     * @param array<int, string> $lines
      */
     public function __construct(ResponseInterface $response, array $lines)
     {
@@ -40,34 +34,22 @@ class MultiLineResponse implements MultiLineResponseInterface
         $this->lines = $lines;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->response->getMessage();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->response->getStatusCode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLines()
+    public function getLines(): array
     {
         return $this->lines;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->response;
     }

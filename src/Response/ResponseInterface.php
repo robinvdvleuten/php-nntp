@@ -13,14 +13,14 @@ namespace Rvdv\Nntp\Response;
 
 interface ResponseInterface
 {
-    public function getMessage();
+    public function getMessage(): string;
 
-    public function getStatusCode();
+    public function getStatusCode(): int;
 
     /**
      * Get a string representation of the response.
      *
      * @return string
      */
-    public function __toString();
+    public function __toString(): string;
 }

@@ -22,9 +22,9 @@ use Rvdv\Nntp\Exception\RuntimeException;
 class Response implements ResponseInterface
 {
     /**
-     * @var array
+     * @var array<string, int>
      */
-    public static $codes = [
+    public static array $codes = [
         'HelpTextFollows' => 100, // RFC 3977
 
         'PostingAllowed' => 200, // RFC 3977
@@ -60,20 +60,11 @@ class Response implements ResponseInterface
         'ProgramError' => 503, // rfc 2980
     ];
 
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @var int
-     */
-    private $statusCode;
+    private int $statusCode;
 
-    /**
-     * @param string $response
-     */
-    public static function createFromString($response)
+    public static function createFromString(string $response): self
     {
         if (false === strpos($response, "\r\n")) {
             throw new InvalidArgumentException(
@@ -97,38 +88,23 @@ class Response implements ResponseInterface
         return new self((int) $matches[1], $matches[2]);
     }
 
-    /**
-     * Constructor.
-     *
-     * @param int    $statusCode
-     * @param string $message
-     */
-    public function __construct($statusCode, $message)
+    public function __construct(int $statusCode, string $message)
     {
         $this->statusCode = $statusCode;
         $this->message = $message;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s [%d]', $this->message, $this->statusCode);
     }
