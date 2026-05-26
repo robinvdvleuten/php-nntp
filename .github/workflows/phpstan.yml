@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - '**.php'
+      - 'phpstan.neon.dist'
+      - '.github/workflows/phpstan.yml'
 
 jobs:
     phpstan:
@@ -14,5 +16,4 @@ jobs:
               with:
                 php-version: '8.4'
             - uses: ramsey/composer-install@5c2bcf28d7b060ef3c601d7b476d5430a7b46c27 # v4
-            - name: Execute tests
-              run: vendor/bin/phpstan --error-format=github
+            - run: vendor/bin/phpstan --error-format=github
