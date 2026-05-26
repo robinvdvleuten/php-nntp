@@ -2,10 +2,9 @@ name: phpstan
 
 on:
   push:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
-      - '.github/workflows/phpstan.yml'
+    branches:
+      - main
+  pull_request:
 
 permissions:
   contents: read

@@ -2,10 +2,9 @@ name: php-cs-fixer
 
 on:
   push:
-    paths:
-      - '**.php'
-      - '.php-cs-fixer.dist.php'
-      - '.github/workflows/php-cs-fixer.yml'
+    branches:
+      - main
+  pull_request:
 
 permissions:
   contents: read
