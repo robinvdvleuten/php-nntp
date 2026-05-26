@@ -20,23 +20,20 @@ use Rvdv\Nntp\Response\MultiLineResponse;
  */
 class OverviewFormatCommand extends Command implements CommandInterface
 {
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         parent::__construct(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return 'LIST OVERVIEW.FMT';
     }
 
-    public function onInformationFollows(MultiLineResponse $response)
+    /**
+     * @return array<string, bool>
+     */
+    public function onInformationFollows(MultiLineResponse $response): array
     {
         $result = [];
 

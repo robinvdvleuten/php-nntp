@@ -21,40 +21,32 @@ use Rvdv\Nntp\Response\Response;
  */
 class GroupCommand extends Command implements CommandInterface
 {
-    /**
-     * @var string
-     */
-    private $group;
+    private string $group;
 
     /**
-     * Constructor.
-     *
      * @param string $group the name of the group
      */
-    public function __construct($group)
+    public function __construct(string $group)
     {
         $this->group = $group;
 
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return sprintf('GROUP %s', $this->group);
     }
 
     /**
-     * @return array
+     * @return array{count: string, first: string, last: string, name: string}|false
      */
-    public function onGroupSelected(Response $response)
+    public function onGroupSelected(Response $response): array|false
     {
         return array_combine(['count', 'first', 'last', 'name'], explode(' ', $response->getMessage()));
     }
 
-    public function onNoSuchGroup(Response $response)
+    public function onNoSuchGroup(Response $response): never
     {
         throw new RuntimeException(sprintf('A group with name %s does not exists on server', $this->group));
     }

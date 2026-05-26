@@ -22,32 +22,24 @@ class XFeatureCommand extends Command implements CommandInterface
 {
     public const COMPRESS_GZIP = 'COMPRESS GZIP';
 
-    /**
-     * @var string
-     */
-    private $feature;
+    private string $feature;
 
     /**
-     * Constructor.
-     *
      * @param string $feature The feature to enable
      */
-    public function __construct($feature)
+    public function __construct(string $feature)
     {
         $this->feature = $feature;
 
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return sprintf('XFEATURE %s', $this->feature);
     }
 
-    public function onXFeatureEnabled(Response $response)
+    public function onXFeatureEnabled(Response $response): bool
     {
         return true;
     }

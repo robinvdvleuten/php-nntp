@@ -18,28 +18,20 @@ use Rvdv\Nntp\Response\MultiLineResponse;
  */
 class HelpCommand extends Command implements CommandInterface
 {
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         parent::__construct(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return 'HELP';
     }
 
     /**
-     * @param MultiLineResponse $response
-     *
      * @return string
      */
-    public function onHelpTextFollows(MultiLineResponse $response)
+    public function onHelpTextFollows(MultiLineResponse $response): string
     {
         return implode("\n", (array) $response->getLines());
     }

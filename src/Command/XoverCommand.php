@@ -16,10 +16,7 @@ namespace Rvdv\Nntp\Command;
  */
 class XoverCommand extends OverviewCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return sprintf('XOVER %d-%d', $this->from, $this->to);
     }

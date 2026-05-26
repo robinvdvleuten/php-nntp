@@ -20,29 +20,21 @@ use Rvdv\Nntp\Response\Response;
  */
 abstract class OverviewCommand extends Command implements CommandInterface
 {
-    /**
-     * @var int
-     */
-    protected $from;
+    protected int $from;
+
+    protected int $to;
 
     /**
-     * @var int
+     * @var array<string, bool>
      */
-    protected $to;
+    protected array $format;
 
     /**
-     * @var array
-     */
-    protected $format;
-
-    /**
-     * Constructor.
-     *
      * @param int   $from   the article number where the range begins
      * @param int   $to     the article number where the range ends
-     * @param array $format the format of the articles in response
+     * @param array<string, bool> $format the format of the articles in response
      */
-    public function __construct($from, $to, array $format)
+    public function __construct(int $from, int $to, array $format)
     {
         $this->from = $from;
         $this->to = $to;
@@ -51,13 +43,16 @@ abstract class OverviewCommand extends Command implements CommandInterface
         parent::__construct(true);
     }
 
-    public function onOverviewInformationFollows(MultiLineResponse $response)
+    /**
+     * @return array<int, array<string, string>>
+     */
+    public function onOverviewInformationFollows(MultiLineResponse $response): array
     {
-        return array_map(function ($line) {
+        return array_map(function (string $line): array {
             $segments = explode("\t", $line);
             $field = 0;
 
-            return array_reduce(array_keys($this->format), function ($message, $name) use ($segments, &$field) {
+            return array_reduce(array_keys($this->format), function (array $message, string $name) use ($segments, &$field): array {
                 $message[$name] = $this->format[$name] ? ltrim(substr($segments[$field], strpos($segments[$field], ':') + 1), " \t") : $segments[$field];
                 ++$field;
 
@@ -66,12 +61,12 @@ abstract class OverviewCommand extends Command implements CommandInterface
         }, $response->getLines());
     }
 
-    public function onNoNewsGroupCurrentSelected(Response $response)
+    public function onNoNewsGroupCurrentSelected(Response $response): never
     {
         throw new RuntimeException('A group must be selected first before getting an overview.');
     }
 
-    public function onNoArticlesSelected(Response $response)
+    public function onNoArticlesSelected(Response $response): never
     {
         throw new RuntimeException(sprintf('No articles selected in the given range %d-%d.', $this->from, $this->to));
     }

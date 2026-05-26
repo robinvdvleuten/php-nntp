@@ -22,50 +22,39 @@ use Rvdv\Nntp\Response\Response;
  */
 class HeadCommand extends Command implements CommandInterface
 {
-    /**
-     * @var string
-     */
-    private $article;
+    private string $article;
 
     /**
-     * Constructor.
-     *
      * @param string $article
      */
-    public function __construct($article)
+    public function __construct(string $article)
     {
         $this->article = $article;
 
         parent::__construct(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return sprintf('HEAD %s', $this->article);
     }
 
-    /**
-     * @return string
-     */
-    public function onHeadFollows(MultiLineResponse $response)
+    public function onHeadFollows(MultiLineResponse $response): string
     {
         return implode("\r\n", $response->getLines());
     }
 
-    public function onNoNewsGroupCurrentSelected(Response $response)
+    public function onNoNewsGroupCurrentSelected(Response $response): never
     {
         throw new RuntimeException('A group must be selected first before getting an article header.', (int) $response->getStatusCode());
     }
 
-    public function onNoSuchArticleNumber(Response $response)
+    public function onNoSuchArticleNumber(Response $response): never
     {
         throw new RuntimeException('No article with that number.', (int) $response->getStatusCode());
     }
 
-    public function onNoSuchArticleId(Response $response)
+    public function onNoSuchArticleId(Response $response): never
     {
         throw new RuntimeException('No article with that message-id.', (int) $response->getStatusCode());
     }

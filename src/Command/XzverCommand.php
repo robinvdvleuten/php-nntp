@@ -16,18 +16,12 @@ namespace Rvdv\Nntp\Command;
  */
 class XzverCommand extends OverviewCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         return sprintf('XZVER %d-%d', $this->from, $this->to);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCompressed()
+    public function isCompressed(): bool
     {
         return true;
     }
