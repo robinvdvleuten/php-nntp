@@ -40,14 +40,19 @@ class Connection implements ConnectionInterface
      * @param string               $host   the host of the NNTP server
      * @param int                  $port   the port of the NNTP server
      * @param bool                 $secure a bool indicating if a secure connection should be established
-     * @param SocketInterface|null $socket an optional socket wrapper instance
+     * @param SocketInterface|null $socket         an optional socket wrapper instance
+     * @param float                $connectTimeout the connect timeout in seconds for the default socket
      */
-    public function __construct(string $host, int $port, bool $secure = false, ?SocketInterface $socket = null)
+    public function __construct(string $host, int $port, bool $secure = false, ?SocketInterface $socket = null, float $connectTimeout = 1.0)
     {
+        if ($connectTimeout <= 0) {
+            throw new InvalidArgumentException('Connect timeout must be greater than 0 seconds');
+        }
+
         $this->host = $host;
         $this->port = $port;
         $this->secure = $secure;
-        $this->socket = $socket ?: new Socket();
+        $this->socket = $socket ?: new Socket($connectTimeout);
     }
 
     public function connect(): ResponseInterface

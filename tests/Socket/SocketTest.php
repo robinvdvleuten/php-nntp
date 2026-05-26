@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Socket;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Socket\Socket;
 
@@ -19,6 +20,25 @@ use Rvdv\Nntp\Socket\Socket;
  */
 class SocketTest extends TestCase
 {
+    /**
+     * @return array<int, array{float}>
+     */
+    public static function getInvalidConnectTimeouts(): array
+    {
+        return [
+            [0.0],
+            [-1.0],
+        ];
+    }
+
+    #[DataProvider('getInvalidConnectTimeouts')]
+    public function testItRejectsInvalidConnectTimeout(float $connectTimeout): void
+    {
+        $this->expectException(\Rvdv\Nntp\Exception\InvalidArgumentException::class);
+
+        new Socket($connectTimeout);
+    }
+
     public function testConnectGoogle(): void
     {
         $socket = new Socket();
