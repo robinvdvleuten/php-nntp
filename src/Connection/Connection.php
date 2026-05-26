@@ -28,35 +28,21 @@ class Connection implements ConnectionInterface
 {
     public const BUFFER_SIZE = 1024;
 
-    /**
-     * @var string
-     */
-    private $host;
+    private string $host;
+
+    private int $port;
+
+    private bool $secure;
+
+    private SocketInterface $socket;
 
     /**
-     * @var int
-     */
-    private $port;
-
-    /**
-     * @var bool
-     */
-    private $secure;
-
-    /**
-     * @var SocketInterface
-     */
-    private $socket;
-
-    /**
-     * Constructor.
-     *
      * @param string               $host   the host of the NNTP server
      * @param int                  $port   the port of the NNTP server
      * @param bool                 $secure a bool indicating if a secure connection should be established
      * @param SocketInterface|null $socket an optional socket wrapper instance
      */
-    public function __construct($host, $port, $secure = false, ?SocketInterface $socket = null)
+    public function __construct(string $host, int $port, bool $secure = false, ?SocketInterface $socket = null)
     {
         $this->host = $host;
         $this->port = $port;
@@ -64,10 +50,7 @@ class Connection implements ConnectionInterface
         $this->socket = $socket ?: new Socket();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function connect()
+    public function connect(): ResponseInterface
     {
         $this->socket->connect(sprintf('tcp://%s:%d', $this->host, $this->port));
 
@@ -78,18 +61,12 @@ class Connection implements ConnectionInterface
         return $this->getResponse();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function disconnect()
+    public function disconnect(): void
     {
         $this->socket->disconnect();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function sendCommand(CommandInterface $command)
+    public function sendCommand(CommandInterface $command): mixed
     {
         $commandString = $command();
 
@@ -111,7 +88,7 @@ class Connection implements ConnectionInterface
         return $this->callCommandHandlerForResponse($command, $response);
     }
 
-    public function sendArticle(CommandInterface $command)
+    public function sendArticle(CommandInterface $command): mixed
     {
         $commandString = $command();
 
@@ -124,7 +101,7 @@ class Connection implements ConnectionInterface
         return $this->callCommandHandlerForResponse($command, $response);
     }
 
-    private function getResponse()
+    private function getResponse(): Response
     {
         $buffer = '';
 
@@ -139,7 +116,7 @@ class Connection implements ConnectionInterface
         return Response::createFromString($buffer);
     }
 
-    private function getMultiLineResponse(Response $response)
+    private function getMultiLineResponse(Response $response): MultiLineResponse
     {
         $lines = [];
 
@@ -165,14 +142,16 @@ class Connection implements ConnectionInterface
             // Add the line to the array of lines.
             $lines[] = $line;
         }
+
+        throw new RuntimeException('Incorrect data received from buffer');
     }
 
-    private function getCompressedResponse(Response $response)
+    private function getCompressedResponse(Response $response): MultiLineResponse
     {
         // Determine encoding by fetching first line.
         $line = $this->socket->gets(self::BUFFER_SIZE);
 
-        if ('=ybegin' == substr($line, 0, 7)) {
+        if ('=ybegin' === substr($line, 0, 7)) {
             $this->disconnect();
 
             throw new RuntimeException('yEnc encoded overviews are not currently supported.');
@@ -202,7 +181,7 @@ class Connection implements ConnectionInterface
         return new MultiLineResponse($response, array_filter($lines));
     }
 
-    private function callCommandHandlerForResponse(CommandInterface $command, ResponseInterface $response)
+    private function callCommandHandlerForResponse(CommandInterface $command, ResponseInterface $response): mixed
     {
         if (in_array($response->getStatusCode(), [Response::$codes['CommandUnknown'], Response::$codes['CommandUnavailable']])) {
             throw new RuntimeException('Sent command is either unknown or unavailable on server');

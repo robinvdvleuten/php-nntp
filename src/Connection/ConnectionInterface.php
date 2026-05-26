@@ -12,28 +12,15 @@
 namespace Rvdv\Nntp\Connection;
 
 use Rvdv\Nntp\Command\CommandInterface;
-use Rvdv\Nntp\Response\Response;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 interface ConnectionInterface
 {
-    /**
-     * @return Response
-     */
-    public function connect();
+    public function connect(): ResponseInterface;
 
-    public function disconnect();
+    public function disconnect(): void;
 
-    /**
-     * @param CommandInterface $command
-     *
-     * @return mixed
-     */
-    public function sendCommand(CommandInterface $command);
+    public function sendCommand(CommandInterface $command): mixed;
 
-    /**
-     * @param CommandInterface $command
-     *
-     * @return mixed
-     */
-    public function sendArticle(CommandInterface $command);
+    public function sendArticle(CommandInterface $command): mixed;
 }
