@@ -57,16 +57,16 @@ class HeadCommand extends Command implements CommandInterface
 
     public function onNoNewsGroupCurrentSelected(Response $response)
     {
-        throw new RuntimeException('A group must be selected first before getting an article header.', $response->getStatusCode());
+        throw new RuntimeException('A group must be selected first before getting an article header.', (int) $response->getStatusCode());
     }
 
     public function onNoSuchArticleNumber(Response $response)
     {
-        throw new RuntimeException('No article with that number.', $response->getStatusCode());
+        throw new RuntimeException('No article with that number.', (int) $response->getStatusCode());
     }
 
     public function onNoSuchArticleId(Response $response)
     {
-        throw new RuntimeException('No article with that message-id.', $response->getStatusCode());
+        throw new RuntimeException('No article with that message-id.', (int) $response->getStatusCode());
     }
 }
