@@ -1,4 +1,4 @@
-name: php-cs-fixer
+name: PHP CS Fixer
 
 on:
   push:
