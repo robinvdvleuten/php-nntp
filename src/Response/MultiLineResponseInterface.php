@@ -14,7 +14,7 @@ namespace Rvdv\Nntp\Response;
 interface MultiLineResponseInterface extends ResponseInterface
 {
     /**
-     * @return array
+     * @return array<int, string>
      */
-    public function getLines();
+    public function getLines(): array;
 }

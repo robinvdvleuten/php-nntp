@@ -208,7 +208,7 @@ class ClientTest extends TestCase
 
         $response->expects($this->once())
             ->method('getStatusCode')
-            ->will($this->returnValue(null));
+            ->will($this->returnValue(Response::$codes['CommandUnavailable']));
 
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -255,7 +255,7 @@ class ClientTest extends TestCase
 
         $response->expects($this->exactly(2))
             ->method('getStatusCode')
-            ->will($this->onConsecutiveCalls(Response::$codes['SendArticle'], null));
+            ->will($this->onConsecutiveCalls(Response::$codes['SendArticle'], Response::$codes['PostingFailed']));
 
         $connection = $this->createMock(ConnectionInterface::class);
 
