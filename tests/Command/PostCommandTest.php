@@ -53,14 +53,13 @@ class PostCommandTest extends TestCase
         }
     }
 
-    public function testItNotReceivesAResultWhenSendArticleResponse(): void
+    public function testItReceivesResponseWhenSendArticleResponse(): void
     {
         $command = $this->createCommandInstance();
 
         $response = $this->createMock(\Rvdv\Nntp\Response\Response::class);
 
-        $command->onSendArticle($response);
-        $this->addToAssertionCount(1);
+        $this->assertSame($response, $command->onSendArticle($response));
     }
 
     /**

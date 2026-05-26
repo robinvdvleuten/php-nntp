@@ -13,6 +13,7 @@ namespace Rvdv\Nntp;
 
 use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\ConnectionInterface;
+use Rvdv\Nntp\Exception\LogicException;
 use Rvdv\Nntp\Exception\RuntimeException;
 use Rvdv\Nntp\Response\Response;
 use Rvdv\Nntp\Response\ResponseInterface;
@@ -77,39 +78,48 @@ class Client implements ClientInterface
         return $this->authenticate($username, $password);
     }
 
-    public function authInfo(string $type, string $value): mixed
+    public function authInfo(string $type, string $value): ResponseInterface
     {
-        return $this->sendCommand(new Command\AuthInfoCommand($type, $value));
+        return $this->responseResult($this->sendCommand(new Command\AuthInfoCommand($type, $value)));
     }
 
-    public function body(string $article): mixed
+    public function body(string $article): string
     {
-        return $this->sendCommand(new Command\BodyCommand($article));
+        return $this->stringResult($this->sendCommand(new Command\BodyCommand($article)));
     }
 
-    public function head(string $article): mixed
+    public function head(string $article): string
     {
-        return $this->sendCommand(new Command\HeadCommand($article));
+        return $this->stringResult($this->sendCommand(new Command\HeadCommand($article)));
     }
 
-    public function listGroups(?string $keyword = null, mixed $arguments = null): mixed
+    /**
+     * @return array<int, array{name: string, high: string, low: string, status: string}>
+     */
+    public function listGroups(?string $keyword = null, mixed $arguments = null): array
     {
-        return $this->sendCommand(new Command\ListCommand($keyword, $arguments));
+        return $this->arrayResult($this->sendCommand(new Command\ListCommand($keyword, $arguments)));
     }
 
-    public function group(string $name): mixed
+    /**
+     * @return array{count: string, first: string, last: string, name: string}
+     */
+    public function group(string $name): array
     {
-        return $this->sendCommand(new Command\GroupCommand($name));
+        return $this->groupResult($this->sendCommand(new Command\GroupCommand($name)));
     }
 
-    public function help(): mixed
+    public function help(): string
     {
-        return $this->sendCommand(new Command\HelpCommand());
+        return $this->stringResult($this->sendCommand(new Command\HelpCommand()));
     }
 
-    public function overviewFormat(): mixed
+    /**
+     * @return array<string, bool>
+     */
+    public function overviewFormat(): array
     {
-        return $this->sendCommand(new Command\OverviewFormatCommand());
+        return $this->arrayResult($this->sendCommand(new Command\OverviewFormatCommand()));
     }
 
     public function post(string $groups, string $subject, string $body, string $from, ?string $headers = null): ResponseInterface
@@ -127,35 +137,39 @@ class Client implements ClientInterface
         return $response;
     }
 
-    public function postArticle(string $groups, string $subject, string $body, string $from, ?string $headers = null): mixed
+    public function postArticle(string $groups, string $subject, string $body, string $from, ?string $headers = null): ResponseInterface
     {
-        return $this->sendArticle(new Command\PostArticleCommand($groups, $subject, $body, $from, $headers));
+        return $this->responseResult($this->sendArticle(new Command\PostArticleCommand($groups, $subject, $body, $from, $headers)));
     }
 
-    public function quit(): mixed
+    public function quit(): void
     {
-        return $this->sendCommand(new Command\QuitCommand());
+        $this->sendCommand(new Command\QuitCommand());
     }
 
-    public function xfeature(string $feature): mixed
+    public function xfeature(string $feature): bool
     {
-        return $this->sendCommand(new Command\XFeatureCommand($feature));
-    }
-
-    /**
-     * @param array<string, bool> $format
-     */
-    public function xover(int $from, int $to, array $format): mixed
-    {
-        return $this->sendCommand(new Command\XoverCommand($from, $to, $format));
+        return $this->boolResult($this->sendCommand(new Command\XFeatureCommand($feature)));
     }
 
     /**
      * @param array<string, bool> $format
+     *
+     * @return array<int, array<string, string>>
      */
-    public function xzver(int $from, int $to, array $format): mixed
+    public function xover(int $from, int $to, array $format): array
     {
-        return $this->sendCommand(new Command\XzverCommand($from, $to, $format));
+        return $this->arrayResult($this->sendCommand(new Command\XoverCommand($from, $to, $format)));
+    }
+
+    /**
+     * @param array<string, bool> $format
+     *
+     * @return array<int, array<string, string>>
+     */
+    public function xzver(int $from, int $to, array $format): array
+    {
+        return $this->arrayResult($this->sendCommand(new Command\XzverCommand($from, $to, $format)));
     }
 
     public function sendCommand(CommandInterface $command): mixed
@@ -166,5 +180,63 @@ class Client implements ClientInterface
     public function sendArticle(CommandInterface $command): mixed
     {
         return $this->connection->sendArticle($command);
+    }
+
+    private function responseResult(mixed $result): ResponseInterface
+    {
+        if (!$result instanceof ResponseInterface) {
+            throw new LogicException(sprintf('Expected command result to be %s.', ResponseInterface::class));
+        }
+
+        return $result;
+    }
+
+    private function stringResult(mixed $result): string
+    {
+        if (!is_string($result)) {
+            throw new LogicException('Expected command result to be a string.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    private function arrayResult(mixed $result): array
+    {
+        if (!is_array($result)) {
+            throw new LogicException('Expected command result to be an array.');
+        }
+
+        return $result;
+    }
+
+    private function boolResult(mixed $result): bool
+    {
+        if (!is_bool($result)) {
+            throw new LogicException('Expected command result to be a boolean.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array{count: string, first: string, last: string, name: string}
+     */
+    private function groupResult(mixed $result): array
+    {
+        if (
+            !is_array($result)
+            || !isset($result['count'], $result['first'], $result['last'], $result['name'])
+            || !is_string($result['count'])
+            || !is_string($result['first'])
+            || !is_string($result['last'])
+            || !is_string($result['name'])
+        ) {
+            throw new LogicException('Expected command result to be a group array.');
+        }
+
+        return $result;
     }
 }
