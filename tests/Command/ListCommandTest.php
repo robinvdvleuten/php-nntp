@@ -53,11 +53,11 @@ class ListCommandTest extends TestCase
 
         $response->expects($this->once())
             ->method('getLines')
-            ->will($this->returnValue([
+            ->willReturn([
                 'php.announce 0000000174 0000000001 m',
                 'php.apc.dev 0000000287 0000000001 y',
                 'php.beta 0000000161 0000000001 n',
-            ]));
+            ]);
 
         $result = $command->onInformationFollows($response);
 

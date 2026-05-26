@@ -47,7 +47,7 @@ class HelpCommandTest extends TestCase
 
         $response->expects($this->once())
             ->method('getLines')
-            ->will($this->returnValue($lines));
+            ->willReturn($lines);
 
         $this->assertEquals(implode("\n", $lines), $command->onHelpTextFollows($response));
     }

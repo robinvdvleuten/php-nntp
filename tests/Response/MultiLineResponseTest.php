@@ -27,11 +27,11 @@ class MultiLineResponseTest extends TestCase
 
         $response->expects($this->once())
             ->method('getMessage')
-            ->will($this->returnValue('server ready - posting allowed'));
+            ->willReturn('server ready - posting allowed');
 
         $response->expects($this->once())
             ->method('getStatusCode')
-            ->will($this->returnValue(200));
+            ->willReturn(200);
 
         $multiLineResponse = new MultiLineResponse($response, []);
 
