@@ -23,7 +23,6 @@ class ResponseTest extends TestCase
     {
         $response = Response::createFromString("200 server ready - posting allowed\r\n");
 
-        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('server ready - posting allowed', $response->getMessage());
         $this->assertEquals(200, $response->getStatusCode());
     }
