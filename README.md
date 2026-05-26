@@ -2,8 +2,9 @@
 
 Client for communicating with servers throught the Network News Transfer Protocol (NNTP) protocol.
 
-[![Latest Stable Version](https://poser.pugx.org/rvdv/nntp/v/stable)](https://packagist.org/packages/rvdv/nntp)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/robinvdvleuten/php-nntp/test.yml?branch=main)](https://github.com/robinvdvleuten/php-nntp/actions?query=workflow%3Atest)
+[![Latest Stable Version](http://poser.pugx.org/rvdv/nntp/v?style=flat-square)](https://packagist.org/packages/rvdv/nntp)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/robinvdvleuten/php-nntp/test.yml?branch=main&style=flat-square)](https://github.com/robinvdvleuten/php-nntp/actions?query=workflow%3Atest)
+[![MIT license](https://img.shields.io/github/license/robinvdvleuten/php-nntp?style=flat-square)](https://github.com/robinvdvleuten/dsmr/blob/main/LICENSE)
 
 ## Installation
 
