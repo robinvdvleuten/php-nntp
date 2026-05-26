@@ -44,7 +44,7 @@ class Socket implements SocketInterface
             throw new SocketException(sprintf('Connection to %s failed: %s', $address, $errstr));
         }
 
-        stream_set_blocking($this->stream, 1);
+        stream_set_blocking($this->stream, true);
 
         // Use unbuffered read operations on the underlying stream resource.
         // Reading chunks from the stream may otherwise leave unread bytes in

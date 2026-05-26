@@ -11,12 +11,13 @@
 
 namespace Rvdv\Nntp\Tests\Connection;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\CommandInterface;
 use Rvdv\Nntp\Connection\Connection;
 use Rvdv\Nntp\Exception\SocketException;
 use Rvdv\Nntp\Response\Response;
-use Rvdv\Nntp\Socket\Socket;
+use Rvdv\Nntp\Socket\SocketInterface;
 
 /**
  * @author Robin van der Vleuten <robin@webstronauts.co>
@@ -24,7 +25,7 @@ use Rvdv\Nntp\Socket\Socket;
 class ConnectionTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject&SocketInterface
      */
     private $socket;
 
@@ -33,9 +34,7 @@ class ConnectionTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->socket = $this->getMockBuilder(Socket::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->socket = $this->createMock(SocketInterface::class);
 
         $this->socket->expects($this->any())
             ->method('connect')

@@ -51,12 +51,12 @@ class Connection implements ConnectionInterface
     /**
      * Constructor.
      *
-     * @param string          $host   the host of the NNTP server
-     * @param int             $port   the port of the NNTP server
-     * @param bool            $secure a bool indicating if a secure connection should be established
-     * @param SocketInterface $socket an optional socket wrapper instance
+     * @param string               $host   the host of the NNTP server
+     * @param int                  $port   the port of the NNTP server
+     * @param bool                 $secure a bool indicating if a secure connection should be established
+     * @param SocketInterface|null $socket an optional socket wrapper instance
      */
-    public function __construct($host, $port, $secure = false, SocketInterface $socket = null)
+    public function __construct($host, $port, $secure = false, ?SocketInterface $socket = null)
     {
         $this->host = $host;
         $this->port = $port;
@@ -134,12 +134,6 @@ class Connection implements ConnectionInterface
             if ("\r\n" === substr($buffer, -2)) {
                 break;
             }
-
-            if (false === $buffer) {
-                $this->disconnect();
-
-                throw new RuntimeException('Incorrect data received from buffer');
-            }
         }
 
         return Response::createFromString($buffer);
@@ -195,12 +189,6 @@ class Connection implements ConnectionInterface
                 if (false !== $uncompressed) {
                     break;
                 }
-            }
-
-            if (false === $buffer) {
-                $this->disconnect();
-
-                throw new RuntimeException('Incorrect data received from buffer');
             }
 
             $line .= $buffer;
