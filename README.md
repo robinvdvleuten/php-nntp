@@ -4,8 +4,6 @@ Client for communicating with servers throught the Network News Transfer Protoco
 
 [![Latest Stable Version](https://poser.pugx.org/rvdv/nntp/v/stable)](https://packagist.org/packages/rvdv/nntp)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/robinvdvleuten/php-nntp/test.yml?branch=main)](https://github.com/robinvdvleuten/php-nntp/actions?query=workflow%3Atest)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/robinvdvleuten/php-nntp/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/robinvdvleuten/php-nntp/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/robinvdvleuten/php-nntp/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/robinvdvleuten/php-nntp/?branch=master)
 
 ## Installation
 
