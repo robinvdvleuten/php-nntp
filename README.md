@@ -80,4 +80,6 @@ Feel free to open an issue to get feedback on your idea before spending too much
 
 ## License
 
-MIT © [Robin van der Vleuten](https://robinvdvleuten.nl)
+Copyright (c) [Robin van der Vleuten](https://robinvdvleuten.nl)
+
+Licensed under the MIT License. See [LICENSE](LICENSE) for details.
