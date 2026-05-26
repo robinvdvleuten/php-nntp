@@ -27,8 +27,8 @@ jobs:
       - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ~/.composer/cache/files
-          key: ${{ matrix.os }}-php-${{ matrix.php }}-composer-${{ matrix.stability }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ matrix.os }}-php-${{ matrix.php }}-composer-${{ matrix.stability }}-
+          key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ matrix.stability }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ matrix.stability }}-
       - run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
       - run: vendor/bin/phpunit
 
