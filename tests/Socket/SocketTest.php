@@ -39,25 +39,41 @@ class SocketTest extends TestCase
         new Socket($connectTimeout);
     }
 
-    public function testConnectGoogle(): void
+    public function testItCanReadAndWriteThroughLocalSocket(): void
     {
+        $server = @stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
+        if (false === $server) {
+            $this->markTestSkipped(sprintf('Could not start local socket server: %s', $errstr));
+        }
+
+        $connection = null;
         $socket = new Socket();
 
-        $this->assertSame($socket, $socket->connect('www.google.nl:80'));
+        try {
+            $address = stream_socket_get_name($server, false);
+            $this->assertIsString($address);
 
-        // Send HTTP request to remote server.
-        $data = "GET / HTTP/1.1\r\nHost: www.google.com\r\n\r\n";
-        $this->assertSame(strlen($data), $socket->write($data));
+            $this->assertSame($socket, $socket->connect($address));
 
-        $this->assertSame('HTTP', $socket->read(4));
+            $connection = stream_socket_accept($server, 1);
+            $this->assertIsResource($connection);
 
-        // Expect there's more data in the socket.
-        $this->assertFalse($socket->eof());
+            $data = "PING\r\n";
+            $this->assertSame(strlen($data), $socket->write($data));
+            $this->assertSame($data, fread($connection, strlen($data)));
 
-        // Read a whole chunk from socket.
-        $this->assertNotEmpty($socket->read(8192));
+            $response = "PONG\r\n";
+            $this->assertSame(strlen($response), fwrite($connection, $response));
+            $this->assertSame('PONG', $socket->read(4));
 
-        $this->assertSame($socket, $socket->disconnect());
+            $this->assertSame($socket, $socket->disconnect());
+        } finally {
+            if (is_resource($connection)) {
+                fclose($connection);
+            }
+
+            fclose($server);
+        }
     }
 
     public function testConnectFail(): void
