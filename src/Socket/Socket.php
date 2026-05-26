@@ -23,10 +23,7 @@ class Socket implements SocketInterface
      */
     private $stream;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function enableCrypto($enable, $cryptoType = STREAM_CRYPTO_METHOD_TLS_CLIENT)
+    public function enableCrypto(bool $enable, int $cryptoType = STREAM_CRYPTO_METHOD_TLS_CLIENT): self
     {
         if (!stream_socket_enable_crypto($this->stream, $enable, $cryptoType)) {
             throw new SocketException();
@@ -35,10 +32,7 @@ class Socket implements SocketInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function connect($address)
+    public function connect(string $address): self
     {
         if (!$this->stream = @stream_socket_client($address, $errno, $errstr, 1.0, STREAM_CLIENT_CONNECT)) {
             throw new SocketException(sprintf('Connection to %s failed: %s', $address, $errstr));
@@ -59,10 +53,7 @@ class Socket implements SocketInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function disconnect()
+    public function disconnect(): self
     {
         if (!fclose($this->stream)) {
             throw new SocketException();
@@ -71,18 +62,12 @@ class Socket implements SocketInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function eof()
+    public function eof(): bool
     {
         return feof($this->stream);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function gets($length = null)
+    public function gets(?int $length = null): string
     {
         if (false === ($data = fgets($this->stream, $length))) {
             throw new SocketException();
@@ -91,10 +76,7 @@ class Socket implements SocketInterface
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function read($length)
+    public function read(int $length): string
     {
         if (false === ($data = fread($this->stream, $length))) {
             throw new SocketException();
@@ -103,10 +85,7 @@ class Socket implements SocketInterface
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function write($data)
+    public function write(string $data): int
     {
         if (false === ($bytes = fwrite($this->stream, $data))) {
             throw new SocketException();

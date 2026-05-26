@@ -16,49 +16,17 @@ namespace Rvdv\Nntp\Socket;
  */
 interface SocketInterface
 {
-    /**
-     * @param bool $enable
-     * @param int  $cryptoType
-     *
-     * @return self
-     */
-    public function enableCrypto($enable, $cryptoType = STREAM_CRYPTO_METHOD_TLS_CLIENT);
+    public function enableCrypto(bool $enable, int $cryptoType = STREAM_CRYPTO_METHOD_TLS_CLIENT): self;
 
-    /**
-     * @param string $address
-     *
-     * @return self
-     */
-    public function connect($address);
+    public function connect(string $address): self;
 
-    /**
-     * @return self
-     */
-    public function disconnect();
+    public function disconnect(): self;
 
-    /**
-     * @return bool
-     */
-    public function eof();
+    public function eof(): bool;
 
-    /**
-     * @param int $length
-     *
-     * @return string
-     */
-    public function gets($length = null);
+    public function gets(?int $length = null): string;
 
-    /**
-     * @param int $length
-     *
-     * @return string
-     */
-    public function read($length);
+    public function read(int $length): string;
 
-    /**
-     * @param $data
-     *
-     * @return int
-     */
-    public function write($data);
+    public function write(string $data): int;
 }
