@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Socket;
 
+use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Rvdv\Nntp\Exception\SocketException;
 
 /**
@@ -18,10 +19,21 @@ use Rvdv\Nntp\Exception\SocketException;
  */
 class Socket implements SocketInterface
 {
+    private float $connectTimeout;
+
     /**
      * @var resource
      */
     private $stream;
+
+    public function __construct(float $connectTimeout = 1.0)
+    {
+        if ($connectTimeout <= 0) {
+            throw new InvalidArgumentException('Connect timeout must be greater than 0 seconds');
+        }
+
+        $this->connectTimeout = $connectTimeout;
+    }
 
     public function enableCrypto(bool $enable, int $cryptoType = STREAM_CRYPTO_METHOD_TLS_CLIENT): self
     {
@@ -34,7 +46,7 @@ class Socket implements SocketInterface
 
     public function connect(string $address): self
     {
-        $stream = @stream_socket_client($address, $errno, $errstr, 1.0, STREAM_CLIENT_CONNECT);
+        $stream = @stream_socket_client($address, $errno, $errstr, $this->connectTimeout, STREAM_CLIENT_CONNECT);
         if (false === $stream) {
             throw new SocketException(sprintf('Connection to %s failed: %s', $address, $errstr));
         }

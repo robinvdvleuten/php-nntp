@@ -11,6 +11,7 @@
 
 namespace Rvdv\Nntp\Tests\Connection;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Rvdv\Nntp\Command\CommandInterface;
@@ -61,6 +62,49 @@ class ConnectionTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('server ready - posting allowed', $response->getMessage());
+    }
+
+    public function testConnectionCanBeEstablishedWithConnectTimeoutAndCustomSocket(): void
+    {
+        $this->socket->expects($this->atLeastOnce())
+            ->method('eof')
+            ->willReturn(false);
+
+        $this->socket->expects($this->once())
+            ->method('connect')
+            ->with('tcp://localhost:5000')
+            ->willReturnSelf();
+
+        $this->socket->expects($this->once())
+            ->method('gets')
+            ->with(1024)
+            ->willReturn("200 server ready - posting allowed\r\n");
+
+        $connection = new Connection('localhost', 5000, false, $this->socket, 5.0);
+
+        $response = $connection->connect();
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * @return array<int, array{float}>
+     */
+    public static function getInvalidConnectTimeouts(): array
+    {
+        return [
+            [0.0],
+            [-1.0],
+        ];
+    }
+
+    #[DataProvider('getInvalidConnectTimeouts')]
+    public function testConnectionRejectsInvalidConnectTimeout(float $connectTimeout): void
+    {
+        $this->expectException(\Rvdv\Nntp\Exception\InvalidArgumentException::class);
+
+        new Connection('localhost', 5000, connectTimeout: $connectTimeout);
     }
 
     public function testConnectionCanBeEncrypted(): void
