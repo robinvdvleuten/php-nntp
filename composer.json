@@ -9,7 +9,7 @@
             "email": "robin@webstronauts.com"
         }
     ],
-    "homepage" : "https://github.com/robinvdvleuten/php-nntp",
+    "homepage": "https://github.com/robinvdvleuten/php-nntp",
     "require": {
         "php": "^8.2"
     },
@@ -21,10 +21,14 @@
         "phpstan/phpstan-phpunit": "^2.0"
     },
     "autoload": {
-        "psr-4": {"Rvdv\\Nntp\\": "src"}
+        "psr-4": {
+            "Rvdv\\Nntp\\": "src"
+        }
     },
     "autoload-dev": {
-        "psr-4": {"Rvdv\\Nntp\\Tests\\": "tests"}
+        "psr-4": {
+            "Rvdv\\Nntp\\Tests\\": "tests"
+        }
     },
     "scripts": {
         "analyze": "vendor/bin/phpstan analyze",
