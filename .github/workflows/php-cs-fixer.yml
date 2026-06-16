@@ -17,5 +17,5 @@ jobs:
             - uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # v2
               with:
                 php-version: '8.4'
-            - uses: ramsey/composer-install@5c2bcf28d7b060ef3c601d7b476d5430a7b46c27 # v4
+            - uses: ramsey/composer-install@26d8a556604053a9612623447203a691f406fbe6 # v4
             - run: vendor/bin/php-cs-fixer check --diff -v
